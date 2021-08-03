@@ -147,6 +147,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     );
                                   }
                                   else {
+                                    // Scaffold.of(context).showSnackBar(
+                                    //   SnackBar(content: Text("Your Email or password is incorrect!! "))
+                                    // );
+                                    ////
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
