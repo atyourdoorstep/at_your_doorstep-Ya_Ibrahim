@@ -75,7 +75,7 @@ class _HomePageOperationState extends State<HomePageOperation> {
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Hi, Your Name',style:
+                  Text('Hi, ${_ucFirst(userData['fName'].toString())} ${_ucFirst(userData['lName'].toString())}',style:
                   TextStyle(fontSize: 17, color: Colors.white, fontFamily: "PTSans" )),
                   Row(
                     children: [
@@ -138,7 +138,7 @@ class _HomePageOperationState extends State<HomePageOperation> {
   onSelected(BuildContext context, int item) {
     switch(item){
       case 1:
-        Navigator.pop(context);
+        logout();
     }
   }
 
@@ -155,6 +155,5 @@ class _HomePageOperationState extends State<HomePageOperation> {
           new MaterialPageRoute(
               builder: (context) => MyApp()));
     }
-
   }
 }

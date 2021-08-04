@@ -199,8 +199,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               },
                               color: Colors.white,
-                              child: Text("Guest Login", style:
-                              TextStyle(fontSize: 18, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w300 )),
+                              child: Text("As a Guest", style:
+                              TextStyle(fontSize: 18, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
                             ),
                           ),
                         ),
