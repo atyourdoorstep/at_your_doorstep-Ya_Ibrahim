@@ -31,6 +31,7 @@ dependencies:
   blobs: ^2.0.0
   shared_preferences:
   http:
+  flutter_easyloading: ^3.0.0
 
 
 dev_dependencies:

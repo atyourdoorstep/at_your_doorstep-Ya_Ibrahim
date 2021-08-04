@@ -9,6 +9,7 @@ class textfieldStyle extends StatelessWidget {
   final onChange;
   final bool obscureText;
   final controllerText;
+  final suffixButton;
 
   textfieldStyle(
       {required this.textLabel1,
@@ -16,7 +17,7 @@ class textfieldStyle extends StatelessWidget {
         this.Icon1,
         required this.textHint,
         this.onChange,
-        required this.obscureText, this.controllerText});
+        required this.obscureText, this.controllerText, this.suffixButton});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +33,7 @@ class textfieldStyle extends StatelessWidget {
           decoration: InputDecoration(
             //filled: true,
             //fillColor: Colors.black12,
+            suffixIcon: suffixButton,
             hintText: textHint,
             labelText: textLabel1,
             hintStyle: hintStyleForTextField,

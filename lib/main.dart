@@ -10,6 +10,7 @@ import 'package:at_your_doorstep/textFieldClass.dart';
 import 'package:blobs/blobs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //import 'api.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 
 void main()  {
@@ -50,19 +51,6 @@ saveStringTolocal(String key,String value)async
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   localStorage.setString(key, value);
 }
-saveToken()
-async {
-  var csrf = await CallApi().getCSRF();
-  print ('in Save:'+csrf['CSRF']);
-  saveStringTolocal('CSRF',csrf['CSRF']);
-  checkIfToken();
-}
-checkIfToken()
-async {
-  SharedPreferences localStorage = await SharedPreferences.getInstance();
-  String? x=localStorage.getString('CSRF');
-  print('Token after save:'+x!);
-}
 class _MyHomePageState extends State<MyHomePage> {
 
   bool showSpinner = false;
@@ -72,29 +60,23 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController passwordController = TextEditingController();
   String emailF = "mussabayubawan2@gmail.com";
   String passwordF = "mussabzgr8123";
-// @override
-//   void initState() {
-//     super.initState();
-//     csrf=CallApi().getCSRF() ;
-//     String str=getTkn(csrf.toString());
-//     print( csrf);
-//   }
 
-//   Future<void> getCSRF()
-//   async {
-//     var cs=CallApi().getCSRF();
-//     print(await cs);
-//   }
+  @override
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
+    //clearCSRFToken();
+  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    saveToken();
+    //saveToken();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -136,40 +118,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 setState(() {
                                   showSpinner = true;
                                 });
-                                if(mailController.text != "" && passwordController.text != "") {
-                                  if (emailF == mailController.text &&
-                                      passwordF == passwordController.text) {
-                                    CircularProgressIndicator();
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => HomePage()),
-                                    );
-                                  }
-                                  else {
-                                    // Scaffold.of(context).showSnackBar(
-                                    //   SnackBar(content: Text("Your Email or password is incorrect!! "))
-                                    // );
-                                    ////
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text("Warning! "),
-                                            content: Text(
-                                                "Your Email or password is incorrect!! "),
-                                            actions: [
-                                              FlatButton(
-                                                child: Text("Ok"),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  }
-                                }
+                                // mailController.text=emailF;
+                                // passwordController.text=passwordF;
+                                var data = {
+                                  'email' : emailF,//mailController.text,
+                                  'password' : passwordF,//passwordController.text
+                                };
+                                login();
                               },
                               color: Colors.red,
                               child: Text("Login", style:
@@ -271,17 +226,39 @@ Expanded buildDivider(){
       ),);
 }
 
-/* void _login() async{
+  _showMsg(msg) { //
+    final snackBar = SnackBar(
+      backgroundColor: Color(0xffc76464),
+      content: Text(msg),
+      action: SnackBarAction(
+        textColor: Colors.white,
+        label: 'Close',
+        onPressed: () {
+          // Some code to undo the change!
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void login() async{
+
     setState(() {
       _isLoading = true;
     });
+
+
     var data = {
       'email' : mailController.text,
       'password' : passwordController.text
     };
-    var res = await CallApi().postData(data, 'login');
+
+    EasyLoading.show(status: 'loading...');
+    var res = await CallApi().postData(data, '/mobileLogin');
     var body = json.decode(res.body);
-    if(body['success']){
+    EasyLoading.dismiss();
+    //print(body);
+    if(body['success']!){
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', body['token']);
       localStorage.setString('user', json.encode(body['user']));
@@ -290,10 +267,16 @@ Expanded buildDivider(){
           new MaterialPageRoute(
               builder: (context) => HomePage()));
     }else{
-      //_showMsg(body['message']);
+      _showMsg(body['message']);
+      //EasyLoading.showToast(body['message']);
     }
+
     setState(() {
       _isLoading = false;
     });
-  }*/
+
+
+
+
+  }
 }
