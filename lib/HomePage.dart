@@ -127,7 +127,7 @@ class _HomePageOperationState extends State<HomePageOperation> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
                   child: Text("Available Services", style:
-                  TextStyle(fontSize: 20, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                  TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                 ),
               ],
             ),
