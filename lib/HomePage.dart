@@ -25,7 +25,8 @@ class HomePageOperation extends StatefulWidget {
   _HomePageOperationState createState() => _HomePageOperationState();
 }
 
-class _HomePageOperationState extends State<HomePageOperation> {
+class _HomePageOperationState extends State<HomePageOperation>
+    with TickerProviderStateMixin {
 
   late Map<String,dynamic> userData;
   _getUserInfo() async {
@@ -46,10 +47,14 @@ class _HomePageOperationState extends State<HomePageOperation> {
     var x=str.toString();
     return x.substring(0,1).toUpperCase()+x.substring(1);
   }
+
+  late TabController _tabControl;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _tabControl = TabController(length: 4, vsync: this);
     userData={};
     _getUserInfo();
 
@@ -89,7 +94,10 @@ class _HomePageOperationState extends State<HomePageOperation> {
               ),
             ),
           ),
-          body: SingleChildScrollView(
+          body: TabBarView(
+            controller: _tabControl,
+            children: <Widget>[
+          SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,6 +140,41 @@ class _HomePageOperationState extends State<HomePageOperation> {
               ],
             ),
           ),
+              Center(child: Text("Search")),
+              Center(child: Text("Shopping Cart")),
+              Center(child: Text("Profile")),
+      ],
+    ),
+      bottomNavigationBar: Material(
+        color: Colors.transparent,
+        shadowColor: Color(0xFF656565),
+        child: TabBar(
+          unselectedLabelColor: Color(0xFF656565),
+          unselectedLabelStyle: TextStyle(fontSize: 14),
+          indicatorColor: Colors.red,
+          labelColor: Colors.red,
+          indicatorSize: TabBarIndicatorSize.tab,
+          controller: _tabControl,
+          tabs: <Widget>[
+            Tab(
+              icon: Icon(Icons.home, size: 30,),
+              child: Text("Home"),
+            ),
+            Tab(
+              icon: Icon(Icons.search,size: 30,),
+              text: "Search",
+            ),
+            Tab(
+              icon: Icon(Icons.add_shopping_cart,size: 30,),
+              text: "Cart",
+            ),
+            Tab(
+              icon: Icon(Icons.account_circle_outlined,size: 30,),
+              text: "Profile",
+            ),
+          ],
+        ),
+      ),
     );
   }
 
