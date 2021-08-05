@@ -10,13 +10,14 @@ class textfieldStyle extends StatelessWidget {
   final bool obscureText;
   final controllerText;
   final suffixButton;
+  final submit;
 
   textfieldStyle(
       {required this.textLabel1,
         this.keyBoardType,
         this.Icon1,
         required this.textHint,
-        this.onChange,
+        this.onChange, this.submit,
         required this.obscureText, this.controllerText, this.suffixButton});
 
   @override

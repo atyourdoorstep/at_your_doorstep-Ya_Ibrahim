@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const hintStyleForTextField = TextStyle(
-    color: Colors.black, fontSize: 15.0, decorationColor: Colors.black);
+    color: Colors.black26, fontSize: 15.0, decorationColor: Colors.black);
 const newFont = TextStyle(
     color: Colors.black,
     fontSize: 15.0,

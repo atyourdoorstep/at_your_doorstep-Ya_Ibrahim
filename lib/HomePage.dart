@@ -4,6 +4,7 @@ import 'package:at_your_doorstep/Constants.dart';
 import 'package:at_your_doorstep/api.dart';
 import 'package:at_your_doorstep/main.dart';
 import 'package:at_your_doorstep/signup_page.dart';
+import 'package:at_your_doorstep/userProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:at_your_doorstep/textFieldClass.dart';
 import 'package:blobs/blobs.dart';
@@ -50,6 +51,7 @@ class _HomePageOperationState extends State<HomePageOperation>
 
   late TabController _tabControl;
 
+  TextEditingController searchController = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -102,6 +104,18 @@ class _HomePageOperationState extends State<HomePageOperation>
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: textfieldStyle(
+                    textHint: 'Search by services ,shop name',
+                    obscureText: false,
+                    textLabel1: 'Search ',
+                    controllerText: searchController,
+                    onChange: (value){
+                      print(value);
+                    },
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
@@ -192,7 +206,7 @@ class _HomePageOperationState extends State<HomePageOperation>
           ),
               Center(child: Text("Search")),
               Center(child: Text("Shopping Cart")),
-              Center(child: Text("Profile")),
+              editProfile(),
       ],
     ),
       bottomNavigationBar: Material(
