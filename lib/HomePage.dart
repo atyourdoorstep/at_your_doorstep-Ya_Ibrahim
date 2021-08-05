@@ -102,39 +102,89 @@ class _HomePageOperationState extends State<HomePageOperation>
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
-                  height: 180.0,
-                  child: ListView(
-                      physics: ClampingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ClipRRect(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: 180.0,
+                    child: ListView(
+                        physics: ClampingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(18.0),
+                              child: Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNWosb1JiswKwHTROhbee2jJvGPzIt-PInWg&usqp=CAU"),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(18.0),
-                            child: Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNWosb1JiswKwHTROhbee2jJvGPzIt-PInWg&usqp=CAU"),
+                            child: Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoWWdl6yrERlzK-R4wHHOTI0oIX0djyFzJsw&usqp=CAU"),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(18.0),
-                          child: Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoWWdl6yrERlzK-R4wHHOTI0oIX0djyFzJsw&usqp=CAU"),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(18.0),
+                            child: Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0gUdOSUpCj1Ua90OToZZ5JICiNVohiiK-cg&usqp=CAU"),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(18.0),
-                          child: Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0gUdOSUpCj1Ua90OToZZ5JICiNVohiiK-cg&usqp=CAU"),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
                   child: Text("Available Services", style:
+                  TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SizedBox(
+                    height: 130,
+                    child: GridView(
+                      scrollDirection: Axis.horizontal,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+                      children: <Widget>[
+                        Card(child: Center(child: Text("Home Services")), shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0),
+                          ),
+                          side: BorderSide(color: Colors.red),
+                        ),),
+                        Card(child: Center(child: Text("Pharmacy")), shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0),
+                          ),
+                          side: BorderSide(color: Colors.red),
+                        ),),
+                        Card(child: Center(child: Text("Education")), shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0),
+                          ),
+                          side: BorderSide(color: Colors.red),
+                        ),),
+                        Card(child: Center(child: Text("Electronics")), shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0),
+                          ),
+                          side: BorderSide(color: Colors.red),
+                        ),),
+                        Card(child: Center(child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Request for New Service"),
+                        )), shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0),
+                          ),
+                          side: BorderSide(color: Colors.red),
+                        ),
+
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
+                  child: Text("Recommended for you", style:
                   TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                 ),
               ],
