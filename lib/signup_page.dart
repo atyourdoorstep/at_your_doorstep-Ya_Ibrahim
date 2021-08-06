@@ -85,6 +85,7 @@ class _SignupOperationState extends State<SignupOperation> {
                         children: <Widget>[
                           //Text("${selectedData.toLocal()}".split(' ')[0]),
                           textfieldStyle(textHint: 'Date', obscureText: false, textLabel1: 'Date',controllerText: dateOfBirthController,
+                            focus: AlwaysDisable(),
                             suffixButton: IconButton(
                               icon: Icon(Icons.calendar_today),
                               onPressed: () => _selectDate(context),
@@ -187,4 +188,9 @@ class _SignupOperationState extends State<SignupOperation> {
 
 
   }
+}
+
+class AlwaysDisable extends FocusNode{
+  @override
+  bool get hasFocus => false;
 }

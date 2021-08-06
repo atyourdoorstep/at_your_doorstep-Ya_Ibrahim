@@ -33,3 +33,11 @@ final ButtonStyle flatButtonStyle = TextButton.styleFrom(
     borderRadius: BorderRadius.all(Radius.circular(10.0)),
   ),
 );
+
+const menuFont = TextStyle(
+    color: Colors.black,
+    fontSize: 18.0,
+    decorationColor: Colors.black,
+    fontFamily: "PTSans",
+    fontWeight: FontWeight.w300,
+);

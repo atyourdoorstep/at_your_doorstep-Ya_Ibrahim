@@ -4,6 +4,7 @@ import 'package:at_your_doorstep/Constants.dart';
 import 'package:at_your_doorstep/HomePage.dart';
 import 'package:at_your_doorstep/api.dart';
 import 'package:at_your_doorstep/signup_page.dart';
+import 'package:at_your_doorstep/userProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:at_your_doorstep/textFieldClass.dart';
@@ -14,7 +15,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 
 void main()  {
-  //runApp(HomePage());
+  // runApp(MaterialApp(
+  //   home: editProfile(),
+  // ));
 
   //return;
   runApp(MyApp());
@@ -195,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomePage()),
+                                      builder: (context) => CupertinoHomePage()),
                                 );
                               },
                               color: Colors.white,

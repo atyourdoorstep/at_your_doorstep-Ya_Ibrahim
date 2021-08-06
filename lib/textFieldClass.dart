@@ -11,13 +11,14 @@ class textfieldStyle extends StatelessWidget {
   final controllerText;
   final suffixButton;
   final submit;
+  final focus;
 
   textfieldStyle(
       {required this.textLabel1,
         this.keyBoardType,
         this.Icon1,
         required this.textHint,
-        this.onChange, this.submit,
+        this.onChange, this.submit,this.focus,
         required this.obscureText, this.controllerText, this.suffixButton});
 
   @override
@@ -27,6 +28,7 @@ class textfieldStyle extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: TextFormField(
+          focusNode: focus,
           obscureText: obscureText,
           onChanged: onChange,
           controller: controllerText,
