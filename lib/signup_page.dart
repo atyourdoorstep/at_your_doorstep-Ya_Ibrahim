@@ -171,7 +171,7 @@ class _SignupOperationState extends State<SignupOperation> {
       Navigator.push(
           context,
           new MaterialPageRoute(
-              builder: (context) => HomePage()));
+              builder: (context) => CupertinoHomePage()));
     }
     else{
       _showMsg(body['message']);

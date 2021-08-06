@@ -199,6 +199,9 @@ class _HomePageOperationState extends State<HomePageOperation>
                   child: Text("Recommended for you", style:
                   TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                 ),
+                 Text("Recommended for you"),
+                  Text("Recommended for you"),
+                   Text("Recommended for you"),
               ],
             ),
           ),
@@ -236,11 +239,11 @@ class CupertinoHomePage extends StatelessWidget {
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.home)),
-            BottomNavigationBarItem(icon: Icon(Icons.calendar_view_day_sharp)),
-            BottomNavigationBarItem(icon: Icon(Icons.search)),
-            BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined)),
-            BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined)),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home" ),
+            BottomNavigationBarItem(icon: Icon(Icons.pages_rounded), label: "Services"),
+            BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined),label: "Cart"),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+            BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: "Profile"),
           ],
         ),
         tabBuilder: (context,index){
