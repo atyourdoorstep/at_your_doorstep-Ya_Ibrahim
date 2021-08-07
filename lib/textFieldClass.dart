@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'Constants.dart';
 
 class textfieldStyle extends StatelessWidget {
-  final String textLabel1;
+  final textLabel1;
   final keyBoardType;
   final Icon1;
   final String textHint;
@@ -14,7 +14,7 @@ class textfieldStyle extends StatelessWidget {
   final focus;
 
   textfieldStyle(
-      {required this.textLabel1,
+      {this.textLabel1,
         this.keyBoardType,
         this.Icon1,
         required this.textHint,
@@ -34,8 +34,6 @@ class textfieldStyle extends StatelessWidget {
           controller: controllerText,
           cursorColor: Colors.blue,
           decoration: InputDecoration(
-            //filled: true,
-            //fillColor: Colors.black12,
             suffixIcon: suffixButton,
             hintText: textHint,
             labelText: textLabel1,

@@ -39,13 +39,14 @@ class _EditProfileOpState extends State<EditProfileOp> {
                 padding: const EdgeInsets.all(12.0),
                 child: Row(
                   children: [
+                    SizedBox(width: 20,),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("Hello!", style:
-                        TextStyle(fontSize: 16, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
+                        TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
                         Text("Your Name", style:
-                        TextStyle(fontSize: 25, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 26, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ],
@@ -154,7 +155,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       textfieldStyle(textHint: 'First Name', obscureText: false, textLabel1: 'First Name '),
                       textfieldStyle(textHint: 'Last Name', obscureText: false, textLabel1: 'Last Name '),
-                      textfieldStyle(textHint: 'Email', obscureText: false, textLabel1: 'CNIC ',),
+                      textfieldStyle(textHint: 'Email', obscureText: false, textLabel1: 'Email ',),
                       textfieldStyle(textHint: 'Phone Number', obscureText: false, textLabel1: 'Phone Number ',),
                       Padding(
                         padding: const EdgeInsets.all(10.0),

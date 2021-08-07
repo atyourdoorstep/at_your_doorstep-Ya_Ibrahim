@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:at_your_doorstep/Constants.dart';
+import 'package:at_your_doorstep/SearchPage.dart';
 import 'package:at_your_doorstep/api.dart';
 import 'package:at_your_doorstep/main.dart';
 import 'package:at_your_doorstep/signup_page.dart';
@@ -51,8 +52,6 @@ class _HomePageOperationState extends State<HomePageOperation>
   }
 
   //late TabController _tabControl;
-
-  TextEditingController searchController = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -102,18 +101,6 @@ class _HomePageOperationState extends State<HomePageOperation>
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: textfieldStyle(
-                    textHint: 'Search by services ,shop name',
-                    obscureText: false,
-                    textLabel1: 'Search ',
-                    controllerText: searchController,
-                    onChange: (value){
-                      print(value);
-                    },
-                  ),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
@@ -188,7 +175,6 @@ class _HomePageOperationState extends State<HomePageOperation>
                           ),
                           side: BorderSide(color: Colors.red),
                         ),
-
                         ),
                       ],
                     ),
@@ -199,9 +185,6 @@ class _HomePageOperationState extends State<HomePageOperation>
                   child: Text("Recommended for you", style:
                   TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                 ),
-                 Text("Recommended for you"),
-                  Text("Recommended for you"),
-                   Text("Recommended for you"),
               ],
             ),
           ),
@@ -237,6 +220,7 @@ class CupertinoHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
+      backgroundColor: Colors.transparent,
         tabBar: CupertinoTabBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home" ),
@@ -269,7 +253,7 @@ class CupertinoHomePage extends StatelessWidget {
             case 3:
               return CupertinoTabView(builder: (context){
                 return CupertinoPageScaffold(
-                  child: Center(child: Text("hello2"),),);
+                  child: SearchPage(),);
               }
               );
             case 4:
