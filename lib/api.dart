@@ -53,10 +53,10 @@ class CallApi{
   _getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
-    if(token!.isEmpty)
-    {
-      return '';
-    }
+    // if(token!.isEmpty)
+    //   {
+    //     return '';
+    //   }
     return '?token=$token';
   }
 // _getCurrentCSRF() async{

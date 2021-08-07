@@ -52,11 +52,11 @@ class _HomePageOperationState extends State<HomePageOperation>
   }
 
   //late TabController _tabControl;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    //_tabControl = TabController(length: 4, vsync: this);
     userData={};
     _getUserInfo();
 
@@ -200,7 +200,7 @@ class _HomePageOperationState extends State<HomePageOperation>
 
   void logout() async{
     // logout from the server ...
-    var res = await CallApi().getData('/logout');
+    var res = await CallApi().postData({},'/mobileLogOut');
     var body = json.decode(res.body);
     if(body['success']){
       SharedPreferences localStorage = await SharedPreferences.getInstance();

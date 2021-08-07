@@ -74,9 +74,24 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //saveToken();
+    _checkStatus();
   }
 
+  @override
+  _checkStatus()async
+  {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    String? token= await localStorage.getString('token');
+    if(token ==null)
+      return;
+    if(token.length>0)
+    {
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => HomePage()));
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,11 +138,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                 });
                                 // mailController.text=emailF;
                                 // passwordController.text=passwordF;
+                                //EasyLoading.show(status: 'loading...');
+                                //EasyLoading.show(status: 'loading...');
+
+                                print('done');
+                                //Future.delayed(const Duration(seconds: 4));
                                 var data = {
-                                  'email' : emailF,//mailController.text,
-                                  'password' : passwordF,//passwordController.text
+                                  'email' : mailController.text,
+                                  'password' : passwordController.text
                                 };
-                                login();
+                                login(data);
+                                //EasyLoading.dismiss();
                               },
                               color: Colors.red,
                               child: Text("Login", style:
@@ -194,7 +215,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                // side: BorderSide(color: Colors.red),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
+                                var user={
+                                  'fName':'Guest',
+                                  'lName':'Account',
+                                  'CNIC':0,
+                                  'contact':0,
+                                  'email':''};
+                                await toLocal('user',json.encode(user));
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -246,18 +274,21 @@ Expanded buildDivider(){
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+  toLocal(String key,String val)async
+  {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    localStorage.setString(key, val);
+  }
+  void login(var data ) async{
 
-  void login() async{
-
+    print('in FUNC');
     setState(() {
       _isLoading = true;
     });
-
-
-    var data = {
-      'email' : mailController.text,
-      'password' : passwordController.text
-    };
+    // var data = {
+    //   'email' : mailController.text,
+    //   'password' : passwordController.text
+    // };
 
     EasyLoading.show(status: 'loading...');
     var res = await CallApi().postData(data, '/mobileLogin');
@@ -276,13 +307,8 @@ Expanded buildDivider(){
       _showMsg(body['message']);
       //EasyLoading.showToast(body['message']);
     }
-
     setState(() {
       _isLoading = false;
     });
-
-
-
-
   }
 }

@@ -156,12 +156,11 @@ class _SignupOperationState extends State<SignupOperation> {
       'CNIC' : CNICController.text,
       'date_of_birth' : dateOfBirthController.text,
     };
-    print ("data: "+data.toString());
-    EasyLoading.show(status: 'loading...');
+    //EasyLoading.show(status: 'loading...');
     var res;
     res= await CallApi().postData(data, '/mobileRegister');
     var body = json.decode(res.body);
-    EasyLoading.dismiss();
+    //EasyLoading.dismiss();
     print(body.toString());
     if(body['success']!){
       SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -177,16 +176,9 @@ class _SignupOperationState extends State<SignupOperation> {
       _showMsg(body['message']);
       //EasyLoading.showToast(body['message']);
     }
-
-
-
-
     setState(() {
       _isLoading = false;
     });
-
-
-
   }
 }
 
