@@ -38,6 +38,10 @@ class MyApp extends StatelessWidget {
 
       ),
       home: MyHomePage(title: 'At Your Doorstep'),
+      initialRoute: 'LoginPage',
+      routes: {
+        'LoginPage': (context)=> MyHomePage(title: 'AT YOUR DOORSTEP'),
+  },
     );
   }
 }

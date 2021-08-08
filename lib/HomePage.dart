@@ -182,8 +182,13 @@ class _HomePageOperationState extends State<HomePageOperation>
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
-                  child: Text("Recommended for you", style:
-                  TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true,).pushNamed('LoginPage');
+                    },
+                    child: Text("Recommended for you", style:
+                    TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                  ),
                 ),
               ],
             ),
@@ -206,10 +211,8 @@ class _HomePageOperationState extends State<HomePageOperation>
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.remove('user');
       localStorage.remove('token');
-      Navigator.push(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => MyApp()));
+      Navigator.of(context, rootNavigator: true,).pushNamed('LoginPage');
+
     }
   }
 }

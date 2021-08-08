@@ -27,21 +27,23 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
+        preferredSize: Size.fromHeight(65),
         child: AppBar(
           leading: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Image.asset("assets/atyourdoorstep1.png"),
           ),
           backgroundColor: Colors.white,
-          title: textfieldStyle(
-            textHint: 'Search by services ,shop name',
-            obscureText: false,
-            //textLabel1: 'Search ',
-            controllerText: searchController,
-            onChange: (value){
-              print(value);
-            },
+          title: Expanded(
+            child: textfieldStyle(
+              textHint: 'Search by services ,shop name',
+              obscureText: false,
+              //textLabel1: 'Search ',
+              controllerText: searchController,
+              onChange: (value){
+                print(value);
+              },
+            ),
           ),
           centerTitle: true,
           titleSpacing: 2.0,

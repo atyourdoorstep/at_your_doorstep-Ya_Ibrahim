@@ -60,54 +60,60 @@ class _EditProfileOpState extends State<EditProfileOp> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0),
                       ),),
-                    child: ListView(
-                      physics: ClampingScrollPhysics(),
-                      children: [
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfileScreen()),);
-                          },
-                          child: ListTile(title: Text("Edit Profile", style: menuFont,),
-                          leading: Icon(Icons.edit),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView(
+                        physics: ClampingScrollPhysics(),
+                        children: [
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfileScreen()),);
+                            },
+                            child: ListTile(title: Text("Edit Profile", style: menuFont,),
+                            leading: Icon(Icons.edit),
+                            ),
                           ),
-                        ),
-                        Divider(),
-                        ListTile(title: Text("Orders", style: menuFont,),
-                          leading: Icon(Icons.shopping_bag_outlined),
-                        ),
-                      ],
+                          Divider(),
+                          ListTile(title: Text("Orders", style: menuFont,),
+                            leading: Icon(Icons.shopping_bag_outlined),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
               //
               SizedBox(
-                height: 280,
+                height: 300,
                 child: Padding(
                   padding: const EdgeInsets.all(7.0),
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0),
                       ),),
-                    child: ListView(
-                      physics: ClampingScrollPhysics(),
-                      children: [
-                        ListTile(title: Text("Complaints", style: menuFont,),
-                          leading: Icon(Icons.edit),
-                        ),
-                        Divider(),
-                        ListTile(title: Text("Suggest New Service", style: menuFont,),
-                          leading: Icon(Icons.add_chart),
-                        ),
-                        Divider(),
-                        ListTile(title: Text("My Address", style: menuFont,),
-                          leading: Icon(Icons.location_on),
-                        ),
-                        Divider(),
-                        ListTile(title: Text("Sign Out", style: menuFont,),
-                          leading: Icon(Icons.power_settings_new),
-                        ),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView(
+                        physics: ClampingScrollPhysics(),
+                        children: [
+                          ListTile(title: Text("Complaints", style: menuFont,),
+                            leading: Icon(Icons.edit),
+                          ),
+                          Divider(),
+                          ListTile(title: Text("Suggest New Service", style: menuFont,),
+                            leading: Icon(Icons.add_chart),
+                          ),
+                          Divider(),
+                          ListTile(title: Text("My Address", style: menuFont,),
+                            leading: Icon(Icons.location_on),
+                          ),
+                          Divider(),
+                          ListTile(title: Text("Sign Out", style: menuFont,),
+                            leading: Icon(Icons.power_settings_new),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
