@@ -57,9 +57,21 @@ class _SplashStateState extends State<SplashState> {
           child: Container(
               child: Center(child: Hero(
                   tag: 'logo',
-                  child: Image.asset("assets/atyourdoorstep1.png", height: 180,width: 180,)))),
+                  child: Image.asset("assets/atyourdoorstep.png", height: 180,width: 180,)))),
         ),
-        CircularProgressIndicator(color: Colors.red,),
+        Stack(
+          alignment: AlignmentDirectional.topCenter,
+          children: [
+            Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Center(
+              child: Text("AT YOUR DOORSTEP", style:
+              TextStyle(fontSize: 19, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+            ),
+          ),
+            CircularProgressIndicator(color: Colors.red,),
+    ],
+        ),
       ],
     );
   }
