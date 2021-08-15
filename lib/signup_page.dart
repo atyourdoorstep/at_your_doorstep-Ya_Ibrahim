@@ -27,7 +27,8 @@ class SignupOperation extends StatefulWidget {
 
 class _SignupOperationState extends State<SignupOperation> {
   bool _isLoading = false;
-  DateTime  selectedData=DateTime.now();
+  //DateTime  selectedData=DateTime.now();
+  DateTime  selectedData=DateTime((DateTime.now().year-18),DateTime.now().month,DateTime.now().day);
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController mailController = TextEditingController();
@@ -38,19 +39,19 @@ class _SignupOperationState extends State<SignupOperation> {
   TextEditingController dateOfBirthController = TextEditingController();
 
   _selectDate(BuildContext context) async {
-
+    DateTime today = DateTime.now();
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedData,
         firstDate: DateTime(1920, 8),
-        lastDate: DateTime(2101));
+        lastDate: DateTime((today.year-18),today.month,today.day),
+    );
     if (picked != null && picked != selectedData)
       setState(() {
         selectedData = picked;
       });
     dateOfBirthController.text=selectedData.year.toString()+'-'+selectedData.month.toString()+'-'+selectedData.day.toString();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,13 +146,13 @@ class _SignupOperationState extends State<SignupOperation> {
     setState(() {
       _isLoading = true;
     });
-
+    EasyLoading.show(status: 'loading...');
     var data = {
       'fName' : firstNameController.text,
       'lName' : lastNameController.text,
       'email' : mailController.text,
       'password' : passwordController.text,
-      'confirm-password' : passwordController.text,
+      'password_confirmation' : confirmPasswordController.text,
       'contact' : contactController.text,
       'CNIC' : CNICController.text,
       'date_of_birth' : dateOfBirthController.text,
@@ -162,7 +163,9 @@ class _SignupOperationState extends State<SignupOperation> {
     var body = json.decode(res.body);
     //EasyLoading.dismiss();
     print(body.toString());
-    if(body['success']!){
+    EasyLoading.dismiss();
+    if(body['success']!=null)
+    if(body['success']){
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', body['token']);
       localStorage.setString('user', json.encode(body['user']));
@@ -173,7 +176,9 @@ class _SignupOperationState extends State<SignupOperation> {
               builder: (context) => CupertinoHomePage()));
     }
     else{
-      _showMsg(body['message']);
+      _showMsg(body['message'][0]);
+      print('sup: '+body['message'][0].toString());
+
       //EasyLoading.showToast(body['message']);
     }
     setState(() {

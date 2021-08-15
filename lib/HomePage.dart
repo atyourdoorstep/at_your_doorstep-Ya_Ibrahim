@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:at_your_doorstep/Constants.dart';
+import 'package:at_your_doorstep/Constants.dart';
 import 'package:at_your_doorstep/SearchPage.dart';
 import 'package:at_your_doorstep/api.dart';
 import 'package:at_your_doorstep/main.dart';
@@ -31,25 +32,20 @@ class HomePageOperation extends StatefulWidget {
 class _HomePageOperationState extends State<HomePageOperation>
     with TickerProviderStateMixin {
 
+  var checkUser = {};
   late Map<String,dynamic> userData;
-  _getUserInfo() async {
+  getUserInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var userJson = localStorage.getString('user');
     var user = json.decode(userJson!);
     setState(() {
       userData = user;
     });
+    userD = userData;
+    print("shhah $userD");
     return user;
   }
-  _ucFirst(String str)
-  {
-    if(str.isEmpty)
-      return null;
-    if(str.length<=1)
-      return str.toUpperCase();
-    var x=str.toString();
-    return x.substring(0,1).toUpperCase()+x.substring(1);
-  }
+
 
   //late TabController _tabControl;
 
@@ -58,7 +54,8 @@ class _HomePageOperationState extends State<HomePageOperation>
     // TODO: implement initState
     super.initState();
     userData={};
-    _getUserInfo();
+    getUserInfo();
+
 
   }
 
@@ -82,7 +79,7 @@ class _HomePageOperationState extends State<HomePageOperation>
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Hi, ${_ucFirst(userData['fName'].toString())} ${_ucFirst(userData['lName'].toString())}',style:
+                  Text('Hi, ${ucFirst(userD['fName'].toString())} ${ucFirst(userD['lName'].toString())}',style:
                   TextStyle(fontSize: 17, color: Colors.white, fontFamily: "PTSans" )),
                   Row(
                     children: [
@@ -182,13 +179,8 @@ class _HomePageOperationState extends State<HomePageOperation>
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context, rootNavigator: true,).pushNamed('LoginPage');
-                    },
-                    child: Text("Recommended for you", style:
-                    TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                  ),
+                  child: Text("Recommended for you", style:
+                  TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                 ),
               ],
             ),
@@ -199,22 +191,24 @@ class _HomePageOperationState extends State<HomePageOperation>
   onSelected(BuildContext context, int item) {
     switch(item){
       case 1:
-        logout();
+        logout(this.context);
     }
   }
 
-  void logout() async{
-    // logout from the server ...
-    var res = await CallApi().postData({},'/mobileLogOut');
-    var body = json.decode(res.body);
-    if(body['success']){
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.remove('user');
-      localStorage.remove('token');
-      Navigator.of(context, rootNavigator: true,).pushNamed('LoginPage');
-
-    }
-  }
+  // void logout() async{
+  //   // logout from the server ...
+  //   var res = await CallApi().postData({},'/mobileLogOut');
+  //   var body = json.decode(res.body);
+  //   if(body['success']){
+  //     SharedPreferences localStorage = await SharedPreferences.getInstance();
+  //     localStorage.remove('user');
+  //     localStorage.remove('token');
+  //     Navigator.of(
+  //         context,
+  //        rootNavigator: true,).pushNamed('LoginPage');
+  //   }
+  //
+  // }
 }
 
 class CupertinoHomePage extends StatelessWidget {
