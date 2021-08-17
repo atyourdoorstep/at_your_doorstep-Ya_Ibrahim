@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:at_your_doorstep/Constants.dart';
-import 'package:at_your_doorstep/Constants.dart';
 import 'package:at_your_doorstep/HomePage.dart';
 import 'package:at_your_doorstep/api.dart';
 import 'package:at_your_doorstep/main.dart';
@@ -61,90 +60,92 @@ class _EditProfileOpState extends State<EditProfileOp> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF7F7F7),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    SizedBox(width: 20,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Hello!", style:
-                        TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
-                        // Text('${(userD['fName'].toString())} ${(userD['lName'].toString())}', style:
-                        Text('${(userD['fName'].toString())} ${(userD['lName'].toString())}', style:
-                        TextStyle(fontSize: 26, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    children: [
+                      SizedBox(width: 20,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Hello!", style:
+                          TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
+                          // Text('${(userD['fName'].toString())} ${(userD['lName'].toString())}', style:
+                          Text('${(userD['fName'].toString())} ${(userD['lName'].toString())}', style:
+                          TextStyle(fontSize: 26, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 150,
-                child: Padding(
-                  padding: const EdgeInsets.all(7.0),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0),
-                      ),),
-                    child: ListView(
-                      physics: ClampingScrollPhysics(),
-                      children: [
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfileScreen()),);
-                          },
-                          child: ListTile(title: Text("Edit Profile", style: menuFont,),
-                          leading: Icon(Icons.edit),
+                SizedBox(
+                  height: 150,
+                  child: Padding(
+                    padding: const EdgeInsets.all(7.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0),
+                        ),),
+                      child: ListView(
+                        physics: ClampingScrollPhysics(),
+                        children: [
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfileScreen()),);
+                            },
+                            child: ListTile(title: Text("Edit Profile", style: menuFont,),
+                            leading: Icon(Icons.edit),
+                            ),
                           ),
-                        ),
-                        Divider(),
-                        ListTile(title: Text("Orders", style: menuFont,),
-                          leading: Icon(Icons.shopping_bag_outlined),
-                        ),
-                      ],
+                          Divider(),
+                          ListTile(title: Text("Orders", style: menuFont,),
+                            leading: Icon(Icons.shopping_bag_outlined),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              //
-              SizedBox(
-                height: 280,
-                child: Padding(
-                  padding: const EdgeInsets.all(7.0),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0),
-                      ),),
-                    child: ListView(
-                      physics: ClampingScrollPhysics(),
-                      children: [
-                        ListTile(title: Text("Complaints", style: menuFont,),
-                          leading: Icon(Icons.edit),
-                        ),
-                        Divider(),
-                        ListTile(title: Text("Suggest New Service", style: menuFont,),
-                          leading: Icon(Icons.add_chart),
-                        ),
-                        Divider(),
-                        ListTile(title: Text("My Address", style: menuFont,),
-                          leading: Icon(Icons.location_on),
-                        ),
-                        Divider(),
-                        ListTile(title: Text("Sign Out", style: menuFont,),
-                          leading: Icon(Icons.power_settings_new),
+                //
+                SizedBox(
+                  height: 280,
+                  child: Padding(
+                    padding: const EdgeInsets.all(7.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0),
+                        ),),
+                      child: ListView(
+                        physics: ClampingScrollPhysics(),
+                        children: [
+                          ListTile(title: Text("Complaints", style: menuFont,),
+                            leading: Icon(Icons.edit),
+                          ),
+                          Divider(),
+                          ListTile(title: Text("Suggest New Service", style: menuFont,),
+                            leading: Icon(Icons.add_chart),
+                          ),
+                          Divider(),
+                          ListTile(title: Text("My Address", style: menuFont,),
+                            leading: Icon(Icons.location_on),
+                          ),
+                          Divider(),
+                          ListTile(title: Text("Sign Out", style: menuFont,),
+                            leading: Icon(Icons.power_settings_new),
 
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -165,6 +166,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController mailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  bool _isChanged=false;
+  // String url='https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png';
 
   late Map<String,dynamic> userData;
   // _getUserInfo() async {
@@ -182,6 +185,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   // }
 
   @override
+  // _getProfilePic()
+  // async {
+  //   var u=await getProfilePicture();
+  //   setState(() {
+  //     url=u;
+  //   });
+  //   print('Profile pic URL: '+url.toString());
+  // }
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -191,7 +202,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     lastNameController.text=ucFirst(userData['lName'].toString());
     mailController.text= userData['email'].toString();
     phoneController.text= userData['contact'].toString();
-
   }
   @override
   Widget build(BuildContext context) {
@@ -199,100 +209,136 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       appBar: AppBar(
         backgroundColor: Colors.red,
       ),
-      body: SingleChildScrollView(
-        child:  Column(
-          children: [
-            Stack(
-              children: [
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Center(
-                        child: Text("EDIT PROFILE", style:
-                        TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Stack(
-                        alignment: AlignmentDirectional.bottomEnd,
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.grey,
-                            radius: 60,
-                            backgroundImage: NetworkImage("https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png"),
-                          ),
-                          CircleAvatar(child: Icon(Icons.edit, size: 15,),),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      textfieldStyle(textHint: ucFirst(userData['fName'].toString()), obscureText: false, textLabel1:'First Name', controllerText: firstNameController, ),
-                      textfieldStyle(textHint:ucFirst(userData['lName'].toString()) , obscureText: false, textLabel1: 'Last Name', controllerText: lastNameController,),
-                      textfieldStyle(textHint: userData['email'].toString(), obscureText: false, textLabel1: 'Email',controllerText: mailController,),
-                      textfieldStyle(textHint: userData['contact'].toString(), obscureText: false, textLabel1: 'Phone Number',controllerText: phoneController,),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ButtonTheme(
-                          minWidth: double.infinity,
-                          height: 55,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                              onPressed: ()
-                              {
-                                _save(
-                                  {
-                                    'fName':firstNameController.text.toLowerCase(),
-                                    'lName':lastNameController.text.toLowerCase(),
-                                    'email':mailController.text.toLowerCase(),
-                                    'contact':phoneController.text.toLowerCase()
-                                  }
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child:  Column(
+            children: [
+              Stack(
+                children: [
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Center(
+                          child: Text("EDIT PROFILE", style:
+                          TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Stack(
+                          alignment: AlignmentDirectional.bottomEnd,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              radius: 60,
+                              backgroundImage: NetworkImage( profilePicUrl),
+                              // backgroundImage: NetworkImage("https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png"),
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                                print("Change Image");
+                                showModalBottomSheet(
+                                  elevation: 20.0,
+                                    context: context,
+                                    builder: (context) => SingleChildScrollView(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          height: 200,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10),
+                                            ),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              GestureDetector(
+                                                onTap:(){},
+                                                child: ListTile(title: Text("Upload From Gallery", style: menuFont,),
+                                                ),
+                                              ),
+                                              Divider(),
+                                              GestureDetector(
+                                                onTap:(){},
+                                                child: ListTile(title: Text("Open Camera", style: menuFont,),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                 );
                               },
-                              color: Colors.red,
-                              child: Text("Save", style:
-                              TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
+                                child: CircleAvatar(child: Icon(Icons.edit, size: 15,),),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        textfieldStyle(textHint: ucFirst(userData['fName'].toString()), obscureText: false, textLabel1:'First Name', controllerText: firstNameController, onChange: (value){setState(() {_isChanged=true;}); },),
+                        textfieldStyle(textHint:ucFirst(userData['lName'].toString()) , obscureText: false, textLabel1: 'Last Name', controllerText: lastNameController,onChange:(value) {setState(() {_isChanged=true;}); },),
+                        textfieldStyle(textHint: userData['email'].toString(), obscureText: false, textLabel1: 'Email',controllerText: mailController,onChange:(value) {setState(() {_isChanged=true;}); },),
+                        textfieldStyle(textHint: userData['contact'].toString(), obscureText: false, textLabel1: 'Phone Number',controllerText: phoneController,onChange: (value){setState(() {_isChanged=true;}); },),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: ButtonTheme(
+                            minWidth: double.infinity,
+                            height: 55,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                ),
+                                onPressed: _isChanged?()=>{ _save({
+                                'fName':firstNameController.text.toLowerCase(),
+                                'lName':lastNameController.text.toLowerCase(),
+                                'email':mailController.text.toLowerCase(),
+                                'contact':phoneController.text.toLowerCase()
+                                }
+                                )}:null,
+                                color: Colors.red,
+                                child: Text("Save", style:
+                                TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
-  }
-  _showMsg(msg) { //
-    final snackBar = SnackBar(
-      backgroundColor: Color(0xffc76464),
-      content: Text(msg),
-      action: SnackBarAction(
-        textColor: Colors.white,
-        label: 'Close',
-        onPressed: () {
-          // Some code to undo the change!
-        },
-      ),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
   toLocal(String key,String val)async
   {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     localStorage.setString(key, val);
+  }
+  _sendTosave()
+  {
+    _save({
+      'fName':firstNameController.text.toLowerCase(),
+  'lName':lastNameController.text.toLowerCase(),
+    'email':mailController.text.toLowerCase(),
+  'contact':phoneController.text.toLowerCase()
+  }
+    );
   }
   _save(var data ) async {
     print('in FUNC');
@@ -315,9 +361,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         var user = json.decode(userJson!);
         setState(() {
           userD = user;
+          _isChanged=false;
         });
       } else {
-        _showMsg(body['message']);
+        showMsg(context,body['message']);
         //EasyLoading.showToast(body['message']);
       }
     }
@@ -326,11 +373,3 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 }
 
 
-
-//onPressed: () {
-//   Navigator.push(
-//     context,
-//     MaterialPageRoute(
-//         builder: (context) => text()),
-//   );
-// },

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:at_your_doorstep/Constants.dart';
-import 'package:at_your_doorstep/Constants.dart';
 import 'package:at_your_doorstep/SearchPage.dart';
 import 'package:at_your_doorstep/api.dart';
 import 'package:at_your_doorstep/main.dart';
@@ -42,7 +41,6 @@ class _HomePageOperationState extends State<HomePageOperation>
       userData = user;
     });
     userD = userData;
-    print("shhah $userD");
     return user;
   }
 
@@ -55,7 +53,7 @@ class _HomePageOperationState extends State<HomePageOperation>
     super.initState();
     userData={};
     getUserInfo();
-
+    getProfilePicture();
 
   }
 

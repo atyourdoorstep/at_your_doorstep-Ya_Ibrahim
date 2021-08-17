@@ -128,20 +128,6 @@ class _SignupOperationState extends State<SignupOperation> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-  _showMsg(msg) { //
-    final snackBar = SnackBar(
-      backgroundColor: Color(0xffc76464),
-      content: Text(msg),
-      action: SnackBarAction(
-        textColor: Colors.white,
-        label: 'Close',
-        onPressed: () {
-          // Some code to undo the change!
-        },
-      ),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
   void _handleLogin() async {
     setState(() {
       _isLoading = true;
@@ -176,7 +162,7 @@ class _SignupOperationState extends State<SignupOperation> {
               builder: (context) => CupertinoHomePage()));
     }
     else{
-      _showMsg(body['message'][0]);
+      showMsg(context,body['message'][0]);
       print('sup: '+body['message'][0].toString());
 
       //EasyLoading.showToast(body['message']);

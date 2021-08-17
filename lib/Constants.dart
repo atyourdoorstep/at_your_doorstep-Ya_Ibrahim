@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api.dart';
@@ -48,12 +49,16 @@ const menuFont = TextStyle(
 );
 
 late Map<String,dynamic> userD = {};
-
 void logout(BuildContext context) async{
+
   // logout from the server ...
   var res = await CallApi().postData({},'/mobileLogOut');
   var body = json.decode(res.body);
-  if(body['success']){
+  if(body['success']||(!body['success']&&body['message'].toString()=='Token has expired')){
+    if((!body['success']&&body['message'].toString()=='Token has expired'))
+      {
+        showMsg(context, 'Session expired please login again');
+      }
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     localStorage.remove('user');
     localStorage.remove('token');
@@ -62,6 +67,20 @@ void logout(BuildContext context) async{
       rootNavigator: true,).pushNamed('LoginPage');
   }
 
+}
+showMsg(BuildContext context,msg) { //
+  final snackBar = SnackBar(
+    backgroundColor: Color(0xffc76464),
+    content: Text(msg),
+    action: SnackBarAction(
+      textColor: Colors.white,
+      label: 'Close',
+      onPressed: () {
+        // Some code to undo the change!
+      },
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 ucFirst(String str)
 {
@@ -72,3 +91,12 @@ ucFirst(String str)
   var x=str.toString();
   return x.substring(0,1).toUpperCase()+x.substring(1).toLowerCase();
 }
+getProfilePicture()
+async {
+  var res= await CallApi().postData({},'/getProfilePicture' );
+  res =json.decode(res.body);
+print(  res.toString());
+  profilePicUrl=res['url'];
+return profilePicUrl;
+}
+String profilePicUrl='https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png';
