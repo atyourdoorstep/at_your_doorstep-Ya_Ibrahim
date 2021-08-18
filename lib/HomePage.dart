@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:at_your_doorstep/Constants.dart';
@@ -44,7 +45,7 @@ class _HomePageOperationState extends State<HomePageOperation>
     return user;
   }
 
-
+  var serviceNames;
   //late TabController _tabControl;
 
   @override
@@ -54,7 +55,7 @@ class _HomePageOperationState extends State<HomePageOperation>
     userData={};
     getUserInfo();
     getProfilePicture();
-
+    getParentServices();
   }
 
   @override
@@ -138,40 +139,17 @@ class _HomePageOperationState extends State<HomePageOperation>
                   padding: const EdgeInsets.all(10.0),
                   child: SizedBox(
                     height: 130,
-                    child: GridView(
+                    child: GridView.builder(
+                      itemCount: 3,
                       scrollDirection: Axis.horizontal,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
-                      children: <Widget>[
-                        Card(child: Center(child: Text("Home Services")), shape: RoundedRectangleBorder(
+                      itemBuilder: (context , index){
+                        return Card(child: Center(child: Text(ucFirst(serviceNames[index]['name']))), shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10.0),
                           ),
                           side: BorderSide(color: Colors.red),
-                        ),),
-                        Card(child: Center(child: Text("Pharmacy")), shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0),
-                          ),
-                          side: BorderSide(color: Colors.red),
-                        ),),
-                        Card(child: Center(child: Text("Education")), shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0),
-                          ),
-                          side: BorderSide(color: Colors.red),
-                        ),),
-                        Card(child: Center(child: Text("Electronics")), shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0),
-                          ),
-                          side: BorderSide(color: Colors.red),
-                        ),),
-                        Card(child: Center(child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Request for New Service"),
-                        )), shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0),
-                          ),
-                          side: BorderSide(color: Colors.red),
-                        ),
-                        ),
-                      ],
+                        ),);
+                      },
                     ),
                   ),
                 ),
@@ -184,6 +162,17 @@ class _HomePageOperationState extends State<HomePageOperation>
             ),
           ),
     );
+  }
+
+  getParentServices()
+  async {
+    var res= await CallApi().postData({},'/getParentServices' );
+    res =json.decode(res.body);
+    setState(() {
+      serviceNames = res;
+    });
+    print(  serviceNames[0].toString());
+    return res;
   }
 
   onSelected(BuildContext context, int item) {
