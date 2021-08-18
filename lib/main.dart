@@ -150,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.push(
               context,
               new MaterialPageRoute(
-                  builder: (context) => CupertinoHomePage()));
+                  builder: (context) => CupertinoHomePage(userName:"LoginUser")));
         }
       }
       else {
@@ -325,7 +325,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => CupertinoHomePage()),
+                                      builder: (context) => CupertinoHomePage(userName: "Guest")),
                                 );
                               },
                               color: Colors.white,
@@ -403,7 +403,7 @@ Expanded buildDivider(){
           Navigator.push(
               context,
               new MaterialPageRoute(
-                  builder: (context) => CupertinoHomePage()));
+                  builder: (context) => CupertinoHomePage(userName: "loginUser",)));
         } else {
           showMsg(context, body['message']);
           //EasyLoading.showToast(body['message']);

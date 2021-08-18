@@ -192,29 +192,38 @@ class _HomePageOperationState extends State<HomePageOperation>
         logout(this.context);
     }
   }
-
-  // void logout() async{
-  //   // logout from the server ...
-  //   var res = await CallApi().postData({},'/mobileLogOut');
-  //   var body = json.decode(res.body);
-  //   if(body['success']){
-  //     SharedPreferences localStorage = await SharedPreferences.getInstance();
-  //     localStorage.remove('user');
-  //     localStorage.remove('token');
-  //     Navigator.of(
-  //         context,
-  //        rootNavigator: true,).pushNamed('LoginPage');
-  //   }
-  //
-  // }
 }
 
-class CupertinoHomePage extends StatelessWidget {
-  const CupertinoHomePage({Key? key}) : super(key: key);
+class CupertinoHomePage extends StatefulWidget {
+
+  String userName;
+  CupertinoHomePage({required this.userName});
+
+  @override
+  _CupertinoHomePageState createState() => _CupertinoHomePageState();
+}
+
+class _CupertinoHomePageState extends State<CupertinoHomePage> {
+
+  late String guestname;
+  bool guestCheck=true;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    guestname = widget.userName;
+    if(guestname == "Guest"){
+      print(guestname);
+      setState(() {
+        guestCheck = false;
+      });
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
+    return guestCheck ? CupertinoTabScaffold(
       backgroundColor: Colors.transparent,
         tabBar: CupertinoTabBar(
           items: const <BottomNavigationBarItem>[
@@ -255,6 +264,40 @@ class CupertinoHomePage extends StatelessWidget {
               return CupertinoTabView(builder: (context){
                 return CupertinoPageScaffold(
                   child: editProfile(),);
+              }
+              );
+            default:
+              return CupertinoTabView(builder: (context){
+                return CupertinoPageScaffold(
+                  child: HomePage(),);
+              }
+              );
+          }
+
+        }
+    ): CupertinoTabScaffold(
+        backgroundColor: Colors.transparent,
+        tabBar: CupertinoTabBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home" ),
+            //BottomNavigationBarItem(icon: Icon(Icons.pages_rounded), label: "Services"),
+           // BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined),label: "Cart"),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+            //BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: "Profile"),
+          ],
+        ),
+        tabBuilder: (context,index){
+          switch(index){
+            case 0:
+              return CupertinoTabView(builder: (context){
+                return CupertinoPageScaffold(
+                  child: HomePage(),);
+              }
+              );
+            case 1:
+              return CupertinoTabView(builder: (context){
+                return CupertinoPageScaffold(
+                  child: SearchPage(),);
               }
               );
             default:
