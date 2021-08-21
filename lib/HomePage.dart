@@ -5,11 +5,13 @@ import 'package:at_your_doorstep/Constants.dart';
 import 'package:at_your_doorstep/SearchPage.dart';
 import 'package:at_your_doorstep/api.dart';
 import 'package:at_your_doorstep/main.dart';
+import 'package:at_your_doorstep/servicesCategory.dart';
 import 'package:at_your_doorstep/signup_page.dart';
 import 'package:at_your_doorstep/userProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:at_your_doorstep/textFieldClass.dart';
 import 'package:blobs/blobs.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -46,6 +48,7 @@ class _HomePageOperationState extends State<HomePageOperation>
   }
 
   var serviceNames;
+  bool executed = false;
   //late TabController _tabControl;
 
   @override
@@ -56,6 +59,12 @@ class _HomePageOperationState extends State<HomePageOperation>
     getUserInfo();
     getProfilePicture();
     getParentServices();
+    // Timer(Duration(seconds: 5),(){
+    //   print("Loading Screen");
+    //   build(context);
+    // });
+    executed = false;
+
   }
 
   @override
@@ -92,7 +101,7 @@ class _HomePageOperationState extends State<HomePageOperation>
               ),
             ),
           ),
-          body:SingleChildScrollView(
+          body: executed ? SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,15 +149,23 @@ class _HomePageOperationState extends State<HomePageOperation>
                   child: SizedBox(
                     height: 130,
                     child: GridView.builder(
-                      itemCount: 3,
+                      itemCount: serviceNames["data"].length,
                       scrollDirection: Axis.horizontal,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
                       itemBuilder: (context , index){
-                        return Card(child: Center(child: Text(ucFirst(serviceNames[index]['name']))), shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0),
-                          ),
-                          side: BorderSide(color: Colors.red),
-                        ),);
+                        return TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => ServiceCategory(sName: ucFirst(serviceNames["data"][index]['name']))));
+                          },
+                          child: Card(child: Center(child: Text(ucFirst(serviceNames["data"][index]['name']))), shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0),
+                            ),
+                            side: BorderSide(color: Colors.red),
+                          ),),
+                        );
                       },
                     ),
                   ),
@@ -160,18 +177,22 @@ class _HomePageOperationState extends State<HomePageOperation>
                 ),
               ],
             ),
-          ),
+          ): Center(child: CircularProgressIndicator(color: Colors.red,),),
     );
   }
 
   getParentServices()
   async {
-    var res= await CallApi().postData({},'/getParentServices' );
-    res =json.decode(res.body);
-    setState(() {
-      serviceNames = res;
-    });
-    //print(  serviceNames[0].toString());
+    var res= await CallApi().postData({},'/getAllServicesWithChildren' );
+    if(res.statusCode == 200){
+      res =json.decode(res.body);
+      setState(() {
+        serviceNames = res;
+      });
+      executed = true;
+      //print(  serviceNames[0].toString());
+    }
+    print(res.toString());
     return res;
   }
 
@@ -194,6 +215,7 @@ class CupertinoHomePage extends StatefulWidget {
 
 class _CupertinoHomePageState extends State<CupertinoHomePage> {
 
+  late DateTime currentBackPressTime;
   late String guestname;
   bool guestCheck=true;
   @override
@@ -212,58 +234,61 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return guestCheck ? CupertinoTabScaffold(
-      backgroundColor: Colors.transparent,
-        tabBar: CupertinoTabBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home" ),
-            BottomNavigationBarItem(icon: Icon(Icons.pages_rounded), label: "Services"),
-            BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined),label: "Cart"),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-            BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: "Profile"),
-          ],
-        ),
-        tabBuilder: (context,index){
-          switch(index){
-            case 0:
-              return CupertinoTabView(builder: (context){
-                return CupertinoPageScaffold(
-                child: HomePage(),);
-              }
-              );
-            case 1:
-              return CupertinoTabView(builder: (context){
-                return CupertinoPageScaffold(
-                  child:  Center(child: Text("hello0"),),);
-              }
-              );
-            case 2:
-              return CupertinoTabView(builder: (context){
-                return CupertinoPageScaffold(
-                  child:  Center(child: Text("hello1"),),);
-              }
-              );
-            case 3:
-              return CupertinoTabView(builder: (context){
-                return CupertinoPageScaffold(
-                  child: SearchPage(),);
-              }
-              );
-            case 4:
-              return CupertinoTabView(builder: (context){
-                return CupertinoPageScaffold(
-                  child: editProfile(),);
-              }
-              );
-            default:
-              return CupertinoTabView(builder: (context){
-                return CupertinoPageScaffold(
+    return guestCheck ? WillPopScope(
+      onWillPop: onWillPop,
+      child: CupertinoTabScaffold(
+        backgroundColor: Colors.transparent,
+          tabBar: CupertinoTabBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home" ),
+              BottomNavigationBarItem(icon: Icon(Icons.pages_rounded), label: "Services"),
+              BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined),label: "Cart"),
+              BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+              BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: "Profile"),
+            ],
+          ),
+          tabBuilder: (context,index){
+            switch(index){
+              case 0:
+                return CupertinoTabView(builder: (context){
+                  return CupertinoPageScaffold(
                   child: HomePage(),);
-              }
-              );
-          }
+                }
+                );
+              case 1:
+                return CupertinoTabView(builder: (context){
+                  return CupertinoPageScaffold(
+                    child:  Center(child: Text("hello0"),),);
+                }
+                );
+              case 2:
+                return CupertinoTabView(builder: (context){
+                  return CupertinoPageScaffold(
+                    child:  Center(child: Text("hello1"),),);
+                }
+                );
+              case 3:
+                return CupertinoTabView(builder: (context){
+                  return CupertinoPageScaffold(
+                    child: SearchPage(),);
+                }
+                );
+              case 4:
+                return CupertinoTabView(builder: (context){
+                  return CupertinoPageScaffold(
+                    child: editProfile(),);
+                }
+                );
+              default:
+                return CupertinoTabView(builder: (context){
+                  return CupertinoPageScaffold(
+                    child: HomePage(),);
+                }
+                );
+            }
 
-        }
+          }
+      ),
     ): CupertinoTabScaffold(
         backgroundColor: Colors.transparent,
         tabBar: CupertinoTabBar(
@@ -296,5 +321,16 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
 
         }
     );
+  }
+
+  Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      //Fluttertoast.showToast(msg: "Double Tap to Exit");
+      return Future.value(false);
+    }
+    return Future.value(true);
   }
 }

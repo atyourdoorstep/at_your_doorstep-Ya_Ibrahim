@@ -135,9 +135,14 @@ class _EditProfileOpState extends State<EditProfileOp> {
                             leading: Icon(Icons.location_on),
                           ),
                           Divider(),
-                          ListTile(title: Text("Sign Out", style: menuFont,),
-                            leading: Icon(Icons.power_settings_new),
+                          TextButton(
+                            onPressed: () {
+                              logout(context);
+                            },
+                            child: ListTile(title: Text("Sign Out", style: menuFont,),
+                              leading: Icon(Icons.power_settings_new),
 
+                            ),
                           ),
                         ],
                       ),

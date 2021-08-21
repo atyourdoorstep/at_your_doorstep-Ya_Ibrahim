@@ -98,7 +98,7 @@ class MyApp extends StatelessWidget {
       initialRoute: 'SplashPage',
       routes: {
         'SplashPage':(context)=>SplashState(),
-        'LoginPage':(context)=>MyHomePage(title: 'AtYourDoorStep')
+        'LoginPage':(context)=>MyHomePage(title: 'AtYourDoorStep'),
       },
       builder: EasyLoading.init(),
     );
