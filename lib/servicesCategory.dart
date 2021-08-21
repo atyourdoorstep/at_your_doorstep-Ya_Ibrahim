@@ -26,20 +26,71 @@ class ServiceCategory extends StatefulWidget {
 class _ServiceCategoryState extends State<ServiceCategory> {
 
   late String name;
+
+  var serviceNames;
+  bool executed = false;
+  //late TabController _tabControl;
+
   @override
   void initState() {
-    name = widget.sName;
     // TODO: implement initState
     super.initState();
+    name = widget.sName;
+    getParentServices();
+    // Timer(Duration(seconds: 5),(){
+    //   print("Loading Screen");
+    //   build(context);
+    // });
+    executed = false;
+
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body:  Center(
-        child: Text(name, style:
-        TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
-      ),
+      body: executed ? Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(ucFirst(name), style:
+              TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 180.0,
+              child: ListView.builder(
+                physics: ClampingScrollPhysics(),
+                itemCount: serviceNames["data"].length,
+                //scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int index) {
+                    return serviceNames["data"][index]['name'] == name?  Text(serviceNames["data"][index]['name']): Text("Nothing Found");
+
+              },
+              ),
+            ),
+          ),
+        ],
+      ): Center(child: CircularProgressIndicator(color: Colors.red,),),
     );
   }
+
+  getParentServices()
+  async {
+    var res= await CallApi().postData({},'/getAllServicesWithChildren' );
+    if(res.statusCode == 200){
+      res =json.decode(res.body);
+      setState(() {
+        serviceNames = res;
+      });
+      executed = true;
+      //print(  serviceNames[0].toString());
+    }
+    print(res.toString());
+    return res;
+  }
+
 }

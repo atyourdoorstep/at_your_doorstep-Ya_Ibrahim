@@ -160,7 +160,7 @@ class _HomePageOperationState extends State<HomePageOperation>
                                 new MaterialPageRoute(
                                     builder: (context) => ServiceCategory(sName: ucFirst(serviceNames["data"][index]['name']))));
                           },
-                          child: Card(child: Center(child: Text(ucFirst(serviceNames["data"][index]['name']))), shape: RoundedRectangleBorder(
+                          child: Card(child: Center(child: Text(serviceNames["data"][index]['name'],)), shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0),
                             ),
                             side: BorderSide(color: Colors.red),
