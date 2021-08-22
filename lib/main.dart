@@ -92,6 +92,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
         primarySwatch: Colors.red,
+        canvasColor: Colors.transparent,
 
       ),
       home: SplashState(),

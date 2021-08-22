@@ -155,10 +155,63 @@ class _HomePageOperationState extends State<HomePageOperation>
                       itemBuilder: (context , index){
                         return TextButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) => ServiceCategory(sName: ucFirst(serviceNames["data"][index]['name']))));
+                            print(serviceNames["data"][index]['children'].length);
+
+                            showModalBottomSheet(
+                                elevation: 20.0,
+                                context: context,
+
+                                builder: (context) =>
+                                    Container(
+                                  height: 350,
+                                  color: Colors.transparent,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10.0),
+                                        topRight: Radius.circular(10.0),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Center(
+                                            child: Text(
+                                                ucFirst(serviceNames["data"]
+                                                    [index]['name']),
+                                                style: TextStyle(
+                                                    fontSize: 30,
+                                                    color: Colors.red,
+                                                    fontFamily: "PTSans",
+                                                    fontWeight: FontWeight.w700,
+                                                    letterSpacing: 2.0)),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Center(
+                                            child: Text(
+                                                "Number of Childrens:  ${serviceNames["data"][index]['children'].length}",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.red,
+                                                    fontFamily: "PTSans",
+                                                    fontWeight: FontWeight.w700,
+                                                    letterSpacing: 2.0)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+
+                            // Navigator.push(
+                            //     context,
+                            //     new MaterialPageRoute(
+                            //         builder: (context) => ServiceCategory(sName: ucFirst(serviceNames["data"][index]['name']))));
                           },
                           child: Card(child: Center(child: Text(serviceNames["data"][index]['name'],)), shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0),
