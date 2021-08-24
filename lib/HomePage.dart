@@ -1,16 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:at_your_doorstep/Constants.dart';
 import 'package:at_your_doorstep/SearchPage.dart';
 import 'package:at_your_doorstep/api.dart';
-import 'package:at_your_doorstep/main.dart';
-import 'package:at_your_doorstep/servicesCategory.dart';
-import 'package:at_your_doorstep/signup_page.dart';
 import 'package:at_your_doorstep/userProfile.dart';
 import 'package:flutter/material.dart';
-import 'package:at_your_doorstep/textFieldClass.dart';
-import 'package:blobs/blobs.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
@@ -156,6 +150,8 @@ class _HomePageOperationState extends State<HomePageOperation>
                         return TextButton(
                           onPressed: () {
                             print(serviceNames["data"][index]['children'].length);
+                            int len = serviceNames["data"][index]['children'].length;
+                            var serviceGen = serviceNames["data"][index]['children'];
 
                             showModalBottomSheet(
                                 elevation: 20.0,
@@ -163,7 +159,7 @@ class _HomePageOperationState extends State<HomePageOperation>
 
                                 builder: (context) =>
                                     Container(
-                                  height: 350,
+                                  height: 500,
                                   color: Colors.transparent,
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -175,6 +171,26 @@ class _HomePageOperationState extends State<HomePageOperation>
                                     ),
                                     child: Column(
                                       children: [
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(9.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                              "Services > ${ucFirst(serviceNames["data"]
+                                              [index]['name'])} > Categories",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      color: Colors.redAccent,
+                                                      fontFamily: "PTSans",
+                                                      fontWeight: FontWeight.w700,
+                                                      letterSpacing: 2.0)),
+                                            ],
+                                          ),
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Center(
@@ -189,19 +205,56 @@ class _HomePageOperationState extends State<HomePageOperation>
                                                     letterSpacing: 2.0)),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Center(
-                                            child: Text(
-                                                "Number of Childrens:  ${serviceNames["data"][index]['children'].length}",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.red,
-                                                    fontFamily: "PTSans",
-                                                    fontWeight: FontWeight.w700,
-                                                    letterSpacing: 2.0)),
+                                        len >0 ? SizedBox(
+                                          height: 300,
+                                          child: ListView.builder(
+                                              physics: ClampingScrollPhysics(),
+                                              itemCount: len,
+                                              itemBuilder: (context , index){
+                                                return Padding(
+                                                  padding: const EdgeInsets.all(10.0),
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    height: 100,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.all(
+                                                        Radius.circular(10.0),
+                                                      ),
+                                                      border: Border.all(color: Colors.red),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        Image.asset("assets/atyourdoorstep.png", height: 50,width: 50,),
+                                                        Padding(
+                                                          padding: const EdgeInsets.all(8.0),
+                                                          child: Column(
+                                                            mainAxisSize: MainAxisSize.min,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: [
+                                                              Text(ucFirst(serviceGen[index]['name']), style: TextStyle(color: Colors.red, fontSize: 20.0),),
+                                                              Text(ucFirst(serviceGen[index]['name']), style: TextStyle(color: Colors.red, fontSize: 10.0),),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              }
                                           ),
-                                        ),
+                                        ): Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                      child: Center(
+                                        child: Text(
+                                            "There is no Service Category Available at that Time....",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.red,
+                                                fontFamily: "PTSans",
+                                                fontWeight: FontWeight.w700,
+                                                letterSpacing: 2.0)),
+                                      ),
+                                    ),
                                       ],
                                     ),
                                   ),

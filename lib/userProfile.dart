@@ -1,13 +1,9 @@
 import 'dart:convert';
 
 import 'package:at_your_doorstep/Constants.dart';
-import 'package:at_your_doorstep/HomePage.dart';
 import 'package:at_your_doorstep/api.dart';
-import 'package:at_your_doorstep/main.dart';
-import 'package:at_your_doorstep/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:at_your_doorstep/textFieldClass.dart';
-import 'package:blobs/blobs.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -61,6 +57,7 @@ class _EditProfileOpState extends State<EditProfileOp> {
     return Scaffold(
       backgroundColor: Color(0xFFF7F7F7),
       body: SafeArea(
+        minimum: EdgeInsets.all(8),
         child: SingleChildScrollView(
           child: Container(
             child: Column(
@@ -76,7 +73,7 @@ class _EditProfileOpState extends State<EditProfileOp> {
                           Text("Hello!", style:
                           TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
                           // Text('${(userD['fName'].toString())} ${(userD['lName'].toString())}', style:
-                          Text('${(userD['fName'].toString())} ${(userD['lName'].toString())}', style:
+                          Text('${ucFirst((userD['fName'].toString()))} ${ucFirst((userD['lName'].toString()))}', style:
                           TextStyle(fontSize: 26, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
                         ],
                       ),
@@ -147,6 +144,17 @@ class _EditProfileOpState extends State<EditProfileOp> {
                         ],
                       ),
                     ),
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                ButtonTheme(
+                  height: 70,
+                  hoverColor: Colors.grey,
+                  child: ElevatedButton(
+                      onPressed: (){},
+                      child: Text("Registered as a Service Provider"),
                   ),
                 ),
               ],
