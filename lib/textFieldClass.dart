@@ -12,11 +12,13 @@ class textfieldStyle extends StatelessWidget {
   final suffixButton;
   final submit;
   final focus;
+  final contentP;
 
   textfieldStyle(
       {this.textLabel1,
         this.keyBoardType,
         this.Icon1,
+        this.contentP,
         required this.textHint,
         this.onChange, this.submit,this.focus,
         required this.obscureText, this.controllerText, this.suffixButton});
@@ -39,9 +41,11 @@ class textfieldStyle extends StatelessWidget {
             labelText: textLabel1,
             hintStyle: hintStyleForTextField,
             hoverColor: Colors.blue,
+            contentPadding: contentP,
             border: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.black87),
               borderRadius: BorderRadius.circular(8),
+
             ),
           ),
           keyboardType: keyBoardType,
