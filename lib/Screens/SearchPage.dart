@@ -1,14 +1,5 @@
-import 'dart:convert';
-
-import 'package:at_your_doorstep/Constants.dart';
-import 'package:at_your_doorstep/api.dart';
-import 'package:at_your_doorstep/main.dart';
-import 'package:at_your_doorstep/signup_page.dart';
-import 'package:at_your_doorstep/userProfile.dart';
+import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:flutter/material.dart';
-import 'package:at_your_doorstep/textFieldClass.dart';
-import 'package:blobs/blobs.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 
 class SearchPage extends StatefulWidget {

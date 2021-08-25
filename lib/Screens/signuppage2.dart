@@ -1,6 +1,5 @@
-import 'package:at_your_doorstep/Constants.dart';
+import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:flutter/material.dart';
-import 'package:at_your_doorstep/textFieldClass.dart';
 import 'package:blobs/blobs.dart';
 
 class Signup2 extends StatelessWidget {

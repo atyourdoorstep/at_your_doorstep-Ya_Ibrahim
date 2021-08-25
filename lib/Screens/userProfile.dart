@@ -1,10 +1,9 @@
 import 'dart:convert';
-
-import 'package:at_your_doorstep/Constants.dart';
-import 'package:at_your_doorstep/api.dart';
-import 'package:at_your_doorstep/requestNewService.dart';
+import 'package:at_your_doorstep/Help_Classes/Constants.dart';
+import 'package:at_your_doorstep/Help_Classes/api.dart';
+import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
+import 'package:at_your_doorstep/Screens/requestNewService.dart';
 import 'package:flutter/material.dart';
-import 'package:at_your_doorstep/textFieldClass.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
