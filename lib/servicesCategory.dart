@@ -15,9 +15,12 @@ import 'package:flutter/cupertino.dart';
 
 
 class ServiceCategory extends StatefulWidget {
-  final sName;
+  final service1;
+  final len1;
+  final serviceN;
+  final ind;
 
-  ServiceCategory({this.sName});
+  ServiceCategory({this.serviceN,this.service1,this.len1, this.ind});
   
   @override
   _ServiceCategoryState createState() => _ServiceCategoryState();
@@ -25,72 +28,142 @@ class ServiceCategory extends StatefulWidget {
 
 class _ServiceCategoryState extends State<ServiceCategory> {
 
-  late String name;
-
+  var serviceGen;
+  var len;
   var serviceNames;
-  bool executed = false;
-  //late TabController _tabControl;
+  late int index;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    name = widget.sName;
-    getParentServices();
-    // Timer(Duration(seconds: 5),(){
-    //   print("Loading Screen");
-    //   build(context);
-    // });
-    executed = false;
-
+    serviceGen = widget.service1;
+    len = widget.len1;
+    serviceNames = widget.serviceN;
+    index = widget.ind;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: executed ? Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(ucFirst(name), style:
-              TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 180.0,
-              child: ListView.builder(
-                physics: ClampingScrollPhysics(),
-                itemCount: serviceNames["data"].length,
-                //scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) {
-                    return serviceNames["data"][index]['name'] == name?  Text(serviceNames["data"][index]['name']): Text("Nothing Found");
-
-              },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 500,
+              color: Colors.transparent,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                              "Services > ${ucFirst(serviceNames["data"]
+                              [index]['name'])} > Categories",
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black26,
+                                  fontFamily: "PTSans",
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 2.0)),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Center(
+                        child: Text(
+                            ucFirst(serviceNames["data"]
+                            [index]['name']),
+                            style: TextStyle(
+                                fontSize: 30,
+                                color: Colors.red,
+                                fontFamily: "PTSans",
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 2.0)),
+                      ),
+                    ),
+                    len > 0 ? SizedBox(
+                      height: 300,
+                      child: ListView.builder(
+                          physics: ClampingScrollPhysics(),
+                          itemCount: len,
+                          itemBuilder: (context, index) {
+                            var serviceGen2;
+                            serviceGen2 = serviceGen[index]['children'];
+                            return GestureDetector(
+                              onTap: (){},
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        offset: Offset(0.0,1.0),
+                                        blurRadius: 6.0,
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0),
+                                    ),
+                                    //border: Border.all(color: Colors.red),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        // Image.asset("assets/atyourdoorstep.png", height: 50,width: 50,),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(ucFirst(serviceGen[index]['name']),
+                                            style: TextStyle(
+                                                color: Colors.black45, fontSize: 20.0),),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                      ),
+                    ) : Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Center(
+                        child: Text(
+                            "There is no Service Category Available at that Time....",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black45,
+                                fontFamily: "PTSans",
+                                fontWeight: FontWeight.w300)),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ): Center(child: CircularProgressIndicator(color: Colors.red,),),
+          ],
+        ),
+      ),
     );
   }
-
-  getParentServices()
-  async {
-    var res= await CallApi().postData({},'/getAllServicesWithChildren' );
-    if(res.statusCode == 200){
-      res =json.decode(res.body);
-      setState(() {
-        serviceNames = res;
-      });
-      executed = true;
-      //print(  serviceNames[0].toString());
-    }
-    print(res.toString());
-    return res;
-  }
-
 }

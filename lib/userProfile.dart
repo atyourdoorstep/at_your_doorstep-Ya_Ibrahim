@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:at_your_doorstep/Constants.dart';
 import 'package:at_your_doorstep/api.dart';
+import 'package:at_your_doorstep/requestNewService.dart';
 import 'package:flutter/material.dart';
 import 'package:at_your_doorstep/textFieldClass.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -124,16 +125,21 @@ class _EditProfileOpState extends State<EditProfileOp> {
                             leading: Icon(Icons.edit),
                           ),
                           Divider(),
-                          ListTile(title: Text("Suggest New Service", style: menuFont,),
-                            leading: Icon(Icons.add_chart),
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => SuggestNewService()),);
+                            },
+                            child: ListTile(title: Text("Suggest New Service", style: menuFont,),
+                              leading: Icon(Icons.add_chart),
+                            ),
                           ),
                           Divider(),
                           ListTile(title: Text("My Address", style: menuFont,),
                             leading: Icon(Icons.location_on),
                           ),
                           Divider(),
-                          TextButton(
-                            onPressed: () {
+                          GestureDetector(
+                            onTap: () {
                               logout(context);
                             },
                             child: ListTile(title: Text("Sign Out", style: menuFont,),
@@ -257,28 +263,34 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 showModalBottomSheet(
                                   elevation: 20.0,
                                     context: context,
-                                    builder: (context) => SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          height: 200,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10),
-                                            ),
+                                    builder: (context) => Container(
+                                      height: 200,
+                                      color: Colors.transparent,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10.0),
+                                            topRight: Radius.circular(10.0),
                                           ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
                                           child: Column(
                                             children: [
                                               GestureDetector(
                                                 onTap:(){},
-                                                child: ListTile(title: Text("Upload From Gallery", style: menuFont,),
+                                                child: ListTile(
+                                                  leading: Icon(Icons.photo),
+                                                  title: Text("Upload From Gallery", style: menuFont,),
                                                 ),
                                               ),
                                               Divider(),
                                               GestureDetector(
                                                 onTap:(){},
-                                                child: ListTile(title: Text("Open Camera", style: menuFont,),
+                                                child: ListTile(
+                                                  leading: Icon(Icons.camera),
+                                                  title: Text("Open Camera", style: menuFont,),
                                                 ),
                                               ),
                                             ],

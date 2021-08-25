@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:at_your_doorstep/Constants.dart';
 import 'package:at_your_doorstep/SearchPage.dart';
 import 'package:at_your_doorstep/api.dart';
+import 'package:at_your_doorstep/servicesCategory.dart';
 import 'package:at_your_doorstep/userProfile.dart';
 import 'package:flutter/material.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
@@ -157,108 +158,13 @@ class _HomePageOperationState extends State<HomePageOperation>
                                 elevation: 20.0,
                                 context: context,
 
-                                builder: (context) =>
-                                    Container(
-                                  height: 500,
-                                  color: Colors.transparent,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10.0),
-                                        topRight: Radius.circular(10.0),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(9.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                              "Services > ${ucFirst(serviceNames["data"]
-                                              [index]['name'])} > Categories",
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      color: Colors.redAccent,
-                                                      fontFamily: "PTSans",
-                                                      fontWeight: FontWeight.w700,
-                                                      letterSpacing: 2.0)),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Center(
-                                            child: Text(
-                                                ucFirst(serviceNames["data"]
-                                                    [index]['name']),
-                                                style: TextStyle(
-                                                    fontSize: 30,
-                                                    color: Colors.red,
-                                                    fontFamily: "PTSans",
-                                                    fontWeight: FontWeight.w700,
-                                                    letterSpacing: 2.0)),
-                                          ),
-                                        ),
-                                        len >0 ? SizedBox(
-                                          height: 300,
-                                          child: ListView.builder(
-                                              physics: ClampingScrollPhysics(),
-                                              itemCount: len,
-                                              itemBuilder: (context , index){
-                                                return Padding(
-                                                  padding: const EdgeInsets.all(10.0),
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 100,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.all(
-                                                        Radius.circular(10.0),
-                                                      ),
-                                                      border: Border.all(color: Colors.red),
-                                                    ),
-                                                    child: Row(
-                                                      children: [
-                                                        Image.asset("assets/atyourdoorstep.png", height: 50,width: 50,),
-                                                        Padding(
-                                                          padding: const EdgeInsets.all(8.0),
-                                                          child: Column(
-                                                            mainAxisSize: MainAxisSize.min,
-                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                            children: [
-                                                              Text(ucFirst(serviceGen[index]['name']), style: TextStyle(color: Colors.red, fontSize: 20.0),),
-                                                              Text(ucFirst(serviceGen[index]['name']), style: TextStyle(color: Colors.red, fontSize: 10.0),),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                          ),
-                                        ): Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                      child: Center(
-                                        child: Text(
-                                            "There is no Service Category Available at that Time....",
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.red,
-                                                fontFamily: "PTSans",
-                                                fontWeight: FontWeight.w700,
-                                                letterSpacing: 2.0)),
-                                      ),
-                                    ),
-                                      ],
-                                    ),
-                                  ),
+                                builder: (context) => ServiceCategory(
+                                  serviceN: serviceNames,
+                                  service1: serviceNames["data"][index]['children'],
+                                  len1: serviceNames["data"][index]['children'].length,
+                                  ind: index
                                 ),
+
                               );
 
                             // Navigator.push(
@@ -266,7 +172,9 @@ class _HomePageOperationState extends State<HomePageOperation>
                             //     new MaterialPageRoute(
                             //         builder: (context) => ServiceCategory(sName: ucFirst(serviceNames["data"][index]['name']))));
                           },
-                          child: Card(child: Center(child: Text(serviceNames["data"][index]['name'],)), shape: RoundedRectangleBorder(
+                          child: Card(child: Center(child: Text(serviceNames["data"][index]['name'],)),
+                            shadowColor: Colors.grey[300],
+                            shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0),
                             ),
                             side: BorderSide(color: Colors.red),
