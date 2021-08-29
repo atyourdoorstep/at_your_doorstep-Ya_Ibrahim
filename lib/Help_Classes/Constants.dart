@@ -91,14 +91,20 @@ ucFirst(String str)
   var x=str.toString();
   return x.substring(0,1).toUpperCase()+x.substring(1).toLowerCase();
 }
+bool load = false;
 getProfilePicture()
 async {
   var res= await CallApi().postData({},'/getProfilePicture' );
-  res =json.decode(res.body);
-print(  res.toString());
-  if(res['url'].toString().length>0)
-  {
-    profilePicUrl=res['url'];
+  var body =json.decode(res.body);
+print(  body.toString());
+  if(res.statusCode == 200) {
+    if (body['url']
+        .toString()
+        .length > 0) {
+      profilePicUrl = body['url'];
+      print(body['success'].toString());
+    }
+    load = true;
   }
 return profilePicUrl;
 }

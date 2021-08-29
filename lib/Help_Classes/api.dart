@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dio/dio.dart';
 class CallApi{
   // final String _url = 'http://127.0.0.1:8000/api';//for web
   // final String _url = 'http://10.0.2.2:8000/api';//for emulator
@@ -35,7 +37,20 @@ class CallApi{
 
     return {'Error':'Failed to get Date from provided URL'};
   }
-
+  uploadFile(file,apiUrl)
+  async {
+    Dio dio = new Dio();
+    String fileName = file.path.split('/').last;
+    FormData formData = FormData.fromMap({
+      // 'token':,
+      "image": await MultipartFile.fromFile(file.path, filename:fileName),
+    });
+    var response = await dio.post(_url + apiUrl + await _getToken(), data: formData);
+    var body=response.data;
+    print("success: "+body['success'].toString());
+    print("api response: "+body.toString());
+    return response;
+  }
 
 
 

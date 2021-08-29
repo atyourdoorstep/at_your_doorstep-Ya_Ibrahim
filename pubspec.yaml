@@ -32,6 +32,9 @@ dependencies:
   shared_preferences:
   http:
   flutter_easyloading: ^3.0.0
+  image_picker: ^0.8.3+3
+  dio: ^4.0.0
+
 
 
 dev_dependencies:

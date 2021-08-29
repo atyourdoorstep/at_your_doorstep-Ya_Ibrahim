@@ -148,8 +148,8 @@ class _HomePageOperationState extends State<HomePageOperation>
                       scrollDirection: Axis.horizontal,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
                       itemBuilder: (context , index){
-                        return TextButton(
-                          onPressed: () {
+                        return GestureDetector(
+                          onTap: () {
                             print(serviceNames["data"][index]['children'].length);
                             int len = serviceNames["data"][index]['children'].length;
                             var serviceGen = serviceNames["data"][index]['children'];
@@ -172,7 +172,12 @@ class _HomePageOperationState extends State<HomePageOperation>
                             //     new MaterialPageRoute(
                             //         builder: (context) => ServiceCategory(sName: ucFirst(serviceNames["data"][index]['name']))));
                           },
-                          child: Card(child: Center(child: Text(serviceNames["data"][index]['name'],)),
+                          child: Card(
+                            child: Center(
+                                child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(serviceNames["data"][index]['name'],),
+                          )),
                             shadowColor: Colors.grey[300],
                             shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0),

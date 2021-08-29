@@ -1,11 +1,17 @@
 import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/requestNewService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+
 
 class editProfile extends StatelessWidget {
   const editProfile({Key? key}) : super(key: key);
@@ -185,6 +191,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController mailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   bool _isChanged=false;
+
+  late var _image;
   // String url='https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png';
 
   late Map<String,dynamic> userData;
@@ -215,6 +223,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     // TODO: implement initState
     super.initState();
     userData=userD;
+    //load = false;
     // _getUserInfo();
     firstNameController.text=ucFirst(userData['fName'].toString());
     lastNameController.text=ucFirst(userData['lName'].toString());
@@ -247,10 +256,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         SizedBox(
                           height: 20,
                         ),
-                        Stack(
+                        load? Stack(
                           alignment: AlignmentDirectional.bottomEnd,
                           children: [
-                            CircleAvatar(
+                          CircleAvatar(
                               backgroundColor: Colors.grey,
                               radius: 60,
                               backgroundImage: NetworkImage( profilePicUrl),
@@ -278,7 +287,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           child: Column(
                                             children: [
                                               GestureDetector(
-                                                onTap:(){},
+                                                onTap:() async {
+                                                  // final ImagePicker _picker = ImagePicker();
+                                                  // XFile image = await _picker.pickImage(
+                                                  //     source: ImageSource.gallery, imageQuality: 50
+                                                  // ) as XFile;
+                                                  _imgFromGallery();
+                                                  Navigator.of(context).pop();
+                                                },
                                                 child: ListTile(
                                                   leading: Icon(Icons.photo),
                                                   title: Text("Upload From Gallery", style: menuFont,),
@@ -286,7 +302,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                               ),
                                               Divider(),
                                               GestureDetector(
-                                                onTap:(){},
+                                                onTap:() async {
+
+                                                  _imgFromCamera();
+                                                  Navigator.of(context).pop();
+                                                },
                                                 child: ListTile(
                                                   leading: Icon(Icons.camera),
                                                   title: Text("Open Camera", style: menuFont,),
@@ -299,9 +319,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     ),
                                 );
                               },
-                                child: CircleAvatar(child: Icon(Icons.edit, size: 15,),),
+                                child: CircleAvatar(
+                                  child: Icon(Icons.edit, size: 15,),),
                             ),
                           ],
+                        ): CircleAvatar(
+                            child: CircularProgressIndicator(),
+                            backgroundColor: Colors.grey,
+                            radius: 60,
                         ),
                         SizedBox(
                           height: 15,
@@ -354,16 +379,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     localStorage.setString(key, val);
   }
-  _sendTosave()
-  {
-    _save({
-      'fName':firstNameController.text.toLowerCase(),
-  'lName':lastNameController.text.toLowerCase(),
-    'email':mailController.text.toLowerCase(),
-  'contact':phoneController.text.toLowerCase()
-  }
-    );
-  }
   _save(var data ) async {
     print('in FUNC');
     // var data = {
@@ -387,11 +402,54 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           userD = user;
           _isChanged=false;
         });
-      } else {
+      }
         showMsg(context,body['message']);
         //EasyLoading.showToast(body['message']);
-      }
     }
+  }
+
+  _imgFromCamera() async {
+
+    EasyLoading.show(status: 'loading...');
+    final ImagePicker _picker = ImagePicker();
+    XFile image = await _picker.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    ) as XFile;
+    print("cam: "+image.path.toString());
+    var msg=await CallApi().uploadFile(image, '/setProfilePicture');
+    var body=msg.data;
+
+    if( body['success']) {
+      showMsg(context, 'Image updated');
+      setState(() {
+        profilePicUrl=body['profile']['image'];
+
+      });
+    }
+    else
+      showMsg(context, 'error in updating image');
+    EasyLoading.dismiss();
+  }
+  _imgFromGallery() async {
+
+    EasyLoading.show(status: 'loading...');
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    final ImagePicker _picker = ImagePicker();
+    XFile image = await _picker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ) as XFile;
+    var msg=await CallApi().uploadFile(image, '/setProfilePicture');
+    var body=msg.data;
+    if( body['success']) {
+      showMsg(context, 'Image updated');
+      setState(() {
+        profilePicUrl=body['profile']['image'];
+      });
+    }
+    else
+      showMsg(context, 'error in updating image');
+    EasyLoading.dismiss();
   }
 
 }

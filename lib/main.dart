@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
         primarySwatch: Colors.red,
-        canvasColor: Colors.transparent,
+       // canvasColor: Colors.transparent,
 
       ),
       home: SplashState(),
@@ -163,185 +163,188 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              children:[
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 60,
-                      ),
-                      IntrinsicHeight(
-                        child: Row(
-                          children: [
-                            Padding(
+    return WillPopScope(
+      onWillPop: ()async => false,
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Stack(
+                children:[
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 60,
+                        ),
+                        IntrinsicHeight(
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Center(child: Hero(
+                                          tag: 'logo',
+                                          child: Image.asset("assets/atyourdoorstep.png", height: 150,width: 150,))),
+                                    )),
+                              ),
+                              VerticalDivider(
+                                width: 20,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Text("Welcome to AYD!", style:
+                                      TextStyle(fontSize: 17, color: Colors.black45, fontFamily: "PTSans", fontWeight: FontWeight.w300)),
+                                    ),
+                                    Center(
+                                      child: Text("SIGN IN", style:
+                                      TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w800 , letterSpacing: 2.0)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Center(
+                        //   child: Text("SIGN IN", style:
+                        //   TextStyle(fontSize: 25, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+                        // ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        textfieldStyle(textHint: 'Email Address', obscureText: false, textLabel1: 'Email Address',controllerText: mailController,),
+                        textfieldStyle(textHint: 'password', obscureText: true, textLabel1: 'Password ',controllerText: passwordController,),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: ButtonTheme(
+                            minWidth: double.infinity,
+                            height: 55,
+                            child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Center(child: Hero(
-                                        tag: 'logo',
-                                        child: Image.asset("assets/atyourdoorstep.png", height: 150,width: 150,))),
-                                  )),
-                            ),
-                            VerticalDivider(
-                              width: 20,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Text("Welcome to AYD!", style:
-                                    TextStyle(fontSize: 17, color: Colors.black45, fontFamily: "PTSans", fontWeight: FontWeight.w300)),
-                                  ),
-                                  Center(
-                                    child: Text("SIGN IN", style:
-                                    TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w800 , letterSpacing: 2.0)),
-                                  ),
-                                ],
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                ),
+                                onPressed: () async {
+                                  setState(() {
+                                    showSpinner = true;
+                                  });
+                                  // mailController.text=emailF;
+                                  // passwordController.text=passwordF;
+                                  //EasyLoading.show(status: 'loading...');
+                                  //EasyLoading.show(status: 'loading...');
+
+                                  //Future.delayed(const Duration(seconds: 4));
+                                  var data = {
+                                    'email' : mailController.text,
+                                    'password' : passwordController.text
+                                  };
+                                  login(data);
+                                  //EasyLoading.dismiss();
+                                },
+                                color: Colors.red,
+                                child: Text("Login", style:
+                                TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
                               ),
                             ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                          child: ButtonTheme(
+                            minWidth: double.infinity,
+                            height: 55,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0),
+                                  ),
+                                  side: BorderSide(color: Colors.red),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Signup()),
+                                  );
+                                },
+                                color: Colors.white,
+                                child: Text("Signup", style:
+                                TextStyle(fontSize: 18, color: Colors.red, fontFamily: "PTSans" )),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 25.0,
+                        ),
+                        Row(
+                          children: [
+                            buildDivider(),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Text("OR", style:
+                              TextStyle(color: Color(0xFFD9D9D9), fontFamily: "PTSans" )),
+                            ),
+                            buildDivider(),
                           ],
                         ),
-                      ),
-                      // Center(
-                      //   child: Text("SIGN IN", style:
-                      //   TextStyle(fontSize: 25, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
-                      // ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      textfieldStyle(textHint: 'Email Address', obscureText: false, textLabel1: 'Email Address',controllerText: mailController,),
-                      textfieldStyle(textHint: 'password', obscureText: true, textLabel1: 'Password ',controllerText: passwordController,),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ButtonTheme(
-                          minWidth: double.infinity,
-                          height: 55,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                              onPressed: () async {
-                                setState(() {
-                                  showSpinner = true;
-                                });
-                                // mailController.text=emailF;
-                                // passwordController.text=passwordF;
-                                //EasyLoading.show(status: 'loading...');
-                                //EasyLoading.show(status: 'loading...');
-
-                                //Future.delayed(const Duration(seconds: 4));
-                                var data = {
-                                  'email' : mailController.text,
-                                  'password' : passwordController.text
-                                };
-                                login(data);
-                                //EasyLoading.dismiss();
-                              },
-                              color: Colors.red,
-                              child: Text("Login", style:
-                              TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
-                            ),
-                          ),
+                        SizedBox(
+                          height: 20,
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                        child: ButtonTheme(
-                          minWidth: double.infinity,
-                          height: 55,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                          child: ButtonTheme(
+                            minWidth: double.infinity,
+                            height: 55,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0),
+                                  ),
+                                 // side: BorderSide(color: Colors.red),
                                 ),
-                                side: BorderSide(color: Colors.red),
+                                onPressed: () async {
+                                  var user={
+                                    'fName':'Guest',
+                                    'lName':'Account',
+                                    'CNIC':0,
+                                    'contact':0,
+                                    'email':''};
+                                  await toLocal('user',json.encode(user));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CupertinoHomePage(userName: "Guest")),
+                                  );
+                                },
+                                color: Colors.white,
+                                child: Text("As a Guest", style:
+                                TextStyle(fontSize: 18, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
                               ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Signup()),
-                                );
-                              },
-                              color: Colors.white,
-                              child: Text("Signup", style:
-                              TextStyle(fontSize: 18, color: Colors.red, fontFamily: "PTSans" )),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 25.0,
-                      ),
-                      Row(
-                        children: [
-                          buildDivider(),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Text("OR", style:
-                            TextStyle(color: Color(0xFFD9D9D9), fontFamily: "PTSans" )),
-                          ),
-                          buildDivider(),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                        child: ButtonTheme(
-                          minWidth: double.infinity,
-                          height: 55,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0),
-                                ),
-                               // side: BorderSide(color: Colors.red),
-                              ),
-                              onPressed: () async {
-                                var user={
-                                  'fName':'Guest',
-                                  'lName':'Account',
-                                  'CNIC':0,
-                                  'contact':0,
-                                  'email':''};
-                                await toLocal('user',json.encode(user));
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CupertinoHomePage(userName: "Guest")),
-                                );
-                              },
-                              color: Colors.white,
-                              child: Text("As a Guest", style:
-                              TextStyle(fontSize: 18, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
-                            ),
-                          ),
+                        SizedBox(
+                          height: 10.0,
                         ),
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
