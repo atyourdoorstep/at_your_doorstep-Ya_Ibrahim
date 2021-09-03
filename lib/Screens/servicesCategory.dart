@@ -1,4 +1,5 @@
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
+import 'package:at_your_doorstep/Screens/servicesPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -21,6 +22,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
   var len;
   var serviceNames;
   late int index;
+  var serNameP ;
 
   @override
   void initState() {
@@ -30,6 +32,9 @@ class _ServiceCategoryState extends State<ServiceCategory> {
     len = widget.len1;
     serviceNames = widget.serviceN;
     index = widget.ind;
+    //
+    serNameP = ucFirst(serviceNames["data"][index]['name']);
+    //
   }
 
   @override
@@ -94,7 +99,15 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                             var serviceGen2;
                             serviceGen2 = serviceGen[index]['children'];
                             return GestureDetector(
-                              onTap: (){},
+                              onTap: (){
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) => ServicesPage(
+                                          servName: serviceGen[index]['name'],
+                                          parentServName: serNameP,)));
+
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Container(
