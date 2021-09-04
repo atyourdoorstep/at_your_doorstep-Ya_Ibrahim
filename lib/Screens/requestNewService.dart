@@ -17,7 +17,16 @@ class _SuggestNewServiceState extends State<SuggestNewService> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+        ),
+      ),
       // body: Container(
       //   child: Text(userD['email'].toString()),
       // ),

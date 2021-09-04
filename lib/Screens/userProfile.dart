@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
+import 'package:at_your_doorstep/Screens/registerForSeller.dart';
 import 'package:at_your_doorstep/Screens/requestNewService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -164,7 +165,10 @@ class _EditProfileOpState extends State<EditProfileOp> {
                   height: 70,
                   hoverColor: Colors.grey,
                   child: ElevatedButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.push(context, new MaterialPageRoute(
+builder: (context) =>RegisterSellerOne()));
+                      },
                       child: Text("Registered as a Service Provider"),
                   ),
                 ),
@@ -234,7 +238,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -247,7 +258,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(
-                          height: 40,
+                          height: 30,
                         ),
                         Center(
                           child: Text("EDIT PROFILE", style:
