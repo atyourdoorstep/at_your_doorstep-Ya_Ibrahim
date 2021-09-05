@@ -65,6 +65,7 @@ void logout(BuildContext context) async{
     Navigator.of(
       context,
       rootNavigator: true,).pushNamed('LoginPage');
+    Navigator.pop(context);
   }
 
 }

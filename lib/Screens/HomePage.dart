@@ -44,7 +44,7 @@ class _HomePageOperationState extends State<HomePageOperation>
 
   var serviceNames;
   bool executed = false;
-  //late TabController _tabControl;
+  late AnimationController controller;
 
   @override
   void initState() {
@@ -58,8 +58,21 @@ class _HomePageOperationState extends State<HomePageOperation>
     //   print("Loading Screen");
     //   build(context);
     // });
+    controller = AnimationController(
+        vsync: this,
+      duration: const Duration(seconds: 5),
+    )..addListener(() {
+      setState(() {});
+    });
+    controller.repeat(reverse: true);
     executed = false;
 
+  }
+  @override
+  void dispose() {
+    controller.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -196,7 +209,14 @@ class _HomePageOperationState extends State<HomePageOperation>
                 ),
               ],
             ),
-          ): Center(child: CircularProgressIndicator(color: Colors.red,),),
+          ): Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+              CircularProgressIndicator(color: Colors.red,value: controller.value,),
+            Image.asset("assets/atyourdoorstep.png", height: 28,width: 28,),
+            ],
+          ),),
     );
   }
 

@@ -42,7 +42,7 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
               TextStyle(fontSize: 23, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
             ),
             SizedBox(
-              height: 20.0,
+              height: 30.0,
             ),
             textfieldStyle(textHint: "Username", obscureText: false, textLabel1:'Username'),
             SizedBox(
