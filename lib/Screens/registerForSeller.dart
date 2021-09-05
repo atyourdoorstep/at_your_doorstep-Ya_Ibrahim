@@ -1,4 +1,5 @@
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
+import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/servicesPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,16 +44,23 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
             SizedBox(
               height: 20.0,
             ),
-            Center(
-              child: Text("Select the type of Service:", style:
-              TextStyle(fontSize: 15, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w400)),
+            textfieldStyle(textHint: "Username", obscureText: false, textLabel1:'Username'),
+            SizedBox(
+              height: 10.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Select the type of Service:", style:
+                TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w400)),
+              ],
             ),
             SizedBox(
-              height: 20.0,
+              height: 10.0,
             ),
             Center(
               child: Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                 child: Card(
                  color: Colors.white,
                   //padding: EdgeInsets.all(0.0),
@@ -60,8 +68,10 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
                     isExpanded: true,
                     focusColor: Colors.white,
                     value: dropdownValue,
-                    // icon: const Icon(Icons.arrow_downward),
-                    // iconSize: 24,
+                    underline: Container(
+                      height: 2,
+                      color: Colors.white,
+                    ),
                     iconEnabledColor: Colors.black,
                     style: const TextStyle(color: Colors.red),
                     onChanged: (String? newValue) {
@@ -73,7 +83,10 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(value),
+                        ),
                       );
                     }).toList(),
                     hint: Text("Please select the service type"),

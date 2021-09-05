@@ -26,7 +26,25 @@ class _ServicesPageState extends State<ServicesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+        ),
+        title: Text(servName,
+            style: TextStyle(
+                fontSize: 30,
+                color: Colors.red,
+                fontFamily: "PTSans",
+                fontWeight: FontWeight.w700,
+                letterSpacing: 2.0),
+        ),
+      ),
       body: Container(
         child: Column(
           children: [
