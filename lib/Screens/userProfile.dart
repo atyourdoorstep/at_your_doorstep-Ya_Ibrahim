@@ -166,8 +166,11 @@ class _EditProfileOpState extends State<EditProfileOp> {
                   hoverColor: Colors.grey,
                   child: ElevatedButton(
                       onPressed: (){
-                        Navigator.push(context, new MaterialPageRoute(
-builder: (context) =>RegisterSellerOne()));
+
+                        Navigator.of(
+                          context,
+                          rootNavigator: true,).pushNamed('RegisterSeller');
+
                       },
                       child: Text("Registered as a Service Provider"),
                   ),
