@@ -1,6 +1,4 @@
-import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
-import 'package:at_your_doorstep/Screens/servicesPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -112,11 +110,13 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
                         side: BorderSide(color: Colors.red),
                       ),
                       onPressed: () {
-                        Navigator.push(context, new MaterialPageRoute(
-                            builder: (context) =>RegisterSellerTwo(
-                              parentService: dropdownValue,
-                              userName: userNameController.text,
-                            )));
+                        if(userNameController.text != ""){
+                          Navigator.push(context, new MaterialPageRoute(
+                              builder: (context) =>RegisterSellerTwo(
+                                parentService: dropdownValue,
+                                userName: userNameController.text,
+                              )));
+                        }
                       },
                       color: Colors.red,
                       child: Text("Next", style:
