@@ -5,7 +5,9 @@ import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/HomePage.dart';
+import 'package:at_your_doorstep/Screens/SearchPage.dart';
 import 'package:at_your_doorstep/Screens/registerForSeller.dart';
+import 'package:at_your_doorstep/Screens/requestNewService.dart';
 import 'package:at_your_doorstep/Screens/signup_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -98,8 +100,11 @@ class MyApp extends StatelessWidget {
       routes: {
         'SplashPage':(context)=>SplashState(),
         'LoginPage':(context)=>MyHomePage(title: 'AtYourDoorStep'),
+        'SignUpPage':(context)=>Signup(),
         'RegisterSeller':(context)=>RegisterSellerOne(),
         'RegisterSellerTwo':(context)=>RegisterSellerTwo(),
+        'NewServiceSugestion':(context)=>SuggestNewService(),
+        'SearchPage':(context)=>SearchPage(),
       },
       builder: EasyLoading.init(),
     );
