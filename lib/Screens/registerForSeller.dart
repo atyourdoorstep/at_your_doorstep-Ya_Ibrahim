@@ -15,6 +15,7 @@ class RegisterSellerOne extends StatefulWidget {
 class _RegisterSellerOneState extends State<RegisterSellerOne> {
 
   String dropdownValue = 'Home';
+  TextEditingController userNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
             SizedBox(
               height: 30.0,
             ),
-            textfieldStyle(textHint: "Username", obscureText: false, textLabel1:'Username'),
+            textfieldStyle(textHint: "Username", obscureText: false, textLabel1:'Username', controllerText: userNameController),
             SizedBox(
               height: 10.0,
             ),
@@ -111,11 +112,11 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
                         side: BorderSide(color: Colors.red),
                       ),
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => Signup()),
-                        // );
+                        Navigator.push(context, new MaterialPageRoute(
+                            builder: (context) =>RegisterSellerTwo(
+                              parentService: dropdownValue,
+                              userName: userNameController.text,
+                            )));
                       },
                       color: Colors.red,
                       child: Text("Next", style:
@@ -126,6 +127,61 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
               ),
             ),
             ///
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class RegisterSellerTwo extends StatefulWidget {
+
+  final parentService;
+  final userName;
+
+  RegisterSellerTwo({this.parentService,this.userName});
+
+  @override
+  _RegisterSellerTwoState createState() => _RegisterSellerTwoState();
+}
+
+class _RegisterSellerTwoState extends State<RegisterSellerTwo> {
+
+  late String parentService;
+  late String userName;
+
+  @override
+  void initState() {
+    parentService =widget.parentService;
+    userName= widget.userName;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+        ),
+      ),
+      body:Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Text(parentService, style:
+              TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+            ),
+            Center(
+              child: Text(userName, style:
+              TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+            ),
           ],
         ),
       ),
