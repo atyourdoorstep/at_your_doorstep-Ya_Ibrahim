@@ -164,46 +164,49 @@ class _HomePageOperationState extends State<HomePageOperation>
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: SizedBox(
-                    height: 130,
-                    child: GridView.builder(
-                      itemCount: serviceNames["data"].length,
-                      scrollDirection: Axis.horizontal,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
-                      itemBuilder: (context , index){
-                        return GestureDetector(
-                          onTap: () {
-                            print(serviceNames["data"][index]['children'].length);
-                            int len = serviceNames["data"][index]['children'].length;
-                            var serviceGen = serviceNames["data"][index]['children'];
+                Align(
+                  alignment: AlignmentDirectional.center,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      height: 130,
+                      child: GridView.builder(
+                        itemCount: serviceNames["data"].length,
+                        scrollDirection: Axis.horizontal,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+                        itemBuilder: (context , index){
+                          return GestureDetector(
+                            onTap: () {
+                              print(serviceNames["data"][index]['children'].length);
+                              int len = serviceNames["data"][index]['children'].length;
+                              var serviceGen = serviceNames["data"][index]['children'];
 
-                            showModalBottomSheet(
-                                elevation: 20.0,
-                                context: context,
+                              showModalBottomSheet(
+                                  elevation: 20.0,
+                                  context: context,
 
-                                builder: (context) => ServiceCategory(
-                                  serviceN: serviceNames,
-                                  service1: serviceNames["data"][index]['children'],
-                                  len1: serviceNames["data"][index]['children'].length,
-                                  ind: index
-                                ),
-                              );},
-                          child: Card(
-                            child: Center(
-                                child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(serviceNames["data"][index]['name'],),
-                          )),
-                            shadowColor: Colors.grey[300],
-                            shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0),
-                            ),
-                            side: BorderSide(color: Colors.red),
-                          ),),
-                        );
-                      },
+                                  builder: (context) => ServiceCategory(
+                                    serviceN: serviceNames,
+                                    service1: serviceNames["data"][index]['children'],
+                                    len1: serviceNames["data"][index]['children'].length,
+                                    ind: index
+                                  ),
+                                );},
+                            child: Card(
+                              child: Center(
+                                  child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(serviceNames["data"][index]['name'],),
+                            )),
+                              shadowColor: Colors.grey[300],
+                              shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10.0),
+                              ),
+                              side: BorderSide(color: Colors.red),
+                            ),),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
