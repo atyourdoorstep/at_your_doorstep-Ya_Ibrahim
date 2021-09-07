@@ -36,7 +36,7 @@ class _ServicesPageState extends State<ServicesPage> {
           },
           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
         ),
-        title: Text(servName,
+        title: Text(ucFirst(servName),
             style: TextStyle(
                 fontSize: 30,
                 color: Colors.red,

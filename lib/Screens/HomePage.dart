@@ -112,7 +112,7 @@ class _HomePageOperationState extends State<HomePageOperation>
           body: executed ? SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -143,14 +143,26 @@ class _HomePageOperationState extends State<HomePageOperation>
                             child: Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0gUdOSUpCj1Ua90OToZZ5JICiNVohiiK-cg&usqp=CAU"),
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(18.0),
+                            child: Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyzhchKdlDlRAVwZdkEtVWRRGxXxC8PxdqOg&usqp=CAU"),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
-                  child: Text("Available Services", style:
-                  TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
+                      child: Text("Available Services", style:
+                      TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -177,14 +189,7 @@ class _HomePageOperationState extends State<HomePageOperation>
                                   len1: serviceNames["data"][index]['children'].length,
                                   ind: index
                                 ),
-
-                              );
-
-                            // Navigator.push(
-                            //     context,
-                            //     new MaterialPageRoute(
-                            //         builder: (context) => ServiceCategory(sName: ucFirst(serviceNames["data"][index]['name']))));
-                          },
+                              );},
                           child: Card(
                             child: Center(
                                 child: Padding(
@@ -202,10 +207,15 @@ class _HomePageOperationState extends State<HomePageOperation>
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
-                  child: Text("Recommended for you", style:
-                  TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
+                      child: Text("Recommended for you", style:
+                      TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    ),
+                  ],
                 ),
               ],
             ),

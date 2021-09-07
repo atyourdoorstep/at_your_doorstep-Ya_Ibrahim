@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:at_your_doorstep/Help_Classes/Constants.dart';
+import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +17,7 @@ class RegisterSellerOne extends StatefulWidget {
 class _RegisterSellerOneState extends State<RegisterSellerOne> {
 
   String dropdownValue = 'Home';
+  int idCat = 0;
   TextEditingController userNameController = TextEditingController();
 
   @override
@@ -76,6 +81,16 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
                     onChanged: (String? newValue) {
                       setState(() {
                         dropdownValue = newValue!;
+                        if(dropdownValue== 'Home')
+                          idCat=1;
+                        else if(dropdownValue== 'Electronics')
+                          idCat=2;
+                        else if(dropdownValue== 'Medical & Pharma')
+                          idCat=3;
+                        else
+                          idCat=8;
+
+                        print(idCat);
                       });
                     },
                     items: <String>['Home', 'Electronics', 'Medical & Pharma', 'Education']
@@ -111,13 +126,12 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
                       ),
                       onPressed: () {
                         if(userNameController.text != ""){
-                          Navigator.push(context, new MaterialPageRoute(
-                              builder: (context) =>RegisterSellerTwo(
-                                parentService: dropdownValue,
-                                userName: userNameController.text,
-                              )));
+                          _registerServicePro();
                         }
-                      },
+                        else {
+                          showMsg(context, "Your Username field box is Empty!!");
+                        }
+    },
                       color: Colors.red,
                       child: Text("Next", style:
                       TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
@@ -132,6 +146,28 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
       ),
     );
   }
+
+  void _registerServicePro()async{
+    var data = {
+      'user_name' : userNameController.text,
+      'category_id' : idCat,
+    };
+    var resp;
+    resp= await CallApi().postData(data, '/registerSeller');
+    var body = json.decode(resp.body);
+    print(body.toString());
+    if(body['success']){
+      Navigator.push(context, new MaterialPageRoute(
+          builder: (context) =>RegisterSellerTwo(
+            parentService: dropdownValue,
+            userName: userNameController.text,
+          )));
+    }
+    else{
+      showMsg(context,body['message'][0]);
+    }
+  }
+
 }
 
 class RegisterSellerTwo extends StatefulWidget {
