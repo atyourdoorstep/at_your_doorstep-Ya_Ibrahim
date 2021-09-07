@@ -202,6 +202,7 @@ class _RegisterSellerTwoState extends State<RegisterSellerTwo> {
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
+            Navigator.pop(context);
           },
           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
         ),
