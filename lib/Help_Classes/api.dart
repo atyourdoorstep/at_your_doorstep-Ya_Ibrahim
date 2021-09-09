@@ -37,21 +37,44 @@ class CallApi{
 
     return {'Error':'Failed to get Date from provided URL'};
   }
-  uploadFile(file,apiUrl)
-  async {
+  // uploadFile(file,apiUrl) async
+  // {
+  //   Dio dio = new Dio();
+  //   String fileName = file.path.split('/').last;
+  //   FormData formData = FormData.fromMap({
+  //     // 'token':,
+  //     "image": await MultipartFile.fromFile(file.path, filename:fileName),
+  //   });
+  //   var response = await dio.post(_url + apiUrl + await _getToken(), data: formData);
+  //   var body=response.data;
+  //   print("success: "+body['success'].toString());
+  //   print("api response: "+body.toString());
+  //   return response;
+  // }
+  uploadFile(file,Map<String,dynamic> data,apiUrl) async
+  {
     Dio dio = new Dio();
     String fileName = file.path.split('/').last;
-    FormData formData = FormData.fromMap({
-      // 'token':,
-      "image": await MultipartFile.fromFile(file.path, filename:fileName),
-    });
-    var response = await dio.post(_url + apiUrl + await _getToken(), data: formData);
-    var body=response.data;
-    print("success: "+body['success'].toString());
-    print("api response: "+body.toString());
-    return response;
+    data['image']= await MultipartFile.fromFile(file.path, filename:fileName);
+    FormData fd=new FormData.fromMap(data);
+    try {
+      var response = await dio.post(
+          _url + apiUrl + await _getToken(), data: fd);
+        print(response.toString());
+        return response;
+    }
+    catch(e)
+    {
+      if (e is DioError) {
+        return e.response;
+      }
+      return
+          {
+            'success':false,
+            'message':'Some error occurred',
+          };
+    }
   }
-
 
 
   _setHeaders() => {

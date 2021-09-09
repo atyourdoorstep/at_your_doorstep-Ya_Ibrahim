@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:at_your_doorstep/Help_Classes/Constants.dart';
+import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image_picker/image_picker.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
@@ -64,7 +68,28 @@ class _SuggestNewServiceState extends State<SuggestNewService> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                                 ),
-                                onPressed: (){},
+                                onPressed: () async {
+                                  SharedPreferences localStorage = await SharedPreferences.getInstance();
+                                  // String? token=localStorage.getString('token');
+                                  XFile x=await _imgFromGallery();
+                                  var resp=await CallApi().uploadFile(x,
+                                      {
+                                       'token':localStorage.getString('token'),
+                                        'name':'newName',
+                                        'description':'desc',
+                                        'category_id':6,
+                                        'price':222,
+                                      }
+                                      , '/createPost');
+                                  print('response: '+resp.toString());
+                                  var body = resp.data;
+                                  if(body['success'])
+                                    {
+                                      print(body.toString());
+                                    }
+                                  else
+                                    showMsg(context, body['message']);
+                                },
                                 color: Colors.red,
                                 child: Text("Send", style:
                                 TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
@@ -85,5 +110,14 @@ class _SuggestNewServiceState extends State<SuggestNewService> {
         ),
       ),
     );
+  }
+  _imgFromGallery() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    final ImagePicker _picker = ImagePicker();
+    XFile image = await _picker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ) as XFile;
+    return image;
   }
 }

@@ -164,7 +164,7 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
           )));
     }
     else{
-      showMsg(context,body['message'][0]);
+      showMsg(context,body['message']);
     }
   }
 

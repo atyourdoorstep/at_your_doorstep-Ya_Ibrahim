@@ -242,20 +242,19 @@ class _MyHomePageState extends State<MyHomePage> {
                                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                                 ),
                                 onPressed: () async {
+                                  if(mailController.text != ""&& passwordController!=""){
                                   setState(() {
                                     showSpinner = true;
                                   });
-                                  // mailController.text=emailF;
-                                  // passwordController.text=passwordF;
-                                  //EasyLoading.show(status: 'loading...');
-                                  //EasyLoading.show(status: 'loading...');
-
-                                  //Future.delayed(const Duration(seconds: 4));
                                   var data = {
                                     'email' : mailController.text,
                                     'password' : passwordController.text
                                   };
                                   login(data);
+                                  }
+                                  else{
+                                    showMsg(context, 'Please fill the above fields');
+                                  }
                                   //EasyLoading.dismiss();
                                 },
                                 color: Colors.red,
