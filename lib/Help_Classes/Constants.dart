@@ -110,3 +110,15 @@ print(  body.toString());
 return profilePicUrl;
 }
 String profilePicUrl='https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png';
+
+String roleOfUser ="";
+
+getRoleUser() async{
+  var res= await CallApi().postData({},'/getRole' );
+  var body =json.decode(res.body);
+  print(  body.toString());
+  if(res.statusCode == 200){
+    roleOfUser= body['roleName'];
+  }
+  print(roleOfUser.toString());
+}

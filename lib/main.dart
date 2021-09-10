@@ -9,6 +9,7 @@ import 'package:at_your_doorstep/Screens/SearchPage.dart';
 import 'package:at_your_doorstep/Screens/registerForSeller.dart';
 import 'package:at_your_doorstep/Screens/requestNewService.dart';
 import 'package:at_your_doorstep/Screens/signup_page.dart';
+import 'package:at_your_doorstep/Screens/userProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -105,6 +106,7 @@ class MyApp extends StatelessWidget {
         'RegisterSellerTwo':(context)=>RegisterSellerTwo(),
         'NewServiceSugestion':(context)=>SuggestNewService(),
         'SearchPage':(context)=>SearchPage(),
+        'ShowFullImage':(context)=>OpenFullImage(),
       },
       builder: EasyLoading.init(),
     );

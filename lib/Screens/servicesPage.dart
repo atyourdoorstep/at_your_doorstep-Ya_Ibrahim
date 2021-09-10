@@ -18,7 +18,7 @@ class _ServicesPageState extends State<ServicesPage> {
   var parentServName;
   @override
   void initState() {
-    servName = widget.servName;
+    servName = ucFirst(widget.servName);
     parentServName = widget.parentServName;
     // TODO: implement initState
     super.initState();
@@ -36,9 +36,9 @@ class _ServicesPageState extends State<ServicesPage> {
           },
           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
         ),
-        title: Text(ucFirst(servName),
+        title: Text(servName,
             style: TextStyle(
-                fontSize: 30,
+                fontSize: 23,
                 color: Colors.red,
                 fontFamily: "PTSans",
                 fontWeight: FontWeight.w700,
@@ -56,14 +56,18 @@ class _ServicesPageState extends State<ServicesPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                      "Services > $parentServName > Categories > $servName",
-                      style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.black26,
-                          fontFamily: "PTSans",
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 2.0)),
+                  Expanded(
+                    child: Text(
+                        "Services > $parentServName > Categories > $servName ",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.black26,
+                            fontFamily: "PTSans",
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 2.0)),
+                  ),
                 ],
               ),
             ),
