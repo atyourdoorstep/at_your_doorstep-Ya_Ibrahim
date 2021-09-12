@@ -186,11 +186,9 @@ class _EditProfileOpState extends State<EditProfileOp> {
                     height: 55,
                     child: ElevatedButton(
                       onPressed: (){
-                        //
-                        // Navigator.of(
-                        //   context,
-                        //   rootNavigator: true,).pushNamed('RegisterSeller');
-
+                         Navigator.of(
+                           context,
+                          rootNavigator: true,).pushNamed('sellerUpdateProfile');
                       },
                       child: Text("Go to Seller Profile"),
                     ),
@@ -300,11 +298,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                    context,
                                    rootNavigator: true,).pushNamed('ShowFullImage');
                         },
-                              child: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                radius: 60,
-                                backgroundImage: NetworkImage( profilePicUrl),
-                                // backgroundImage: NetworkImage("https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png"),
+                              child: Hero(
+                                tag:"fullsize",
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.grey,
+                                  radius: 60,
+                                  backgroundImage: NetworkImage( profilePicUrl),
+                                  // backgroundImage: NetworkImage("https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png"),
+                                ),
                               ),
                             ),
                             GestureDetector(
@@ -424,11 +425,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
   _save(var data ) async {
     print('in FUNC');
-    // var data = {
-    //   'email' : mailController.text,
-    //   'password' : passwordController.text
-    // };
-
     EasyLoading.show(status: 'loading...');
     var res = await CallApi().postData(data, '/updateUser');
     var body = json.decode(res.body);
@@ -598,7 +594,7 @@ class _OpenFullImageState extends State<OpenFullImage> {
         ],
       ),
       body: Hero(
-        tag: "photo",
+        tag:"fullsize",
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(

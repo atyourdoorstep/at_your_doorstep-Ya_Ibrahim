@@ -49,6 +49,14 @@ const menuFont = TextStyle(
 );
 
 late Map<String,dynamic> userD = {};
+late Map<String,dynamic> userSeller = {};
+
+var token;
+getToken() async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  token = localStorage.getString('token');
+}
+
 void logout(BuildContext context) async{
 
   // logout from the server ...
@@ -121,4 +129,16 @@ getRoleUser() async{
     roleOfUser= body['roleName'];
   }
   print(roleOfUser.toString());
+}
+
+getSellerInfo() async {
+  var res = await CallApi().postData(token, '/sells');
+  var body = json.decode(res.body);
+  if (body != null){
+    if (body['success']!) {
+     // print(body['profile']['title'].toString());
+      SharedPreferences localStorage1 = await SharedPreferences.getInstance();
+      localStorage1.setString('userSeller',json.encode(body['profile']) );
+    }
+  }
 }

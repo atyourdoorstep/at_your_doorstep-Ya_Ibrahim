@@ -8,6 +8,7 @@ import 'package:at_your_doorstep/Screens/HomePage.dart';
 import 'package:at_your_doorstep/Screens/SearchPage.dart';
 import 'package:at_your_doorstep/Screens/registerForSeller.dart';
 import 'package:at_your_doorstep/Screens/requestNewService.dart';
+import 'package:at_your_doorstep/Screens/sellerProfileUpdate.dart';
 import 'package:at_your_doorstep/Screens/signup_page.dart';
 import 'package:at_your_doorstep/Screens/userProfile.dart';
 import 'package:flutter/cupertino.dart';
@@ -107,6 +108,7 @@ class MyApp extends StatelessWidget {
         'NewServiceSugestion':(context)=>SuggestNewService(),
         'SearchPage':(context)=>SearchPage(),
         'ShowFullImage':(context)=>OpenFullImage(),
+        'sellerUpdateProfile':(context)=>UpdateSellerProfile(),
       },
       builder: EasyLoading.init(),
     );
@@ -428,4 +430,5 @@ Expanded buildDivider(){
       _isLoading = false;
     });
   }
+
 }
