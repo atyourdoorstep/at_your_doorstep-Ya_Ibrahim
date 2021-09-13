@@ -42,15 +42,15 @@ class _HomePageOperationState extends State<HomePageOperation>
     return user;
   }
 
-  getSellerInfoSave() async {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var userJson = localStorage.getString('userSeller');
-    var user = json.decode(userJson!);
-    setState(() {
-      userSeller = user;
-    });
-    return user;
-  }
+  // getSellerInfoSave() async {
+  //   SharedPreferences localStorage = await SharedPreferences.getInstance();
+  //   var userJson = localStorage.getString('userSeller');
+  //   var user = json.decode(userJson!);
+  //   setState(() {
+  //     userSeller = user;
+  //   });
+  //   return user;
+  // }
 
   var serviceNames;
   bool executed = false;
@@ -66,7 +66,7 @@ class _HomePageOperationState extends State<HomePageOperation>
     getParentServices();
     getRoleUser();
     getSellerInfo();
-    getSellerInfoSave();
+    // getSellerInfoSave();
     // Timer(Duration(seconds: 5),(){
     //   print("Loading Screen");
     //   build(context);

@@ -333,7 +333,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                               onTap:() async {
                                                 Navigator.of(context).pop();
                                                 EasyLoading.show(status: 'loading...');
-                                                _updateProfilePicture(await CallApi().uploadFile(await _imgFromGallery(),{}, '/setProfilePicture'));
+                                                _updateProfilePicture(await CallApi().uploadFile(await imgFromGallery(),{}, '/setProfilePicture'));
                                                 EasyLoading.dismiss();
 
                                               },
@@ -348,7 +348,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                 //_imgFromCamera
                                                 Navigator.of(context).pop();
                                                 EasyLoading.show(status: 'loading...');
-                                                _updateProfilePicture(await CallApi().uploadFile(await _imgFromCamera(),{}, '/setProfilePicture'));
+                                                _updateProfilePicture(await CallApi().uploadFile(await imgFromCamera(),{}, '/setProfilePicture'));
                                                 EasyLoading.dismiss();
                                               },
                                               child: ListTile(
@@ -458,51 +458,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     else
       showMsg(context, 'error in updating image');
   }
-  _imgFromCamera() async {
 
-    EasyLoading.show(status: 'loading...');
-    final ImagePicker _picker = ImagePicker();
-    XFile image = await _picker.pickImage(
-        source: ImageSource.camera, imageQuality: 50
-    ) as XFile;
-    EasyLoading.dismiss();
-   // return image;
-    print("cam: "+image.path.toString());
-
-    var msg=await CallApi().uploadFile(image,{}, '/setProfilePicture');
-    var body=msg.data;
-
-    if( body['success']) {
-      showMsg(context, 'Image updated');
-      setState(() {
-        profilePicUrl=body['profile']['image'];
-
-      });
-    }
-    else
-      showMsg(context, 'error in updating image');
-  }
-  _imgFromGallery() async {
-
-    EasyLoading.show(status: 'loading...');
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var token = localStorage.getString('token');
-    final ImagePicker _picker = ImagePicker();
-    XFile image = await _picker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50
-    ) as XFile;
-    var msg=await CallApi().uploadFile(image,{}, '/setProfilePicture');
-    var body=msg.data;
-    if( body['success']) {
-      showMsg(context, 'Image updated');
-      setState(() {
-        profilePicUrl=body['profile']['image'];
-      });
-    }
-    else
-      showMsg(context, 'error in updating image');
-    EasyLoading.dismiss();
-  }
 
 }
 

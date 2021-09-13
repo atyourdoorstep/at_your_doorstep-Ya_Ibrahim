@@ -26,21 +26,27 @@ class _UpdateSellerProfileState extends State<UpdateSellerProfile> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController urlController = TextEditingController();
   bool _isChanged=false;
-  late Map<String,dynamic> userDataSeller;
+  late Map<String,dynamic> userDataSeller={};
 bool excuted = false;
-
-
+getSellerInfo ()async
+{
+  var inf= await CallApi().postData({}, '/sells');
+  var seller = json.decode(inf.body);
+  print('seller: '+seller['profile'].toString());
+  setState(() {
+    userDataSeller=seller['profile'];
+    titleController.text=ucFirst(userDataSeller['title'].toString());
+    print(userDataSeller['title'].toString());
+    descriptionController.text=ucFirst(userDataSeller['description'].toString());
+    urlController.text= userDataSeller['url']!=null? userDataSeller['url'].toString():'';
+  });
+}
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getToken();
-    userDataSeller=userSeller;
-    print("hello $userDataSeller");
-    titleController.text=ucFirst(userDataSeller['title'].toString());
-    print(userDataSeller['title'].toString());
-    descriptionController.text=ucFirst(userDataSeller['description'].toString());
-    urlController.text= userDataSeller['url'].toString();
+    getSellerInfo();
+
   }
   @override
   Widget build(BuildContext context) {
@@ -75,9 +81,9 @@ bool excuted = false;
                         SizedBox(
                           height: 20,
                         ),
-                        textfieldStyle(textHint: ucFirst(userDataSeller['title'].toString()), obscureText: false, textLabel1:'Title', controllerText: titleController, onChange: (value){setState(() {_isChanged=true;}); },),
+                        textfieldStyle(textHint: ucFirst( userDataSeller['title'].toString()), obscureText: false, textLabel1:'Title', controllerText: titleController, onChange: (value){setState(() {_isChanged=true;}); },),
                         textfieldStyle(textHint:ucFirst(userDataSeller['description'].toString()) , obscureText: false, textLabel1: 'Describe your service', controllerText: descriptionController,onChange:(value) {setState(() {_isChanged=true;}); },),
-                        textfieldStyle(textHint: userDataSeller['url'].toString(), obscureText: false, textLabel1: 'Email',controllerText: urlController,onChange:(value) {setState(() {_isChanged=true;}); },),
+                        textfieldStyle(textHint: userDataSeller['url']!=''? userDataSeller['url'].toString():'', obscureText: false, textLabel1: 'URL',controllerText: urlController,onChange:(value) {setState(() {_isChanged=true;}); },),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: ButtonTheme(
@@ -90,10 +96,9 @@ bool excuted = false;
                                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                                 ),
                                 onPressed: _isChanged?()=>{ _storeSellerInfo({
-                                  'token': token,
                                   'title':titleController.text.toLowerCase(),
                                   'description':descriptionController.text.toLowerCase(),
-                                  'url':urlController.text.toLowerCase(),
+                                  'url':urlController.text.toLowerCase().length>0?urlController.text.toLowerCase():'',
                                 }
                                 )}:null,
                                 color: Colors.red,
@@ -123,6 +128,9 @@ bool excuted = false;
     localStorage.setString(key, val);
   }
   _storeSellerInfo(var data ) async {
+    if(data['url'].toString().length==0||data['url']==null)
+      data.remove('url');
+  print ('data: '+data.toString());
     EasyLoading.show(status: 'loading...');
     var res = await CallApi().postData(data, '/updateProfile');
     var body = json.decode(res.body);
@@ -132,13 +140,8 @@ bool excuted = false;
       if (body != null) {
         if (body['success']!) {
           print(body.toString());
-          toLocal('userSeller', json.encode(body['profile']));
-          SharedPreferences localStorage = await SharedPreferences
-              .getInstance();
-          var userJson = localStorage.getString('userSeller');
-          var user = json.decode(userJson!);
           setState(() {
-            userSeller = user;
+            userDataSeller = body['profile'];
             _isChanged = false;
           });
         }

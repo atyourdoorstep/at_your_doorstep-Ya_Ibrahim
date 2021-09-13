@@ -17,7 +17,6 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-
 void main()  {
   // runApp(MaterialApp(
   //   home: editProfile(),
@@ -115,6 +114,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -122,6 +122,7 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
+
 class _MyHomePageState extends State<MyHomePage> {
 
   bool showSpinner = false;

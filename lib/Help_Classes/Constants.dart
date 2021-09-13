@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:http/http.dart' as http;
 import 'api.dart';
 
 const hintStyleForTextField = TextStyle(
@@ -51,11 +52,10 @@ const menuFont = TextStyle(
 late Map<String,dynamic> userD = {};
 late Map<String,dynamic> userSeller = {};
 
-var token;
-getToken() async {
-  SharedPreferences localStorage = await SharedPreferences.getInstance();
-  token = localStorage.getString('token');
-}
+// getToken() async {
+//   SharedPreferences localStorage = await SharedPreferences.getInstance();
+//   token = localStorage.getString('token');
+// }
 
 void logout(BuildContext context) async{
 
@@ -132,7 +132,7 @@ getRoleUser() async{
 }
 
 getSellerInfo() async {
-  var res = await CallApi().postData(token, '/sells');
+  var res = await CallApi().postData( {},'/sells');
   var body = json.decode(res.body);
   if (body != null){
     if (body['success']!) {
@@ -141,4 +141,45 @@ getSellerInfo() async {
       localStorage1.setString('userSeller',json.encode(body['profile']) );
     }
   }
+  return {
+    'success':false,
+    'message':'this user is not register as a service provider'
+  };
 }
+//get images
+imgFromCamera() async {
+  final ImagePicker _picker = ImagePicker();
+  XFile image = await _picker.pickImage(
+      source: ImageSource.camera, imageQuality: 50
+  ) as XFile;
+  return image;
+}
+imgFromGallery() async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  var token = localStorage.getString('token');
+  final ImagePicker _picker = ImagePicker();
+  XFile image = await _picker.pickImage(
+      source: ImageSource.gallery, imageQuality: 50
+  ) as XFile;
+  return image;
+}
+
+
+
+// test()
+// async {
+//   // https://jsonplaceholder.typicode.com/todos/1
+//   Uri fullUrl = Uri.parse('https://jsonplaceholder.typicode.com/todos/1');
+//   var resp = await http.get(
+//     fullUrl,
+//   );
+//
+//   if (resp.statusCode == 200) {
+//     print('resp: '+resp.toString());
+//     String data = resp.body;
+//     //print('post resp: '+data.toString());
+//     return jsonDecode(data);
+//   } else {
+//     return 'error';
+//   }
+// }
