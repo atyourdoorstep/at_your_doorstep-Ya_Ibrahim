@@ -51,6 +51,7 @@ const menuFont = TextStyle(
 
 late Map<String,dynamic> userD = {};
 late Map<String,dynamic> userSeller = {};
+late Map<String,dynamic> categoryFetch = {};
 
 // getToken() async {
 //   SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -163,7 +164,6 @@ imgFromGallery() async {
   ) as XFile;
   return image;
 }
-
 
 
 // test()

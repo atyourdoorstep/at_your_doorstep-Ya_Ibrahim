@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
+import 'package:at_your_doorstep/Screens/createPost.dart';
 import 'package:at_your_doorstep/Screens/registerForSeller.dart';
 import 'package:at_your_doorstep/Screens/requestNewService.dart';
 import 'package:flutter/material.dart';
@@ -117,7 +118,7 @@ class _EditProfileOpState extends State<EditProfileOp> {
                 ),
                 //
                 SizedBox(
-                  height: 280,
+                  height: roleOfUser == "seller"?350:290,
                   child: Padding(
                     padding: const EdgeInsets.all(7.0),
                     child: Card(
@@ -127,6 +128,45 @@ class _EditProfileOpState extends State<EditProfileOp> {
                       child: ListView(
                         physics: ClampingScrollPhysics(),
                         children: [
+                          Visibility(
+                            visible: roleOfUser == "seller",
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap:(){
+                                    Navigator.of(
+                                      context,
+                                      rootNavigator: true,).pushNamed('sellerUpdateProfile');
+                      },
+                                  child: ListTile(title: Text("Seller Profile", style: menuFont,),
+                                    leading: Icon(Icons.account_box_outlined),
+                                  ),
+                                ),
+                                Divider(),
+                              ],
+                            ),
+                          ),
+                          Visibility(
+                            visible: roleOfUser == "seller",
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap:(){
+                                     Navigator.push(context, new MaterialPageRoute(
+                                         builder: (context) =>PostCreation()));
+                                  },
+                                  child: ListTile(title: Text("Create New Post / Add Item", style: menuFont,),
+                                    leading: Icon(Icons.create_outlined),
+                                  ),
+                                ),
+                                Divider(),
+                              ],
+                            ),
+                          ),
+                          ListTile(title: Text("My Address", style: menuFont,),
+                            leading: Icon(Icons.location_on),
+                          ),
+                          Divider(),
                           ListTile(title: Text("Complaints", style: menuFont,),
                             leading: Icon(Icons.edit),
                           ),
@@ -138,10 +178,6 @@ class _EditProfileOpState extends State<EditProfileOp> {
                             child: ListTile(title: Text("Suggest New Service", style: menuFont,),
                               leading: Icon(Icons.add_chart),
                             ),
-                          ),
-                          Divider(),
-                          ListTile(title: Text("My Address", style: menuFont,),
-                            leading: Icon(Icons.location_on),
                           ),
                           Divider(),
                           GestureDetector(
@@ -175,22 +211,6 @@ class _EditProfileOpState extends State<EditProfileOp> {
 
                       },
                       child: Text("Registered as a Service Provider"),
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: roleOfUser == "seller",
-                  child: ButtonTheme(
-                    hoverColor: Colors.grey,
-                    minWidth: double.infinity,
-                    height: 55,
-                    child: ElevatedButton(
-                      onPressed: (){
-                         Navigator.of(
-                           context,
-                          rootNavigator: true,).pushNamed('sellerUpdateProfile');
-                      },
-                      child: Text("Go to Seller Profile"),
                     ),
                   ),
                 ),

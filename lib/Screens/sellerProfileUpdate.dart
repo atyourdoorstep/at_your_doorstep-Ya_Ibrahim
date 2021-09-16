@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
+import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/registerForSeller.dart';
 import 'package:at_your_doorstep/Screens/requestNewService.dart';
@@ -22,30 +23,36 @@ class UpdateSellerProfile extends StatefulWidget {
 
 class _UpdateSellerProfileState extends State<UpdateSellerProfile> {
 
+  bool executed = false;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController urlController = TextEditingController();
   bool _isChanged=false;
   late Map<String,dynamic> userDataSeller={};
-bool excuted = false;
 getSellerInfo ()async
 {
   var inf= await CallApi().postData({}, '/sells');
   var seller = json.decode(inf.body);
   print('seller: '+seller['profile'].toString());
-  setState(() {
-    userDataSeller=seller['profile'];
-    titleController.text=ucFirst(userDataSeller['title'].toString());
-    print(userDataSeller['title'].toString());
-    descriptionController.text=ucFirst(userDataSeller['description'].toString());
-    urlController.text= userDataSeller['url']!=null? userDataSeller['url'].toString():'';
-  });
+  if(inf.statusCode == 200) {
+    setState(() {
+      userDataSeller = seller['profile'];
+      titleController.text = ucFirst(userDataSeller['title'].toString());
+      print(userDataSeller['title'].toString());
+      descriptionController.text =
+          ucFirst(userDataSeller['description'].toString());
+      urlController.text =
+      userDataSeller['url'] != null ? userDataSeller['url'].toString() : '';
+    });
+    executed = true;
+  }
 }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getSellerInfo();
+    executed = false;
 
   }
   @override
@@ -61,7 +68,7 @@ getSellerInfo ()async
           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
         ),
       ),
-      body: SafeArea(
+      body: executed ? SafeArea(
         child: SingleChildScrollView(
           child:  Column(
             children: [
@@ -119,7 +126,7 @@ getSellerInfo ()async
             ],
           ),
         ),
-      ),
+      ): SpecialSpinner(),
     );
   }
   toLocal(String key,String val)async
@@ -147,7 +154,6 @@ getSellerInfo ()async
         }
         showMsg(context, body['message']);
       }
-      excuted = true;
     }
   }
 

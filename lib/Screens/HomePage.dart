@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
+import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Screens/SearchPage.dart';
 import 'package:at_your_doorstep/Screens/servicesCategory.dart';
 import 'package:at_your_doorstep/Screens/userProfile.dart';
@@ -42,19 +43,8 @@ class _HomePageOperationState extends State<HomePageOperation>
     return user;
   }
 
-  // getSellerInfoSave() async {
-  //   SharedPreferences localStorage = await SharedPreferences.getInstance();
-  //   var userJson = localStorage.getString('userSeller');
-  //   var user = json.decode(userJson!);
-  //   setState(() {
-  //     userSeller = user;
-  //   });
-  //   return user;
-  // }
-
   var serviceNames;
   bool executed = false;
-  late AnimationController controller;
 
   @override
   void initState() {
@@ -71,21 +61,8 @@ class _HomePageOperationState extends State<HomePageOperation>
     //   print("Loading Screen");
     //   build(context);
     // });
-    controller = AnimationController(
-        vsync: this,
-      duration: const Duration(seconds: 5),
-    )..addListener(() {
-      setState(() {});
-    });
-    controller.repeat(reverse: true);
     executed = false;
 
-  }
-  @override
-  void dispose() {
-    controller.dispose();
-    // TODO: implement dispose
-    super.dispose();
   }
 
   @override
@@ -238,14 +215,7 @@ class _HomePageOperationState extends State<HomePageOperation>
                 ),
               ],
             ),
-          ): Center(
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-              CircularProgressIndicator(color: Colors.red,value: controller.value,),
-            Image.asset("assets/atyourdoorstep.png", height: 28,width: 28,),
-            ],
-          ),),
+          ): SpecialSpinner(),
     );
   }
 
@@ -258,9 +228,7 @@ class _HomePageOperationState extends State<HomePageOperation>
         serviceNames = res;
       });
       executed = true;
-      //print(  serviceNames[0].toString());
     }
-    print(res.toString());
     return res;
   }
 
