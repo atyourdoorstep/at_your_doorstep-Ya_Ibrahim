@@ -80,7 +80,7 @@ void logout(BuildContext context) async{
 }
 showMsg(BuildContext context,msg) { //
   final snackBar = SnackBar(
-    backgroundColor: Color(0xffc76464),
+    backgroundColor: Colors.black54,
     content: Text(msg),
     action: SnackBarAction(
       textColor: Colors.white,

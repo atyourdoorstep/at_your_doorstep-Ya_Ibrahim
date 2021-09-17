@@ -6,6 +6,9 @@ import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PostCreation extends StatefulWidget {
   const PostCreation({Key? key}) : super(key: key);
@@ -16,6 +19,9 @@ class PostCreation extends StatefulWidget {
 
 class _PostCreationState extends State<PostCreation> {
 
+  TextEditingController itemNameController = TextEditingController();
+  TextEditingController itemDescController = TextEditingController();
+  TextEditingController itemPriceController = TextEditingController();
   bool checkB = false;
   int checkIn = 0;
   bool executed = false;
@@ -36,6 +42,7 @@ class _PostCreationState extends State<PostCreation> {
         categoryID= sellerV['sellerProfile']["category_id"];
         });
       executed = true;
+      getChildrenCategory();
     }
   }
 
@@ -65,7 +72,7 @@ class _PostCreationState extends State<PostCreation> {
   @override
   void initState() {
     getSellerRegisteredCategory();
-    getChildrenCategory();
+    //getChildrenCategory();
     executed = false;
     executed1 = false;
     super.initState();
@@ -104,9 +111,9 @@ class _PostCreationState extends State<PostCreation> {
               SizedBox(
                 height: 30.0,
               ),
-              textfieldStyle(textHint: "Item Name", obscureText: false, textLabel1:'Item Name',),
-              textfieldStyle(textHint: "Description", obscureText: false, textLabel1:'Description',),
-              textfieldStyle(textHint: "Price", obscureText: false, textLabel1:'Adjust item Price',),
+              textfieldStyle(textHint: "Item Name", obscureText: false, textLabel1:'Item Name',controllerText: itemNameController,),
+              textfieldStyle(textHint: "Description", obscureText: false, textLabel1:'Description',controllerText: itemDescController,),
+              textfieldStyle(textHint: "Price", obscureText: false, textLabel1:'Adjust item Price',controllerText: itemPriceController,),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -120,21 +127,37 @@ class _PostCreationState extends State<PostCreation> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
-                  height: 100,
-                  width: 200,
-                  child:categoryList.length > 0 ? ListView.builder(
+                  height: 35,
+                  child: ListView.builder(
+                    //physics: ClampingScrollPhysics(),
                       shrinkWrap: true,
-                      //scrollDirection: Axis.horizontal,
+                      scrollDirection: Axis.horizontal,
                       itemCount: categoryList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        print(categoryFetch.length);
-                        return ListTile(
-                          title: Text(ucFirst(categoryList[index]['name']),
-                          style: TextStyle(
-                              color: selectedIndex== index ? Colors.white: Colors.red,
+                      itemBuilder:
+                          (BuildContext context, int index) {
+                        return GestureDetector(
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.height/7,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                color: selectedIndex== index ? Colors.red : null,
+                                border:
+                                Border.all(color: selectedIndex== index ?  Colors.red :  Colors.black),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Center(
+                                child: Text(
+                                    ucFirst(categoryList[index]['name']),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: selectedIndex== index ? Colors.white: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                          ),
-                          tileColor: selectedIndex== index ? Colors.red: null,
                           onTap: (){
                             setState(() {
                               selectedIndex = index;
@@ -143,66 +166,76 @@ class _PostCreationState extends State<PostCreation> {
                             });
                           },
                         );
-                      }): Text("There is no child"),
+                      }),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("Do want to Enable Bargain Option"),
-                    ),
-                    Checkbox(
-                        value: checkB,
-                        onChanged: (value){
-                          setState(() {
-                            checkB = value!;
-                            if(checkB == true)
-                              checkIn = 1;
-                            else
-                              checkIn = 0;
-                            print(checkIn);
-                          });
-                        }
-                    ),
-
-                  ],
+                child: CheckboxListTile(
+                    value: checkB,
+                    title: Text("Do want to Enable Bargain Option?"),
+                    onChanged: (value){
+                      setState(() {
+                        checkB = value!;
+                        if(checkB == true)
+                          checkIn = 1;
+                        else
+                          checkIn = 0;
+                        print(checkIn);
+                      });
+                    }
                 ),
               ),
-             Column(
-               crossAxisAlignment: CrossAxisAlignment.center,
-               children: [
-                 Padding(
-                   padding: const EdgeInsets.all(8.0),
-                   child: Row(
-                     mainAxisAlignment: MainAxisAlignment.start,
-                     children: [
-                       Text("Add Item Image", style:
-                       TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w400)),
-                     ],
-                   ),
-                 ),
-                 Padding(
-                   padding: const EdgeInsets.all(8.0),
-                   child: Row(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                       Container(
-                         height: 100,
-                         width: 100,
-                         decoration: BoxDecoration(
-                           border: Border.all(color: Colors.black),
-                         ),
-                         child: Icon(Icons.add),
-                       ),
-                     ],
-                   ),
-                 ),
-               ],
-             ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ButtonTheme(
+                  minWidth: double.infinity,
+                  height: 55,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                      onPressed: () async {
+                        if(itemPriceController.text != '' && checkIn != null &&
+                            itemDescController.text != '' && getId != null &&
+                            itemNameController.text != ''){
+                          SharedPreferences localStorage = await SharedPreferences.getInstance();
+                          XFile x=await imgFromGallery();
+                          _createPostFunc(
+                              {
+                                'token': localStorage.getString('token'),
+                                'name': itemNameController.text,
+                                'description': itemDescController.text,
+                                'category_id': getId,
+                                'price': itemPriceController.text,
+                                'image':x,
+                                'isBargainAble': checkIn
+                              }
+                          );
+                          Navigator.pop(context);
+                          // Navigator.push(context, new MaterialPageRoute(
+                          //     builder: (context) =>PostCreationTwo(
+                          //       iPrice: itemPriceController.text,
+                          //       checkB: checkIn,
+                          //       itemDesc: itemDescController.text,
+                          //       CategoryId: getId,
+                          //       itemN: itemNameController.text,
+                          //     )));
+                        }
+                        else {
+                            showMsg(context, "Fill up above Required fields");
+                          }
+
+                      },
+                      color: Colors.red,
+                      child: Text("Upload Image & Publish", style:
+                      TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(
                 height: 50,
               ),
@@ -210,6 +243,92 @@ class _PostCreationState extends State<PostCreation> {
           ),
         ),
       ): SpecialSpinner(),
+    );
+  }
+  _createPostFunc(var data) async {
+    EasyLoading.show(status: 'loading...');
+    var res = await CallApi().postData(data, '/createPost');
+    var body = json.decode(res.body);
+    EasyLoading.dismiss();
+    if (body['success']!) {
+      print(body.toString());
+      showMsg(context,"Your Item Published Successfully");
+    }
+    else{
+      showMsg(context,body['message']);
+    }
+  }
+}
+
+class PostCreationTwo extends StatefulWidget {
+  late final String itemN , itemDesc, iPrice;
+  late final int checkB , CategoryId;
+
+  PostCreationTwo({required this.checkB,required this.CategoryId,required this.iPrice,required this.itemDesc,required this.itemN});
+  @override
+  _PostCreationTwoState createState() => _PostCreationTwoState();
+}
+
+class _PostCreationTwoState extends State<PostCreationTwo> {
+
+  late String itemN , itemDesc, iPrice;
+  late int checkB , CategoryId;
+
+  @override
+  void initState() {
+    itemN = widget.itemN;
+    itemDesc = widget.itemDesc;
+    iPrice = widget.iPrice;
+    checkB = widget.checkB;
+    CategoryId = widget.CategoryId;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 200,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.red),
+                  ),
+                  child: TextButton(
+                    onPressed: () async {
+                      XFile x = await imgFromGallery();
+                    },
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Icon(Icons.camera_enhance_outlined, size: 45,),
+                          Text("Upload Item Photo"),
+                        ],
+                      ),
+                    ),
+                  )
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
