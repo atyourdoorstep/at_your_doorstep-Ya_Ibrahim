@@ -280,7 +280,7 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
               BottomNavigationBarItem(icon: Icon(Icons.pages_rounded), label: "Services"),
               BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined),label: "Cart"),
               BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-              BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: "Profile"),
+              BottomNavigationBarItem(icon: Icon(Icons.account_circle_rounded)),
             ],
           ),
           tabBuilder: (context,index){

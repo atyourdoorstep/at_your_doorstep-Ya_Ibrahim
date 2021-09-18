@@ -165,6 +165,7 @@ imgFromGallery() async {
   return image;
 }
 
+var sampleImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNWosb1JiswKwHTROhbee2jJvGPzIt-PInWg&usqp=CAU";
 
 // test()
 // async {

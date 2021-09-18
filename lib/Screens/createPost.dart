@@ -136,27 +136,18 @@ class _PostCreationState extends State<PostCreation> {
                       itemBuilder:
                           (BuildContext context, int index) {
                         return GestureDetector(
-                          child: Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Container(
-                              width: MediaQuery.of(context).size.height/7,
-                              height: 70,
-                              decoration: BoxDecoration(
-                                color: selectedIndex== index ? Colors.red : null,
-                                border:
-                                Border.all(color: selectedIndex== index ?  Colors.red :  Colors.black),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Center(
-                                child: Text(
-                                    ucFirst(categoryList[index]['name']),
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: selectedIndex== index ? Colors.white: Colors.black,
+                          child: Row(
+                            children: [
+                              Chip(
+                                  label: Text(ucFirst(categoryList[index]['name']),
+                                style: TextStyle(
+                                        color: selectedIndex== index ? Colors.white: Colors.black,
+                                     ),
                                   ),
-                                ),
+                                backgroundColor: selectedIndex== index ? Colors.red : null,
                               ),
-                            ),
+                              SizedBox(width: 8),
+                            ],
                           ),
                           onTap: (){
                             setState(() {
@@ -202,19 +193,17 @@ class _PostCreationState extends State<PostCreation> {
                             itemDescController.text != '' && getId != null &&
                             itemNameController.text != ''){
                           SharedPreferences localStorage = await SharedPreferences.getInstance();
-                          XFile x=await imgFromGallery();
-                          _createPostFunc(
-                              {
+                          XFile image =await imgFromGallery();
+                          _createPostFunc(image,{
                                 'token': localStorage.getString('token'),
                                 'name': itemNameController.text,
                                 'description': itemDescController.text,
                                 'category_id': getId,
                                 'price': itemPriceController.text,
-                                'image':x,
                                 'isBargainAble': checkIn
                               }
                           );
-                          Navigator.pop(context);
+
                           // Navigator.push(context, new MaterialPageRoute(
                           //     builder: (context) =>PostCreationTwo(
                           //       iPrice: itemPriceController.text,
@@ -242,12 +231,13 @@ class _PostCreationState extends State<PostCreation> {
             ],
           ),
         ),
-      ): SpecialSpinner(),
+      ): Align(alignment: Alignment.center,
+          child: SpecialSpinner()),
     );
   }
-  _createPostFunc(var data) async {
+  _createPostFunc(file,var data) async {
     EasyLoading.show(status: 'loading...');
-    var res = await CallApi().postData(data, '/createPost');
+    var res = await CallApi().uploadFile(file,data, '/createPost');
     var body = json.decode(res.body);
     EasyLoading.dismiss();
     if (body['success']!) {
@@ -332,3 +322,27 @@ class _PostCreationTwoState extends State<PostCreationTwo> {
     );
   }
 }
+
+
+//Padding(
+//                             padding: const EdgeInsets.all(2.0),
+//                             child: Container(
+//                               width: MediaQuery.of(context).size.height/7,
+//                               height: 70,
+//                               decoration: BoxDecoration(
+//                                 color: selectedIndex== index ? Colors.red : null,
+//                                 border:
+//                                 Border.all(color: selectedIndex== index ?  Colors.red :  Colors.black),
+//                                 borderRadius: BorderRadius.circular(15),
+//                               ),
+//                               child: Center(
+//                                 child: Text(
+//                                     ucFirst(categoryList[index]['name']),
+//                                   overflow: TextOverflow.ellipsis,
+//                                   style: TextStyle(
+//                                     color: selectedIndex== index ? Colors.white: Colors.black,
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                           ),

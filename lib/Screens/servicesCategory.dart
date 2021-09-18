@@ -26,15 +26,13 @@ class _ServiceCategoryState extends State<ServiceCategory> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     serviceGen = widget.service1;
     len = widget.len1;
     serviceNames = widget.serviceN;
     index = widget.ind;
-    //
     serNameP = ucFirst(serviceNames["data"][index]['name']);
-    //
   }
 
   @override
@@ -106,6 +104,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                                       context,
                                       new MaterialPageRoute(
                                           builder: (context) => ServicesPage(
+                                            categoryId: serviceGen[index]['id'],
                                             servName: serviceGen[index]['name'],
                                             parentServName: serNameP,)));
 
