@@ -4,6 +4,7 @@ import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Screens/SearchPage.dart';
+import 'package:at_your_doorstep/Screens/serviceShowCase.dart';
 import 'package:at_your_doorstep/Screens/servicesCategory.dart';
 import 'package:at_your_doorstep/Screens/userProfile.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,26 @@ class _HomePageOperationState extends State<HomePageOperation>
     return user;
   }
 
+  getLocation() async {
+    serviceEnabled =await location.serviceEnabled();
+    if(!serviceEnabled){
+      serviceEnabled = await location.requestService();
+      if(serviceEnabled) return;
+    }
+
+
+    _permissionGranted = await location.hasPermission();
+    if(_permissionGranted == PermissionStatus.denied){
+      _permissionGranted = await location.requestPermission();
+      if(_permissionGranted != PermissionStatus.granted) return;
+    }
+
+    _locationData = await location.getLocation();
+    setState(() {
+      _isGetLocation = true;
+    });
+  }
+
   var serviceNames;
   bool executed = false;
 
@@ -60,16 +81,12 @@ class _HomePageOperationState extends State<HomePageOperation>
     // TODO: implement initState
     super.initState();
     userData={};
+    getLocation();
     getUserInfo();
     getProfilePicture();
     getParentServices();
     getRoleUser();
     getSellerInfo();
-    // getSellerInfoSave();
-    // Timer(Duration(seconds: 5),(){
-    //   print("Loading Screen");
-    //   build(context);
-    // });
     executed = false;
 
   }
@@ -100,6 +117,8 @@ class _HomePageOperationState extends State<HomePageOperation>
                     children: [
                       Text('Deliver to: ',style:
                       TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                      _isGetLocation ? Text("${_locationData.latitude}, ${_locationData.longitude}",style:
+                      TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans" )):
                       Text('Your Location',style:
                       TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans" )),
                     ],
@@ -212,41 +231,19 @@ class _HomePageOperationState extends State<HomePageOperation>
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () async{
-                    serviceEnabled =await location.serviceEnabled();
-                    if(!serviceEnabled){
-                      serviceEnabled = await location.requestService();
-                      if(serviceEnabled) return;
-                    }
-
-
-                    _permissionGranted = await location.hasPermission();
-                    if(_permissionGranted == PermissionStatus.denied){
-                      _permissionGranted = await location.requestPermission();
-                      if(_permissionGranted != PermissionStatus.granted) return;
-                    }
-
-                    _locationData = await location.getLocation();
-                     setState(() {
-                       _isGetLocation = true;
-                     });
-
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
-                        child: Text("Recommended for you", style:
-                        TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                      ),
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
+                      child: Text("Recommended for you", style:
+                      TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    ),
+                  ],
                 ),
                 _isGetLocation ? Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
-                  child: Text("Location: ${_locationData.latitude}/ ${_locationData.longitude}", style:
+                  child: Text("Location: ${_locationData.latitude}, ${_locationData.longitude}", style:
                   TextStyle(fontSize: 14, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                 ): Container(),
               ],
@@ -288,15 +285,14 @@ class CupertinoHomePage extends StatefulWidget {
 class _CupertinoHomePageState extends State<CupertinoHomePage> {
 
   late DateTime currentBackPressTime;
-  late String guestname;
+  late String guestName;
   bool guestCheck=true;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    guestname = widget.userName;
-    if(guestname == "Guest"){
-      print(guestname);
+    guestName = widget.userName;
+    if(guestName == "Guest"){
+      print(guestName);
       setState(() {
         guestCheck = false;
       });
@@ -330,7 +326,7 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
               case 1:
                 return CupertinoTabView(builder: (context){
                   return CupertinoPageScaffold(
-                    child:  Center(child: Text("hello0"),),);
+                    child:  ServiceOption(),);
                 }
                 );
               case 2:
