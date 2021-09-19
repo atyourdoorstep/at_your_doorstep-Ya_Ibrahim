@@ -7,9 +7,9 @@ import 'package:at_your_doorstep/Screens/SearchPage.dart';
 import 'package:at_your_doorstep/Screens/servicesCategory.dart';
 import 'package:at_your_doorstep/Screens/userProfile.dart';
 import 'package:flutter/material.dart';
-//import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:location/location.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,6 +29,15 @@ class HomePageOperation extends StatefulWidget {
 
 class _HomePageOperationState extends State<HomePageOperation>
     with TickerProviderStateMixin {
+
+  Location location = new Location();
+  late bool serviceEnabled;
+  late PermissionStatus _permissionGranted;
+  late LocationData _locationData;
+  bool _isListenLocation=false;
+  bool _isGetLocation=false;
+
+
 
   var checkUser = {};
   late Map<String,dynamic> userData;
@@ -203,16 +212,43 @@ class _HomePageOperationState extends State<HomePageOperation>
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
-                      child: Text("Recommended for you", style:
-                      TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                    ),
-                  ],
+                TextButton(
+                  onPressed: () async{
+                    serviceEnabled =await location.serviceEnabled();
+                    if(!serviceEnabled){
+                      serviceEnabled = await location.requestService();
+                      if(serviceEnabled) return;
+                    }
+
+
+                    _permissionGranted = await location.hasPermission();
+                    if(_permissionGranted == PermissionStatus.denied){
+                      _permissionGranted = await location.requestPermission();
+                      if(_permissionGranted != PermissionStatus.granted) return;
+                    }
+
+                    _locationData = await location.getLocation();
+                     setState(() {
+                       _isGetLocation = true;
+                     });
+
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
+                        child: Text("Recommended for you", style:
+                        TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                      ),
+                    ],
+                  ),
                 ),
+                _isGetLocation ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
+                  child: Text("Location: ${_locationData.latitude}/ ${_locationData.longitude}", style:
+                  TextStyle(fontSize: 14, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                ): Container(),
               ],
             ),
           ): SpecialSpinner(),
