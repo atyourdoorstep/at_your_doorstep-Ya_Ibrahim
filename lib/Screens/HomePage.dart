@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
@@ -308,11 +309,11 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
         backgroundColor: Colors.transparent,
           tabBar: CupertinoTabBar(
             items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home" ),
-              BottomNavigationBarItem(icon: Icon(Icons.pages_rounded), label: "Services"),
-              BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined),label: "Cart"),
-              BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-              BottomNavigationBarItem(icon: Icon(Icons.account_circle_rounded)),
+              BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.home,size: 25), label: "Home" ),
+              BottomNavigationBarItem(icon: Icon(Icons.pages_rounded,size: 25), label: "Services"), //Icons.pages_rounded)
+              BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined,size: 25), label: "Cart"), //Icons.shopping_bag_outlined)
+              BottomNavigationBarItem(icon: Icon(Icons.search,size: 25), label: "Search"),
+              BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.user,size: 25)),
             ],
           ),
           tabBuilder: (context,index){
@@ -396,7 +397,6 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
     if (currentBackPressTime == null ||
         now.difference(currentBackPressTime) > Duration(seconds: 2)) {
       currentBackPressTime = now;
-      //Fluttertoast.showToast(msg: "Double Tap to Exit");
       return Future.value(false);
     }
     return Future.value(true);

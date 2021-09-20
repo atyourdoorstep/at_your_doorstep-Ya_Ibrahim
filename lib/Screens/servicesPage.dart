@@ -56,102 +56,68 @@ class _ServicesPageState extends State<ServicesPage> {
                 letterSpacing: 2.0),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                          "Services > $parentServName > Categories > $servName",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.black26,
-                              fontFamily: "PTSans",
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 2.0)),
-                    ),
-                  ],
-                ),
-              ),
-    executed ? SizedBox(
-      height: 600,
-      child: ListView.builder(
-      physics: ClampingScrollPhysics(),
+      body: executed ? ListView.builder(
       itemCount: categoryItem.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.all(10.0),
           child: Expanded(
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(0.0,1.0),
-                    blurRadius: 6.0,
-                  ),
-                ],
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0.0,1.0),
+                  blurRadius: 6.0,
                 ),
-                //border: Border.all(color: Colors.red),
+              ],
+              borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.network(sampleImage,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Text(ucFirst(categoryItem[index]['name'].toString()),
-                              style: TextStyle(
-                                  color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w500),),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Text("Rs. "+categoryItem[index]['price'].toString(),
-                              style: TextStyle(
-                                  color: Colors.red, fontSize: 15.0, fontWeight: FontWeight.w700),),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: Text(ucFirst(categoryItem[index]['description'].toString()),
-                          style: TextStyle(
-                              color: Colors.black54, fontSize: 12.0),),
-                      )
-                    ],
-                  ),
+              //border: Border.all(color: Colors.red),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.network(sampleImage,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Text(ucFirst(categoryItem[index]['name'].toString()),
+                            style: TextStyle(
+                                color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w500),),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Text("Rs. "+categoryItem[index]['price'].toString(),
+                            style: TextStyle(
+                                color: Colors.red, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Text(ucFirst(categoryItem[index]['description'].toString(),),
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Colors.black54, fontSize: 12.0),),
+                    )
+                  ],
                 ),
               ),
             ),
           ),
+          ),
         );
       },
-      ),
-    ): SpecialSpinner(),
-            ],
-          ),
-        ),
-      ),
+      ): SpecialSpinner(),
     );
   }
 
@@ -169,3 +135,27 @@ class _ServicesPageState extends State<ServicesPage> {
     }
   }
 }
+
+
+
+
+//Padding(
+//             padding: const EdgeInsets.all(10.0),
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.start,
+//               children: [
+//                 Expanded(
+//                   child: Text(
+//                       "Services > $parentServName > Categories > $servName",
+//                       overflow: TextOverflow.ellipsis,
+//                       maxLines: 2,
+//                       style: TextStyle(
+//                           fontSize: 13,
+//                           color: Colors.black26,
+//                           fontFamily: "PTSans",
+//                           fontWeight: FontWeight.w700,
+//                           letterSpacing: 2.0)),
+//                 ),
+//               ],
+//             ),
+//           ),

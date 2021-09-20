@@ -35,6 +35,10 @@ dependencies:
   image_picker: ^0.8.3+3
   dio: ^4.0.0
   location: any
+  font_awesome_flutter: any
+  url_launcher:
+
+
 
 
 

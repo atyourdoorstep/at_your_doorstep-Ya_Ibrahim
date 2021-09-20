@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 
 class editProfile extends StatelessWidget {
@@ -118,7 +119,7 @@ class _EditProfileOpState extends State<EditProfileOp> {
                 ),
                 //
                 SizedBox(
-                  height: roleOfUser == "seller"?350:290,
+                  height: roleOfUser == "seller"?400:290,
                   child: Padding(
                     padding: const EdgeInsets.all(7.0),
                     child: Card(
@@ -214,6 +215,22 @@ class _EditProfileOpState extends State<EditProfileOp> {
                     ),
                   ),
                 ),
+                Align(
+                  alignment: FractionalOffset.bottomCenter,
+                    child: TextButton(
+                      onPressed: () async {
+                        const url = 'https://atyourdoorstep-pk.herokuapp.com/';
+                        if(await canLaunch(url)){
+                          await launch(url);
+                        }
+                        else{
+                          throw 'Could not launch $url';
+                        }
+                      },
+                      child: Text("About", style: TextStyle(
+                        color: Colors.black45,
+                      )),
+                    ),),
               ],
             ),
           ),
