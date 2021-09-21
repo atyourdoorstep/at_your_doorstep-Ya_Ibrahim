@@ -304,7 +304,7 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
   @override
   Widget build(BuildContext context) {
     return guestCheck ? WillPopScope(
-      onWillPop: onWillPop,
+      onWillPop: ()async => false,
       child: CupertinoTabScaffold(
         backgroundColor: Colors.transparent,
           tabBar: CupertinoTabBar(
@@ -390,15 +390,5 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
 
         }
     );
-  }
-
-  Future<bool> onWillPop() {
-    DateTime now = DateTime.now();
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
-      currentBackPressTime = now;
-      return Future.value(false);
-    }
-    return Future.value(true);
   }
 }
