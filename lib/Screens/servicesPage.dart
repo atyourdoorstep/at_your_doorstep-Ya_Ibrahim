@@ -56,67 +56,120 @@ class _ServicesPageState extends State<ServicesPage> {
                 letterSpacing: 2.0),
         ),
       ),
-      body: executed ? ListView.builder(
-      itemCount: categoryItem.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Expanded(
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0.0,1.0),
-                  blurRadius: 6.0,
+      body: executed ? Column(
+        children: [
+          Container(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 40,
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                  "Services > $parentServName > Categories > $servName",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black26,
+                                      fontFamily: "PTSans",
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 2.0)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+                SizedBox(
+                  height: 500,
+                  child: ListView.builder(
+                      physics: ClampingScrollPhysics(),
+                      itemCount: categoryItem.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Container(
+                            width: double.infinity,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0.0,1.0),
+                                  blurRadius: 6.0,
+                                ),
+                              ],
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                              //border: Border.all(color: Colors.red),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                          child: Image.network(categoryItem[index]['image'])),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          child: Text("Rs. "+categoryItem[index]['price'].toString(), style: TextStyle(
+                                            backgroundColor: Colors.red,
+                                            color: Colors.white,
+                                          ),),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(ucFirst(categoryItem[index]['name']),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                              color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(ucFirst(categoryItem[index]['description'], ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                          style: TextStyle(
+                                              color: Colors.black26, fontSize: 15.0),),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                  ),
+                )
               ],
-              borderRadius: BorderRadius.all(
-                Radius.circular(10.0),
-              ),
-              //border: Border.all(color: Colors.red),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.network(sampleImage,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Text(ucFirst(categoryItem[index]['name'].toString()),
-                            style: TextStyle(
-                                color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w500),),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Text("Rs. "+categoryItem[index]['price'].toString(),
-                            style: TextStyle(
-                                color: Colors.red, fontSize: 15.0, fontWeight: FontWeight.w700),),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Text(ucFirst(categoryItem[index]['description'].toString(),),
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            color: Colors.black54, fontSize: 12.0),),
-                    )
-                  ],
-                ),
-              ),
             ),
           ),
-          ),
-        );
-      },
+        ],
       ): SpecialSpinner(),
     );
   }
@@ -139,23 +192,3 @@ class _ServicesPageState extends State<ServicesPage> {
 
 
 
-//Padding(
-//             padding: const EdgeInsets.all(10.0),
-//             child: Row(
-//               mainAxisAlignment: MainAxisAlignment.start,
-//               children: [
-//                 Expanded(
-//                   child: Text(
-//                       "Services > $parentServName > Categories > $servName",
-//                       overflow: TextOverflow.ellipsis,
-//                       maxLines: 2,
-//                       style: TextStyle(
-//                           fontSize: 13,
-//                           color: Colors.black26,
-//                           fontFamily: "PTSans",
-//                           fontWeight: FontWeight.w700,
-//                           letterSpacing: 2.0)),
-//                 ),
-//               ],
-//             ),
-//           ),

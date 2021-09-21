@@ -91,7 +91,8 @@ class _ServiceOptionState extends State<ServiceOption> {
                                   new MaterialPageRoute(
                                       builder: (context) => ServicesPage(
                                         categoryId: serviceNames[0]['children'][index]['id'],
-                                        servName: serviceNames[0]['children'][index]['name'],)));
+                                        servName: serviceNames[0]['children'][index]['name'],
+                                          parentServName: ucFirst(serviceNames[0]['name']), )));
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -110,7 +111,7 @@ class _ServiceOptionState extends State<ServiceOption> {
                     ).toList(),
                   ),
                 ),
-                SizedBox(height: 7.0,),
+                SizedBox(height: 6.0,),
                 ///
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -142,7 +143,8 @@ class _ServiceOptionState extends State<ServiceOption> {
                                   new MaterialPageRoute(
                                       builder: (context) => ServicesPage(
                                           categoryId: serviceNames[1]['children'][index]['id'],
-                                          servName: serviceNames[1]['children'][index]['name'],)));
+                                          servName: serviceNames[1]['children'][index]['name'],
+                                        parentServName: ucFirst(serviceNames[1]['name']),)));
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -162,7 +164,7 @@ class _ServiceOptionState extends State<ServiceOption> {
                     ).toList(),
                   ),
                 ),
-                SizedBox(height: 7.0,),
+                SizedBox(height: 6.0,),
                 ///
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -194,7 +196,8 @@ class _ServiceOptionState extends State<ServiceOption> {
                                   new MaterialPageRoute(
                                       builder: (context) => ServicesPage(
                                           categoryId: serviceNames[2]['children'][index]['id'],
-                                          servName: serviceNames[2]['children'][index]['name'],)));
+                                          servName: serviceNames[2]['children'][index]['name'],
+                                        parentServName: ucFirst(serviceNames[2]['name']),)));
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -213,7 +216,7 @@ class _ServiceOptionState extends State<ServiceOption> {
                     ).toList(),
                   ),
                 ),
-                SizedBox(height: 7.0,),
+                SizedBox(height: 6.0,),
                 ///
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -245,7 +248,8 @@ class _ServiceOptionState extends State<ServiceOption> {
                                   new MaterialPageRoute(
                                       builder: (context) => ServicesPage(
                                           categoryId: serviceNames[3]['children'][index]['id'],
-                                          servName: serviceNames[3]['children'][index]['name'],)));
+                                          servName: serviceNames[3]['children'][index]['name'],
+                                        parentServName: ucFirst(serviceNames[3]['name']),)));
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -264,7 +268,7 @@ class _ServiceOptionState extends State<ServiceOption> {
                     ).toList(),
                   ),
                 ),
-                SizedBox(height: 7.0,),
+                SizedBox(height: 6.0,),
                 ///
               ],
             ),

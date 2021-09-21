@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +16,14 @@ class _SearchPageState extends State<SearchPage> {
 
   bool isSearching = false;
   TextEditingController searchController = TextEditingController();
+  var searchItem;
+  bool executed= false;
+
+  @override
+  void initState() {
+    executed= false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +36,15 @@ class _SearchPageState extends State<SearchPage> {
             child: Image.asset("assets/atyourdoorstep1.png"),
           ),
           backgroundColor: Colors.white,
-          title: textfieldStyle(
-            textHint: 'Search by services ,shop name',
+          title: TextField(
+            decoration: InputDecoration(
+              hintText:  'Search by services ,provider\'s name',
+            ),
             obscureText: false,
-            //textLabel1: 'Search ',
-            controllerText: searchController,
-            onChange: (value){
+            controller: searchController,
+            onSubmitted: (value){
               print(value);
+              getSearchItems(value);
             },
           ),
           centerTitle: true,
@@ -46,4 +59,19 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
+
+  getSearchItems(var searchWord) async {
+    searchItem={};
+    var res= await CallApi().getData('/searchItem?search=$searchWord' );
+    var body =json.decode(res.body);
+    print(  body.toString());
+    if(res.statusCode == 200){
+      setState(() {
+        searchItem = body;
+        print("loooo "+searchItem.toString());
+      });
+      executed = true;
+    }
+  }
+
 }
