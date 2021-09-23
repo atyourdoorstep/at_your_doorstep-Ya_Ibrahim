@@ -14,6 +14,50 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
+class UpdateSellerProAndItems extends StatefulWidget {
+  const UpdateSellerProAndItems({Key? key}) : super(key: key);
+
+  @override
+  _UpdateSellerProAndItemsState createState() => _UpdateSellerProAndItemsState();
+}
+
+class _UpdateSellerProAndItemsState extends State<UpdateSellerProAndItems> {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      child: Scaffold(
+       appBar: AppBar(
+         elevation: 0.0,
+         backgroundColor: Colors.white,
+         leading: IconButton(
+           onPressed: () {
+             Navigator.pop(context);
+           },
+           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+         ),
+         title: Text("Update Profile"),
+         bottom: TabBar(
+           labelColor: Colors.red,
+           tabs: [
+             Tab(text: "Edit Profile",),
+             Tab(text: "Update Posts",),
+           ],
+         ),
+       ),
+        body: TabBarView(
+          children: [
+            UpdateSellerProfile(),
+            Center(child: Text("Update Posts")),
+          ],
+        ),
+      ),
+      length: 2,
+    );
+  }
+}
+
+
+
 class UpdateSellerProfile extends StatefulWidget {
   const UpdateSellerProfile({Key? key}) : super(key: key);
 
@@ -58,16 +102,6 @@ getSellerInfo ()async
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
-        ),
-      ),
       body: executed ? SafeArea(
         child: SingleChildScrollView(
           child:  Column(

@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class ServicesPage extends StatefulWidget {
- final servName;
- final parentServName;
- final categoryId;
+  final servName;
+  final parentServName;
+  final categoryId;
 
- ServicesPage({this.servName, this.parentServName,this.categoryId});
+  ServicesPage({this.servName, this.parentServName,this.categoryId});
 
   @override
   _ServicesPageState createState() => _ServicesPageState();
@@ -48,12 +48,12 @@ class _ServicesPageState extends State<ServicesPage> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
         ),
         title: Text(servName,
-            style: TextStyle(
-                fontSize: 23,
-                color: Colors.red,
-                fontFamily: "PTSans",
-                fontWeight: FontWeight.w700,
-                letterSpacing: 2.0),
+          style: TextStyle(
+              fontSize: 23,
+              color: Colors.red,
+              fontFamily: "PTSans",
+              fontWeight: FontWeight.w700,
+              letterSpacing: 2.0),
         ),
       ),
       body: executed ? Column(
@@ -92,9 +92,8 @@ class _ServicesPageState extends State<ServicesPage> {
                 SizedBox(
                   height: 500,
                   child: ListView.builder(
-                      physics: ClampingScrollPhysics(),
-                      itemCount: categoryItem.length,
-                      itemBuilder: (context, index) {
+                    itemCount: categoryItem.length,
+                      itemBuilder:(context , index){
                         return Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Container(
@@ -114,58 +113,49 @@ class _ServicesPageState extends State<ServicesPage> {
                               ),
                               //border: Border.all(color: Colors.red),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          ),
-                                          child: Image.network(categoryItem[index]['image'])),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          child: Text("Rs. "+categoryItem[index]['price'].toString(), style: TextStyle(
-                                            backgroundColor: Colors.red,
-                                            color: Colors.white,
-                                          ),),
-                                        ),
-                                      ),
-                                    ],
+                            child: Center(
+                              child: ListTile(
+                                leading: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                      minWidth: 60,
+                                      minHeight: 80,
+                                      maxHeight: 140,
+                                      maxWidth: 120,
+                                    ),
+                                    child: Image.network(categoryItem[index]['image'], fit: BoxFit.cover,)),
+                                title: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(ucFirst(categoryItem[index]['name']),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                        color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                                ),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(ucFirst(categoryItem[index]['description'], ),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Colors.black26, fontSize: 15.0),),
+                                ),
+                                trailing: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0),
+                                    ),
+                                    child: Text("Rs. "+categoryItem[index]['price'].toString(), style: TextStyle(
+                                      color: Colors.blue,
+                                    ),),
                                   ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(ucFirst(categoryItem[index]['name']),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
-                                          style: TextStyle(
-                                              color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(ucFirst(categoryItem[index]['description'], ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 3,
-                                          style: TextStyle(
-                                              color: Colors.black26, fontSize: 15.0),),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                                ),
                               ),
                             ),
                           ),
-                        );
-                      }
+                        );//categoryItem[index]['image']
+                      },
                   ),
-                )
+                ),
               ],
             ),
           ),

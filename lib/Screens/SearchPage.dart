@@ -42,6 +42,10 @@ class _SearchPageState extends State<SearchPage> {
             ),
             obscureText: false,
             controller: searchController,
+            onChanged: (value){
+              print(value);
+              getSearchItems(value);
+            },
             onSubmitted: (value){
               print(value);
               getSearchItems(value);
@@ -62,13 +66,14 @@ class _SearchPageState extends State<SearchPage> {
 
   getSearchItems(var searchWord) async {
     searchItem={};
+    // print('/searchItem?search=$searchWord');
+    // return ;
     var res= await CallApi().getData('/searchItem?search=$searchWord' );
     var body =json.decode(res.body);
-    print(  body.toString());
     if(res.statusCode == 200){
       setState(() {
         searchItem = body;
-        print("loooo "+searchItem.toString());
+        print("loooo :"+searchItem.toString());
       });
       executed = true;
     }

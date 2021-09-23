@@ -7,6 +7,7 @@ import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/createPost.dart';
 import 'package:at_your_doorstep/Screens/registerForSeller.dart';
 import 'package:at_your_doorstep/Screens/requestNewService.dart';
+import 'package:at_your_doorstep/Screens/sellerProfileUpdate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
@@ -135,9 +136,11 @@ class _EditProfileOpState extends State<EditProfileOp> {
                               children: [
                                 GestureDetector(
                                   onTap:(){
-                                    Navigator.of(
-                                      context,
-                                      rootNavigator: true,).pushNamed('sellerUpdateProfile');
+                                    Navigator.push(context, new MaterialPageRoute(
+                                        builder: (context) =>UpdateSellerProAndItems()));
+                                    // Navigator.of(
+                                    //   context,
+                                    //   rootNavigator: true,).pushNamed('sellerUpdateProfile');
                       },
                                   child: ListTile(title: Text("Seller Profile", style: menuFont,),
                                     leading: Icon(Icons.account_box_outlined),

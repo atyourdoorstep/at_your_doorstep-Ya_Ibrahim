@@ -40,6 +40,7 @@ class _PostCreationState extends State<PostCreation> {
     if(info.statusCode == 200) {
       setState(() {
         categoryID= sellerV['sellerProfile']["category_id"];
+        print(categoryID.toString());
         });
       executed = true;
       getChildrenCategory();
@@ -48,22 +49,20 @@ class _PostCreationState extends State<PostCreation> {
 
   getChildrenCategory()async
   {
-    var info= await CallApi().postData({}, '/getAllServicesWithChildren');
+    print("hello" +categoryID.toString());
+    var info= await CallApi().postData({'id': categoryID}, '/getLastLvlCat');
     var category = json.decode(info.body);
+    print(category.toString());
     if(info.statusCode == 200) {
       setState(() {
         categoryFetch = category;
       });
-      for(int i=0; i<categoryFetch["data"].length ;i++){
-        if(categoryFetch["data"][i]['id']== categoryID){
           setState(() {
-            categoryList=categoryFetch["data"][i]["children"];
-            parentName=categoryFetch["data"][i]["name"];
-            var don = categoryFetch['data'][i]["children"].length;
+            categoryList=categoryFetch["children"];
+            parentName=categoryFetch["parent"]["name"];
+            var don = categoryFetch["children"].length;
             print("hello $don");
           });
-        }
-      }
       executed1 = true;
     }
   }
@@ -113,7 +112,7 @@ class _PostCreationState extends State<PostCreation> {
               ),
               textfieldStyle(textHint: "Item Name", obscureText: false, textLabel1:'Item Name',controllerText: itemNameController,),
               textfieldStyle(textHint: "Description", obscureText: false, textLabel1:'Description',controllerText: itemDescController,),
-              textfieldStyle(textHint: "Price", obscureText: false, textLabel1:'Adjust item Price',controllerText: itemPriceController,),
+              textfieldStyle(textHint: "Price", obscureText: false, textLabel1:'Adjust item Price',controllerText: itemPriceController,keyBoardType: TextInputType.number,),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -195,12 +194,11 @@ class _PostCreationState extends State<PostCreation> {
                           SharedPreferences localStorage = await SharedPreferences.getInstance();
                           XFile image =await imgFromGallery();
                           _createPostFunc(image,{
-                                'token': localStorage.getString('token'),
-                                'name': itemNameController.text,
-                                'description': itemDescController.text,
+                                'name': itemNameController.text.toString().toLowerCase(),
+                                'description': itemDescController.text.toString().toLowerCase(),
                                 'category_id': getId,
-                                'price': itemPriceController.text,
-                                'isBargainAble': checkIn
+                                'price': int.parse(itemPriceController.text.toString()),
+                                'isBargainAble':  checkIn
                               }
                           );
 
@@ -238,8 +236,9 @@ class _PostCreationState extends State<PostCreation> {
   _createPostFunc(file,var data) async {
     EasyLoading.show(status: 'loading...');
     var res = await CallApi().uploadFile(file,data, '/createPost');
-    var body = json.decode(res.body);
+    var body = (res.data);
     EasyLoading.dismiss();
+
     if (body['success']!) {
       print(body.toString());
       showMsg(context,"Your Item Published Successfully");
