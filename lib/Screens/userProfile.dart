@@ -430,13 +430,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                                 ),
-                                onPressed: _isChanged?()=>{ _save({
+                                onPressed: _isChanged?()=>{
+                                  _save({
                                   'fName':firstNameController.text.toLowerCase(),
                                   'lName':lastNameController.text.toLowerCase(),
                                   'email':mailController.text.toLowerCase(),
                                   'contact':phoneController.text.toLowerCase()
-                                }
-                                )}:null,
+                                })
+                                }:null,
                                 color: Colors.red,
                                 child: Text("Save", style:
                                 TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),

@@ -202,14 +202,6 @@ class _PostCreationState extends State<PostCreation> {
                               }
                           );
 
-                          // Navigator.push(context, new MaterialPageRoute(
-                          //     builder: (context) =>PostCreationTwo(
-                          //       iPrice: itemPriceController.text,
-                          //       checkB: checkIn,
-                          //       itemDesc: itemDescController.text,
-                          //       CategoryId: getId,
-                          //       itemN: itemNameController.text,
-                          //     )));
                         }
                         else {
                             showMsg(context, "Fill up above Required fields");

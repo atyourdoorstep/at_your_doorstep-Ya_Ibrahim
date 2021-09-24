@@ -7,6 +7,7 @@ import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/registerForSeller.dart';
 import 'package:at_your_doorstep/Screens/requestNewService.dart';
+import 'package:at_your_doorstep/Screens/sellersPost.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
@@ -47,7 +48,7 @@ class _UpdateSellerProAndItemsState extends State<UpdateSellerProAndItems> {
         body: TabBarView(
           children: [
             UpdateSellerProfile(),
-            Center(child: Text("Update Posts")),
+            SellersPostList(),
           ],
         ),
       ),
@@ -103,59 +104,49 @@ getSellerInfo ()async
   Widget build(BuildContext context) {
     return Scaffold(
       body: executed ? SafeArea(
-        child: SingleChildScrollView(
-          child:  Column(
-            children: [
-              Stack(
-                children: [
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Center(
-                          child: Text("UPDATE PROFILE", style:
-                          TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        textfieldStyle(textHint: ucFirst( userDataSeller['title'].toString()), obscureText: false, textLabel1:'Title', controllerText: titleController, onChange: (value){setState(() {_isChanged=true;}); },),
-                        textfieldStyle(textHint:ucFirst(userDataSeller['description'].toString()) , obscureText: false, textLabel1: 'Describe your service', controllerText: descriptionController,onChange:(value) {setState(() {_isChanged=true;}); },),
-                        textfieldStyle(textHint: userDataSeller['url']!=''? userDataSeller['url'].toString():'', obscureText: false, textLabel1: 'URL',controllerText: urlController,onChange:(value) {setState(() {_isChanged=true;}); },),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ButtonTheme(
-                            minWidth: double.infinity,
-                            height: 55,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                onPressed: _isChanged?()=>{ _storeSellerInfo({
-                                  'title':titleController.text.toLowerCase(),
-                                  'description':descriptionController.text.toLowerCase(),
-                                  'url':urlController.text.toLowerCase().length>0?urlController.text.toLowerCase():'',
-                                }
-                                )}:null,
-                                color: Colors.red,
-                                child: Text("Save", style:
-                                TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                      ],
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                height: 30,
+              ),
+              Center(
+                child: Text("UPDATE PROFILE", style:
+                TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              textfieldStyle(textHint: ucFirst( userDataSeller['title'].toString()), obscureText: false, textLabel1:'Title', controllerText: titleController, onChange: (value){setState(() {_isChanged=true;}); },),
+              textfieldStyle(textHint:ucFirst(userDataSeller['description'].toString()) , obscureText: false, textLabel1: 'Describe your service', controllerText: descriptionController,onChange:(value) {setState(() {_isChanged=true;}); },),
+              textfieldStyle(textHint: userDataSeller['url']!=''? userDataSeller['url'].toString():'', obscureText: false, textLabel1: 'URL',controllerText: urlController,onChange:(value) {setState(() {_isChanged=true;}); },),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ButtonTheme(
+                  minWidth: double.infinity,
+                  height: 55,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                      onPressed: _isChanged?()=>{ _storeSellerInfo({
+                        'title':titleController.text.toLowerCase(),
+                        'description':descriptionController.text.toLowerCase(),
+                        'url':urlController.text.toLowerCase().length>0?urlController.text.toLowerCase():'',
+                      }
+                      )}:null,
+                      color: Colors.red,
+                      child: Text("Save", style:
+                      TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
                     ),
                   ),
-                ],
+                ),
+              ),
+              SizedBox(
+                height: 30,
               ),
             ],
           ),

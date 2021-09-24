@@ -62,31 +62,26 @@ class _ServicesPageState extends State<ServicesPage> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 40,
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                  "Services > $parentServName > Categories > $servName",
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.black26,
-                                      fontFamily: "PTSans",
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: 2.0)),
-                            ),
-                          ],
+                  height: 50,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                              "Services > $parentServName > Categories > $servName",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black26,
+                                  fontFamily: "PTSans",
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 2.0)),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
