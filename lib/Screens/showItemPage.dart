@@ -34,6 +34,7 @@ class _ShowItemPageState extends State<ShowItemPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -50,7 +51,35 @@ class _ShowItemPageState extends State<ShowItemPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(items['image'], fit: BoxFit.contain,),
+              Container(
+                height: size.height * 0.6,
+                child: Stack(
+                  //alignment: AlignmentDirectional.topStart,
+                  children: <Widget>[
+                    Container(
+                      height: size.height * 1.3 - 50,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(sampleImage),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFF0B0424).withOpacity(0.2),
+                            Color(0xFF0B0424),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(8.0),
