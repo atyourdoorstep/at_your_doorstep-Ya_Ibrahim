@@ -61,7 +61,7 @@ class _ShowItemPageState extends State<ShowItemPage> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(sampleImage),
+                          image: NetworkImage(items['image']),
                         ),
                       ),
                     ),

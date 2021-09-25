@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
+import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
+import 'package:at_your_doorstep/Screens/showItemPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -57,7 +60,62 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            executed? SizedBox(
+              height: 500,
+              child: ListView.builder(
+                itemCount: searchItem.length,
+                itemBuilder:(context , index){
+                  return GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, new MaterialPageRoute(
+                          builder: (context) =>ShowItemPage(itemDetails: searchItem[index],)));
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: double.infinity,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(0.0,1.0),
+                                blurRadius: 6.0,
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              leading: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    minWidth: 60,
+                                    minHeight: 80,
+                                  ),
+                                  child: Image.network(searchItem[index]['image'], fit: BoxFit.cover,)),
+                              title: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(ucFirst(searchItem[index]['name']),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );//categoryItem[index]['image']
+                },
+              ),
+            ): Align(
+              alignment: Alignment.center,
+                child: SpecialSpinner()),
           ],
         ),
       ),
@@ -72,7 +130,7 @@ class _SearchPageState extends State<SearchPage> {
     var body =json.decode(res.body);
     if(res.statusCode == 200){
       setState(() {
-        searchItem = body;
+        searchItem = body['result'];
         print("loooo :"+searchItem.toString());
       });
       executed = true;
