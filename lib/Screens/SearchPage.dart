@@ -113,9 +113,7 @@ class _SearchPageState extends State<SearchPage> {
                   );//categoryItem[index]['image']
                 },
               ),
-            ): Align(
-              alignment: Alignment.center,
-                child: SpecialSpinner()),
+            ): SpecialSpinner(),
           ],
         ),
       ),
