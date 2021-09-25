@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
+import 'package:at_your_doorstep/Screens/showItemPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -89,59 +90,65 @@ class _ServicesPageState extends State<ServicesPage> {
                   child: ListView.builder(
                     itemCount: categoryItem.length,
                       itemBuilder:(context , index){
-                        return Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 120,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey,
-                                  offset: Offset(0.0,1.0),
-                                  blurRadius: 6.0,
+                        return GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, new MaterialPageRoute(
+                                builder: (context) =>ShowItemPage(itemDetails: categoryItem[index],)));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
+                              width: double.infinity,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    offset: Offset(0.0,1.0),
+                                    blurRadius: 6.0,
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
                                 ),
-                              ],
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
+                                //border: Border.all(color: Colors.red),
                               ),
-                              //border: Border.all(color: Colors.red),
-                            ),
-                            child: Center(
-                              child: ListTile(
-                                leading: ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                      minWidth: 60,
-                                      minHeight: 80,
-                                      maxHeight: 140,
-                                      maxWidth: 120,
+                              child: Center(
+                                child: ListTile(
+                                  leading: ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        minWidth: 60,
+                                        minHeight: 80,
+                                        maxHeight: 140,
+                                        maxWidth: 120,
+                                      ),
+                                      child: Image.network(categoryItem[index]['image'], fit: BoxFit.cover,)),
+                                  title: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(ucFirst(categoryItem[index]['name']),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                          color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(ucFirst(categoryItem[index]['description'], ),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.black26, fontSize: 15.0),),
+                                  ),
+                                  trailing: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      ),
+                                      child: Text("Rs. "+categoryItem[index]['price'].toString(), style: TextStyle(
+                                        color: Colors.blue,
+                                      ),),
                                     ),
-                                    child: Image.network(categoryItem[index]['image'], fit: BoxFit.cover,)),
-                                title: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(ucFirst(categoryItem[index]['name']),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                        color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
-                                ),
-                                subtitle: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(ucFirst(categoryItem[index]['description'], ),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: Colors.black26, fontSize: 15.0),),
-                                ),
-                                trailing: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    ),
-                                    child: Text("Rs. "+categoryItem[index]['price'].toString(), style: TextStyle(
-                                      color: Colors.blue,
-                                    ),),
                                   ),
                                 ),
                               ),

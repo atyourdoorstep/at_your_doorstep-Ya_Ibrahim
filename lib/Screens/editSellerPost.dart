@@ -175,8 +175,8 @@ class _EditPostState extends State<EditPost> {
             builder: (context) =>UpdateSellerProAndItems()));
       });
     }
-    else{
-      showMsg(context,body['message']);
+    if(body['success'] == false){
+      showMsg(context,body.toString());
     }
   }
 
