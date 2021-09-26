@@ -176,7 +176,7 @@ class _EditPostState extends State<EditPost> {
       });
     }
     if(body['success'] == false){
-      showMsg(context,body.toString());
+      showMsg(context,body['message'].toString());
     }
   }
 

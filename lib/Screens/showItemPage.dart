@@ -82,6 +82,18 @@ class _ShowItemPageState extends State<ShowItemPage> {
               ),
               SizedBox(height: 10),
               Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Posted Date: ", style:
+                    TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    Text(items['created_at'].substring(0,10), style:
+                    TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                  ],
+                ),
+              ),
+              Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(ucFirst(items['name']), style:
                 TextStyle(fontSize: 25, color: Colors.blueGrey, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
@@ -96,18 +108,15 @@ class _ShowItemPageState extends State<ShowItemPage> {
                 child: Text(items['inStock'] == 1? "In Stock" :"Out of Stock", style:
                 TextStyle(fontSize: 17, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w400 )),
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.assistant_photo_outlined),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(items['isBargainAble'] == 1? "It's Bargainable Product " :"This Product or serive is not Bargainable.", style:
-                    TextStyle(fontSize: 17, color: Colors.green, fontFamily: "PTSans", fontWeight: FontWeight.w400 )),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.assistant_photo_outlined),
+                    Text(items['isBargainAble'] == 1? " It's Bargainable Product " :" This Product or service is not Bargainable.", style:
+                    TextStyle(fontSize: 16, color: Colors.green, fontFamily: "PTSans", fontWeight: FontWeight.w400 )),
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
