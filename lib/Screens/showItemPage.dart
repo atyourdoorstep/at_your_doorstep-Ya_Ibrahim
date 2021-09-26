@@ -178,7 +178,10 @@ class _ShowItemPageState extends State<ShowItemPage> {
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
                       color: Colors.red,
-                      onPressed: () {  },
+                      onPressed: () {
+                        int iad = items['id'];
+                        showMsg(context, "Quantity: $quantity  itemID: $iad" );
+                      },
                       child: Text("Add to cart", style:
                       TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
                     ),
