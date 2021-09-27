@@ -288,7 +288,7 @@ class _EditPostState extends State<EditPost> {
   }
   _updateItemImage(sendImage)
   {
-    var body=sendImage.body;
+    var body=json.decode(sendImage.body);
     if( body['success']) {
       showMsg(context, 'Image updated');
       setState(() {
