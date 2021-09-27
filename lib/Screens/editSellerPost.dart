@@ -7,6 +7,7 @@ import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/sellerProfileUpdate.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,7 @@ class EditPost extends StatefulWidget {
 class _EditPostState extends State<EditPost> {
 
   late int postId;
+  bool checkIm = false;
 
   TextEditingController itemNameController = TextEditingController();
   TextEditingController itemDescController = TextEditingController();
@@ -35,6 +37,7 @@ class _EditPostState extends State<EditPost> {
   int stockCheck = 0;
 
   int price =0;
+  var itemImage = "";
 
 
   @override
@@ -50,8 +53,9 @@ class _EditPostState extends State<EditPost> {
       inStockV = widget.itemDetails['inStock'] == 1 ? true : false;
       checkIn = widget.itemDetails['isBargainAble'] == 1 ? 1 : 0;
       stockCheck = widget.itemDetails['inStock'] == 1 ? 1 : 0;
+      itemImage = widget.itemDetails['image'];
     });
-
+    print(itemImage.toString());
 
     super.initState();
   }
@@ -80,8 +84,108 @@ class _EditPostState extends State<EditPost> {
                 TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
               ),
               SizedBox(
-                height: 30.0,
+                height: 20.0,
               ),
+              Visibility(
+                visible: checkIm == false,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        checkIm = true;
+                      });
+                    },
+                    child: Text("Update Image",
+                        style: TextStyle(fontSize: 14, color: Colors.blue, fontFamily: "PTSans", fontWeight: FontWeight.w300),
+                    ),
+                  ),
+                ),
+              ),
+             Visibility(
+               visible: checkIm == true,
+               child: Column(
+               children: [
+                 Padding(
+                   padding: const EdgeInsets.all(10.0),
+                   child: Container(
+                     child: Stack(
+                       alignment: AlignmentDirectional.bottomEnd,
+                       children: [
+                         ClipRRect(
+                             borderRadius: BorderRadius.all(
+                               Radius.circular(30.0),),
+                             child: Image.network(itemImage, fit: BoxFit.contain,)),
+                         Padding(
+                           padding: const EdgeInsets.all(8.0),
+                           child: GestureDetector(
+                             onTap: (){
+                               showModalBottomSheet(
+                                 elevation: 20.0,
+                                 context: context,
+                                 builder: (context) => Container(
+                                   height: 200,
+                                   color: Colors.transparent,
+                                   child: Container(
+                                     decoration: BoxDecoration(
+                                       color: Colors.white,
+                                       borderRadius: BorderRadius.only(
+                                         topLeft: Radius.circular(10.0),
+                                         topRight: Radius.circular(10.0),
+                                       ),
+                                     ),
+                                     child: Padding(
+                                       padding: const EdgeInsets.all(8.0),
+                                       child: Column(
+                                         children: [
+                                           GestureDetector(
+                                             onTap:() async {
+                                               Navigator.of(context).pop();
+                                               EasyLoading.show(status: 'loading...');
+                                               _updateItemImage(await CallApi().uploadFile(await imgFromGallery(),{}, '/updatePost'));
+                                               EasyLoading.dismiss();
+
+                                             },
+                                             child: ListTile(
+                                               leading: Icon(Icons.photo),
+                                               title: Text("Upload From Gallery", style: menuFont,),
+                                             ),
+                                           ),
+                                           Divider(),
+                                           GestureDetector(
+                                             onTap:() async {
+                                               //_imgFromCamera
+                                               Navigator.of(context).pop();
+                                               EasyLoading.show(status: 'loading...');
+                                               _updateItemImage(await CallApi().uploadFile(await imgFromCamera(),{}, '/updatePost'));
+                                               EasyLoading.dismiss();
+                                             },
+                                             child: ListTile(
+                                               leading: Icon(Icons.camera),
+                                               title: Text("Open Camera", style: menuFont,),
+                                             ),
+                                           ),
+                                         ],
+                                       ),
+                                     ),
+                                   ),
+                                 ),
+                               );
+                             },
+                             child: CircleAvatar(
+                               child: Icon(Icons.edit, size: 15,),),
+                           ),
+                         ),
+                       ],
+                     ),
+                   ),
+                 ),
+                 SizedBox(
+                   height: 10.0,
+                 ),
+               ],
+             ),
+             ),
               textfieldStyle(textHint: "Item Name", obscureText: false, textLabel1:'Item Name',controllerText: itemNameController,),
               textfieldStyle(textHint: "Description", obscureText: false, textLabel1:'Description',controllerText: itemDescController,),
               textfieldStyle(textHint: "Price", obscureText: false, textLabel1:'Adjust item Price',controllerText: itemPriceController,),
@@ -150,6 +254,9 @@ class _EditPostState extends State<EditPost> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 50.0,
+              ),
             ],
           ),
         ),
@@ -178,6 +285,18 @@ class _EditPostState extends State<EditPost> {
     if(body['success'] == false){
       showMsg(context,body['message'].toString());
     }
+  }
+  _updateItemImage(sendImage)
+  {
+    var body=sendImage.body;
+    if( body['success']) {
+      showMsg(context, 'Image updated');
+      setState(() {
+        itemImage=body['item']['image'];
+      });
+    }
+    else
+      showMsg(context, 'error in updating image');
   }
 
 }

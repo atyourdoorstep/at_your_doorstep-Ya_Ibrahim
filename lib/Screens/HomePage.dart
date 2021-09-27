@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:at_your_doorstep/Screens/cartPage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
@@ -333,7 +334,7 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
               case 2:
                 return CupertinoTabView(builder: (context){
                   return CupertinoPageScaffold(
-                    child:  Center(child: Text("hello1"),),);
+                    child:  AddCartPage());
                 }
                 );
               case 3:
