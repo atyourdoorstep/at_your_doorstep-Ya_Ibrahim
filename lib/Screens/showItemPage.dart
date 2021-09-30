@@ -178,9 +178,20 @@ class _ShowItemPageState extends State<ShowItemPage> {
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
                       color: Colors.red,
-                      onPressed: () {
-                        int iad = items['id'];
-                        showMsg(context, "Quantity: $quantity  itemID: $iad" );
+                      onPressed: () async {
+                        EasyLoading.show(status: 'loading...');
+                       var res= await CallApi().postData(
+                            {
+                              "item_id": items['id'],
+                              "quantity": quantity,
+                        },'/addToCart' );
+                        var body =json.decode(res.body);
+                        EasyLoading.dismiss();
+                        print(body.toString());
+                        if(body["success"] == true){
+                          showMsg(context, "Add to Cart Successfully",);
+                        }
+
                       },
                       child: Text("Add to cart", style:
                       TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
