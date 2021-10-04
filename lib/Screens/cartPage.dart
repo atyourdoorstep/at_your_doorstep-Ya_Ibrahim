@@ -6,6 +6,7 @@ import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/sellerProfileUpdate.dart';
+import 'package:at_your_doorstep/Screens/showItemPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,6 +39,7 @@ class _AddCartPageState extends State<AddCartPage> {
         child: Column(
           children: <Widget>[
             Stack(
+              alignment: Alignment.bottomCenter,
               children: [
                 ClipRRect(
                     borderRadius: BorderRadius.only(
@@ -45,71 +47,116 @@ class _AddCartPageState extends State<AddCartPage> {
                         bottomRight: Radius.circular(40),
                     ),
                     child: Image.network(sampleImage, fit: BoxFit.contain,)),
+                Center(child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text("YOUR CART DETAIL",
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w700),),
+                )),
               ],
             ),
-            searchItem.length>0 ? SizedBox(
-              height: searchItem.length <= 1  ? 100 : 300,
-              child: ListView.builder(
-                itemCount: searchItem.length,
+            executed ? SizedBox(
+              height: 300,
+              child: cartItems.length >= 1 ? ListView.builder(
+                itemCount: cartItems.length,
                 itemBuilder:(context , index){
                   return GestureDetector(
                     onTap: (){
-                      Navigator.push(context, new MaterialPageRoute(
-                          builder: (context) =>ShowItemPage(itemDetails: searchItem[index],)));
+                     // Navigator.push(context, new MaterialPageRoute(
+                      //   builder: (context) =>ShowItemPage(itemDetails: cartItems[index]['item'])));
                     },
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: double.infinity,
-                          height: 70,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(0.0,1.0),
-                                blurRadius: 6.0,
+                        child: Column(
+                          children: [
+                            ListTile(
+                               title: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                 children: [
+                                   Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(ucFirst(cartItems[index]['item']['name']),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                          color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
                               ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              leading: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    minWidth: 60,
-                                    minHeight: 80,
-                                  ),
-                                  child: Image.network(cartItems[index]['image'], fit: BoxFit.cover,)),
-                              title: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(ucFirst(cartItems[index]['name']),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
-                              ),
+                                   Row(
+                                     children: [
+                                       Padding(
+                                         padding: const EdgeInsets.all(8.0),
+                                         child: Text("Rs. "+cartItems[index]['item']['price'].toString(), style: TextStyle(
+                                           color: Colors.blue,
+                                         ),),
+                                       ),
+                                       Padding(
+                                         padding: const EdgeInsets.all(8.0),
+                                         child: Text(", Quantity(s): "+cartItems[index]['quantity'].toString(), style: TextStyle(
+                                           color: Colors.blue,
+                                         ),),
+                                       ),
+                                     ],
+                                   ),
+                                 ],
+                               ),
                               trailing: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                  child: Text("Rs. "+cartItems[index]['price'].toString(), style: TextStyle(
-                                    color: Colors.blue,
-                                  ),),
-                                ),
+                                child: OutlinedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text("Warning!"),
+                                            content: Text(
+                                                "Do you want to delete that item or service? "),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () async {
+                                                  var res= await CallApi().postData({
+                                                    'id': cartItems[index]['id'],
+                                                  },'/removeFromCart');
+                                                  var body =json.decode(res.body);
+                                                  if(res.statusCode == 200){
+                                                    Navigator.pop(context);
+                                                    executed = false;
+                                                    getCartItems();
+
+                                                  }
+                                                },
+                                                child: Text("Yes"),
+
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("No"),
+
+                                              ),
+                                            ],
+                                          );
+                                        }
+                                      );
+                                },
+                                child: Icon(Icons.delete_forever)),
                               ),
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Divider(),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  );//categoryItem[index]['image']
+                  );
                 },
-              ),
-            ): ListTile(title: Center(child: Text("Cart is EMPTY !!")),),
+              ): ListTile(title: Center(child: Text("Cart is Empty !!",
+              style: TextStyle(color: Colors.red),
+              )),),
+            ): SpecialSpinner(),
 
           ],
         ),
