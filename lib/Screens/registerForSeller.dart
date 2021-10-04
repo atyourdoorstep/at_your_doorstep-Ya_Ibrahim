@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
+import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -111,33 +112,16 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
             ///
             Padding(
               padding: EdgeInsets.all(12.0),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                child: ButtonTheme(
-                  minWidth: double.infinity,
-                  height: 55,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0),
-                        ),
-                        side: BorderSide(color: Colors.red),
-                      ),
-                      onPressed: () {
-                        if(userNameController.text != ""){
-                          _registerServicePro();
-                        }
-                        else {
-                          showMsg(context, "Your Username field box is Empty!!");
-                        }
-    },
-                      color: Colors.red,
-                      child: Text("Next", style:
-                      TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
-                    ),
-                  ),
-                ),
+              child: AYDButton(
+                buttonText: "Register",
+                onPressed: () {
+                  if(userNameController.text != ""){
+                    _registerServicePro();
+                  }
+                  else {
+                    showMsg(context, "Your Username field box is Empty!!");
+                  }
+                },
               ),
             ),
             ///
@@ -157,11 +141,9 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
     var body = json.decode(resp.body);
     print(body.toString());
     if(body['success']){
-      Navigator.push(context, new MaterialPageRoute(
-          builder: (context) =>RegisterSellerTwo(
-            parentService: dropdownValue,
-            userName: userNameController.text,
-          )));
+      showMsg(context, "You have Successfully Register as a Service Provider.");
+      Navigator.pop(context);
+      getRoleUser();
     }
     else{
       showMsg(context,body['message']);

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
+import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/HomePage.dart';
 import 'package:at_your_doorstep/Screens/SearchPage.dart';
@@ -235,66 +236,34 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         textfieldStyle(textHint: 'Email Address', obscureText: false, textLabel1: 'Email Address',controllerText: mailController,),
                         textfieldStyle(textHint: 'password', obscureText: true, textLabel1: 'Password ',controllerText: passwordController,),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ButtonTheme(
-                            minWidth: double.infinity,
-                            height: 55,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                onPressed: () async {
-                                  if(mailController.text != ""&& passwordController!=""){
-                                  setState(() {
-                                    showSpinner = true;
-                                  });
-                                  var data = {
-                                    'email' : mailController.text,
-                                    'password' : passwordController.text
-                                  };
-                                  login(data);
-                                  }
-                                  else{
-                                    showMsg(context, 'Please fill the above fields');
-                                  }
-                                  //EasyLoading.dismiss();
-                                },
-                                color: Colors.red,
-                                child: Text("Login", style:
-                                TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
-                              ),
-                            ),
-                          ),
+                        AYDButton(
+                          buttonText: "Login",
+                          onPressed: () async {
+                            if(mailController.text != ""&& passwordController!=""){
+                              setState(() {
+                                showSpinner = true;
+                              });
+                              var data = {
+                                'email' : mailController.text,
+                                'password' : passwordController.text
+                              };
+                              login(data);
+                            }
+                            else{
+                              showMsg(context, 'Please fill the above fields');
+                            }
+                            //EasyLoading.dismiss();
+                          },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                          child: ButtonTheme(
-                            minWidth: double.infinity,
-                            height: 55,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0),
-                                  ),
-                                  side: BorderSide(color: Colors.red),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Signup()),
-                                  );
-                                },
-                                color: Colors.white,
-                                child: Text("Signup", style:
-                                TextStyle(fontSize: 18, color: Colors.red, fontFamily: "PTSans" )),
-                              ),
-                            ),
-                          ),
+                        AYDOutlinedButton(
+                          buttonText: "Signup",
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Signup()),
+                            );
+                          },
                         ),
                         SizedBox(
                           height: 25.0,
@@ -313,39 +282,22 @@ class _MyHomePageState extends State<MyHomePage> {
                         SizedBox(
                           height: 20,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                          child: ButtonTheme(
-                            minWidth: double.infinity,
-                            height: 55,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0),
-                                  ),
-                                 // side: BorderSide(color: Colors.red),
-                                ),
-                                onPressed: () async {
-                                  var user={
-                                    'fName':'Guest',
-                                    'lName':'Account',
-                                    'CNIC':0,
-                                    'contact':0,
-                                    'email':''};
-                                  await toLocal('user',json.encode(user));
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => CupertinoHomePage(userName: "Guest")),
-                                  );
-                                },
-                                color: Colors.white,
-                                child: Text("As a Guest", style:
-                                TextStyle(fontSize: 18, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
-                              ),
-                            ),
-                          ),
+                        AYDWithoutOutlinedButton(
+                          buttonText: "As a Guest",
+                          onPressed: () async {
+                            var user={
+                              'fName':'Guest',
+                              'lName':'Account',
+                              'CNIC':0,
+                              'contact':0,
+                              'email':''};
+                            await toLocal('user',json.encode(user));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CupertinoHomePage(userName: "Guest")),
+                            );
+                          },
                         ),
                         SizedBox(
                           height: 10.0,

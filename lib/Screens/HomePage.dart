@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:at_your_doorstep/Screens/cartPage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

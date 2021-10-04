@@ -1,19 +1,15 @@
 import 'dart:convert';
-import 'dart:async';
-import 'dart:io';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
+import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/createPost.dart';
-import 'package:at_your_doorstep/Screens/registerForSeller.dart';
 import 'package:at_your_doorstep/Screens/requestNewService.dart';
 import 'package:at_your_doorstep/Screens/sellerProfileUpdate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -419,31 +415,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         textfieldStyle(textHint:ucFirst(userData['lName'].toString()) , obscureText: false, textLabel1: 'Last Name', controllerText: lastNameController,onChange:(value) {setState(() {_isChanged=true;}); },),
                         textfieldStyle(textHint: userData['email'].toString(), obscureText: false, textLabel1: 'Email',controllerText: mailController,onChange:(value) {setState(() {_isChanged=true;}); },),
                         textfieldStyle(textHint: userData['contact'].toString(), obscureText: false, textLabel1: 'Phone Number',controllerText: phoneController,onChange: (value){setState(() {_isChanged=true;}); },),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ButtonTheme(
-                            minWidth: double.infinity,
-                            height: 55,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                onPressed: _isChanged?()=>{
-                                  _save({
-                                  'fName':firstNameController.text.toLowerCase(),
-                                  'lName':lastNameController.text.toLowerCase(),
-                                  'email':mailController.text.toLowerCase(),
-                                  'contact':phoneController.text.toLowerCase()
-                                })
-                                }:null,
-                                color: Colors.red,
-                                child: Text("Save", style:
-                                TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
-                              ),
-                            ),
-                          ),
+                        AYDButton(
+                          buttonText: "Save",
+                          onPressed: _isChanged?()=>{
+                            _save({
+                              'fName':firstNameController.text.toLowerCase(),
+                              'lName':lastNameController.text.toLowerCase(),
+                              'email':mailController.text.toLowerCase(),
+                              'contact':phoneController.text.toLowerCase()
+                            })
+                          }:null,
                         ),
                         SizedBox(
                           height: 30,

@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:async';
-import 'dart:io';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
+import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:flutter/material.dart';
@@ -176,44 +175,29 @@ class _PostCreationState extends State<PostCreation> {
                     }
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ButtonTheme(
-                  minWidth: double.infinity,
-                  height: 55,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      onPressed: () async {
-                        if(itemPriceController.text != '' && checkIn != null &&
-                            itemDescController.text != '' && getId != null &&
-                            itemNameController.text != ''){
-                          SharedPreferences localStorage = await SharedPreferences.getInstance();
-                          XFile image =await imgFromGallery();
-                          _createPostFunc(image,{
-                                'name': itemNameController.text.toString().toLowerCase(),
-                                'description': itemDescController.text.toString().toLowerCase(),
-                                'category_id': getId,
-                                'price': int.parse(itemPriceController.text.toString()),
-                                'isBargainAble':  checkIn
-                              }
-                          );
+              AYDButton(
+                buttonText: "Upload Image & Publish",
+                onPressed: () async {
+                  if(itemPriceController.text != '' && checkIn != null &&
+                      itemDescController.text != '' && getId != null &&
+                      itemNameController.text != ''){
+                    SharedPreferences localStorage = await SharedPreferences.getInstance();
+                    XFile image =await imgFromGallery();
+                    _createPostFunc(image,{
+                      'name': itemNameController.text.toString().toLowerCase(),
+                      'description': itemDescController.text.toString().toLowerCase(),
+                      'category_id': getId,
+                      'price': int.parse(itemPriceController.text.toString()),
+                      'isBargainAble':  checkIn
+                    }
+                    );
 
-                        }
-                        else {
-                            showMsg(context, "Fill up above Required fields");
-                          }
+                  }
+                  else {
+                    showMsg(context, "Fill up above Required fields");
+                  }
 
-                      },
-                      color: Colors.red,
-                      child: Text("Upload Image & Publish", style:
-                      TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
-                    ),
-                  ),
-                ),
+                },
               ),
               SizedBox(
                 height: 50,

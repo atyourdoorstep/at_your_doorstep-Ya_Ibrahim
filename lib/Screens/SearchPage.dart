@@ -1,9 +1,6 @@
 import 'dart:convert';
-
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
-import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
-import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/showItemPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -213,7 +210,25 @@ class _SearchPageState extends State<SearchPage> {
             ////
           ],
         ),
-      ): Container(),
+      ): Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {  },
+              child: Text("Test Button", style:
+              TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
+              style: ElevatedButton.styleFrom(
+                fixedSize: Size(double.maxFinite,55),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 

@@ -1,16 +1,13 @@
 import 'dart:convert';
 import 'dart:async';
-import 'dart:io';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
-import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
+import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/sellerProfileUpdate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class EditPost extends StatefulWidget {
   final postId;
@@ -225,34 +222,19 @@ class _EditPostState extends State<EditPost> {
 
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ButtonTheme(
-                  minWidth: double.infinity,
-                  height: 55,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      onPressed:(){
+              AYDButton(
+                buttonText: "Save & Publish",
+                onPressed:(){
 
-                      _updatePostFunc({
-                      'name': itemNameController.text,
-                      'description': itemDescController.text,
-                      'id': postId,
-                      'price': itemPriceController.text,
-                      'inStock': stockCheck.toString(),
-                      'isBargainAble': checkIn.toString(),
-                      });
-                      },
-                      color: Colors.red,
-                      child: Text("Save & Publish", style:
-                      TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
-                    ),
-                  ),
-                ),
+                  _updatePostFunc({
+                    'name': itemNameController.text,
+                    'description': itemDescController.text,
+                    'id': postId,
+                    'price': itemPriceController.text,
+                    'inStock': stockCheck.toString(),
+                    'isBargainAble': checkIn.toString(),
+                  });
+                },
               ),
               SizedBox(
                 height: 50.0,

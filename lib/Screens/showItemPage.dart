@@ -1,15 +1,9 @@
 import 'dart:convert';
-import 'dart:async';
-import 'dart:io';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
-import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
-import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
-import 'package:at_your_doorstep/Screens/sellerProfileUpdate.dart';
+import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class ShowItemPage extends StatefulWidget {
@@ -166,38 +160,23 @@ class _ShowItemPageState extends State<ShowItemPage> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ButtonTheme(
-                  minWidth: double.infinity,
-                  height: 55,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      color: Colors.red,
-                      onPressed: () async {
-                        EasyLoading.show(status: 'loading...');
-                       var res= await CallApi().postData(
-                            {
-                              "item_id": items['id'],
-                              "quantity": quantity,
-                        },'/addToCart' );
-                        var body =json.decode(res.body);
-                        EasyLoading.dismiss();
-                        print(body.toString());
-                        if(body["success"] == true){
-                          showMsg(context, "Add to Cart Successfully",);
-                        }
+              AYDButton(
+                buttonText: "Add to cart",
+                onPressed: () async {
+                  EasyLoading.show(status: 'loading...');
+                  var res= await CallApi().postData(
+                      {
+                        "item_id": items['id'],
+                        "quantity": quantity,
+                      },'/addToCart' );
+                  var body =json.decode(res.body);
+                  EasyLoading.dismiss();
+                  print(body.toString());
+                  if(body["success"] == true){
+                    showMsg(context, "Add to Cart Successfully",);
+                  }
 
-                      },
-                      child: Text("Add to cart", style:
-                      TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
-                    ),
-                  ),
-                ),
+                },
               ),
               SizedBox(
                 height: 50.0,

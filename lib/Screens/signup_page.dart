@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
+import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -23,7 +24,6 @@ class SignupOperation extends StatefulWidget {
 
 class _SignupOperationState extends State<SignupOperation> {
   bool _isLoading = false;
-  //DateTime  selectedData=DateTime.now();
   DateTime  selectedData=DateTime((DateTime.now().year-18),DateTime.now().month,DateTime.now().day);
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -93,26 +93,11 @@ class _SignupOperationState extends State<SignupOperation> {
                       textfieldStyle(textHint: 'Email Address', obscureText: false, textLabel1: 'Email Address ',controllerText: mailController,keyBoardType: TextInputType.emailAddress,),
                       textfieldStyle(textHint: 'Password', obscureText: true, textLabel1: 'Password',controllerText: passwordController),
                       textfieldStyle(textHint: 'Confirm Password', obscureText: true, textLabel1: 'Confirm Password ',controllerText: confirmPasswordController,),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ButtonTheme(
-                          minWidth: double.infinity,
-                          height: 55,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                              onPressed: () {
-                                _handleLogin();
-                              },
-                              color: Colors.red,
-                              child: Text("Next", style:
-                              TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
-                            ),
-                          ),
-                        ),
+                      AYDButton(
+                        buttonText: "Next",
+                        onPressed: () {
+                          _handleLogin();
+                        },
                       ),
                     ],
                   ),

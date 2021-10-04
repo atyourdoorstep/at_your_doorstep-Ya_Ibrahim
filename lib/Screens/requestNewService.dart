@@ -1,12 +1,10 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
+import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:image_picker/image_picker.dart';
-//import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -72,32 +70,17 @@ class _SuggestNewServiceState extends State<SuggestNewService> {
                         textfieldStyle(
                           contentP:   EdgeInsets.symmetric(vertical: 50),
                           textHint: "Write your Request", obscureText: false, textLabel1: 'Request Message',controllerText: desNameController,),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ButtonTheme(
-                            minWidth: double.infinity,
-                            height: 55,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                onPressed: () async {
-                                  SharedPreferences localStorage = await SharedPreferences.getInstance();
-                                  if(desNameController.text !=""){
-                                    saveRequest({
-                                      'token': localStorage.getString('token'),
-                                      'description': desNameController.text,
-                                    });
-                                  }
-                                },
-                                color: Colors.red,
-                                child: Text("Send", style:
-                                TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
-                              ),
-                            ),
-                          ),
+                        AYDButton(
+                          buttonText: "Send",
+                          onPressed: () async {
+                            SharedPreferences localStorage = await SharedPreferences.getInstance();
+                            if(desNameController.text !=""){
+                              saveRequest({
+                                'token': localStorage.getString('token'),
+                                'description': desNameController.text,
+                              });
+                            }
+                          },
                         ),
                         SizedBox(
                           height: 30,
