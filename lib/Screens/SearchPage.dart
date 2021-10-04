@@ -210,25 +210,7 @@ class _SearchPageState extends State<SearchPage> {
             ////
           ],
         ),
-      ): Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () {  },
-              child: Text("Test Button", style:
-              TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
-              style: ElevatedButton.styleFrom(
-                fixedSize: Size(double.maxFinite,55),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      ): Container(),
     );
   }
 
