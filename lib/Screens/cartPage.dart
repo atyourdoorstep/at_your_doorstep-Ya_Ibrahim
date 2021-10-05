@@ -23,13 +23,6 @@ class _CartMainPageState extends State<CartMainPage> {
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.white,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
-          ),
-          title: Text("Update Profile"),
           bottom: TabBar(
             labelColor: Colors.red,
             tabs: [

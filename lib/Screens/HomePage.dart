@@ -104,12 +104,9 @@ class _HomePageOperationState extends State<HomePageOperation>
               backgroundColor: Colors.red,
               leading: Icon(Icons.location_on,),
               actions: [
-                PopupMenuButton<int>(
-                  onSelected: (item)=>onSelected(context,item),
-                    itemBuilder: (context)=>[
-                      PopupMenuItem<int>(value: 0,child: Text("Profile"),),
-                      PopupMenuItem<int>(value: 1,child: Text("Sign Out"),),
-                    ],
+                IconButton(
+                    onPressed: (){},
+                    icon: Icon(Icons.shopping_bag_outlined),
                 ),
               ],
               title: Column(
@@ -267,13 +264,6 @@ class _HomePageOperationState extends State<HomePageOperation>
       executed = true;
     }
     return res;
-  }
-
-  onSelected(BuildContext context, int item) {
-    switch(item){
-      case 1:
-        //logout(this.context);
-    }
   }
 }
 
