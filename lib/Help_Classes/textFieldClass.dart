@@ -13,9 +13,10 @@ class textfieldStyle extends StatelessWidget {
   final submit;
   final focus;
   final contentP;
+  final inputAction;
 
   textfieldStyle(
-      {this.textLabel1,
+      {this.textLabel1, this.inputAction,
         this.keyBoardType,
         this.Icon1,
         this.contentP,
@@ -30,6 +31,7 @@ class textfieldStyle extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: TextFormField(
+          textInputAction: inputAction,
           focusNode: focus,
           obscureText: obscureText,
           onChanged: onChange,

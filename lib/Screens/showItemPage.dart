@@ -175,6 +175,9 @@ class _ShowItemPageState extends State<ShowItemPage> {
                   if(body["success"] == true){
                     showMsg(context, "Add to Cart Successfully",);
                   }
+                  if(body["success"] == false){
+                    showMsg(context, body['message'],);
+                  }
 
                 },
               ),

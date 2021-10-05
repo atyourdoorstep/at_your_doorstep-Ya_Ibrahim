@@ -234,8 +234,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         SizedBox(
                           height: 30,
                         ),
-                        textfieldStyle(textHint: 'Email Address', obscureText: false, textLabel1: 'Email Address',controllerText: mailController,),
-                        textfieldStyle(textHint: 'password', obscureText: true, textLabel1: 'Password ',controllerText: passwordController,),
+                        textfieldStyle(textHint: 'Email Address', obscureText: false, textLabel1: 'Email Address',controllerText: mailController,inputAction: TextInputAction.next,),
+                        textfieldStyle(textHint: 'password', obscureText: true, textLabel1: 'Password ',controllerText: passwordController,inputAction: TextInputAction.done),
                         AYDButton(
                           buttonText: "Login",
                           onPressed: () async {

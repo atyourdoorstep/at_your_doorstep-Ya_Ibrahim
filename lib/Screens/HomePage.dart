@@ -11,7 +11,8 @@ import 'package:at_your_doorstep/Screens/userProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:location/location.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:location/location.dart' as loc;
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -32,10 +33,10 @@ class HomePageOperation extends StatefulWidget {
 class _HomePageOperationState extends State<HomePageOperation>
     with TickerProviderStateMixin {
 
-  Location location = new Location();
+  loc.Location location = new loc.Location();
   late bool serviceEnabled;
-  late PermissionStatus _permissionGranted;
-  late LocationData _locationData;
+  late loc.PermissionStatus _permissionGranted;
+  late loc.LocationData _locationData;
   bool _isListenLocation=false;
   bool _isGetLocation=false;
 
@@ -63,9 +64,9 @@ class _HomePageOperationState extends State<HomePageOperation>
 
 
     _permissionGranted = await location.hasPermission();
-    if(_permissionGranted == PermissionStatus.denied){
+    if(_permissionGranted == loc.PermissionStatus.denied){
       _permissionGranted = await location.requestPermission();
-      if(_permissionGranted != PermissionStatus.granted) return;
+      if(_permissionGranted != loc.PermissionStatus.granted) return;
     }
 
     _locationData = await location.getLocation();
@@ -87,7 +88,9 @@ class _HomePageOperationState extends State<HomePageOperation>
     getProfilePicture();
     getParentServices();
     getRoleUser();
-    getSellerInfo();
+    if(roleOfUser == "seller") {
+      getSellerInfo();
+    }
     executed = false;
 
   }
@@ -269,7 +272,7 @@ class _HomePageOperationState extends State<HomePageOperation>
   onSelected(BuildContext context, int item) {
     switch(item){
       case 1:
-        logout(this.context);
+        //logout(this.context);
     }
   }
 }
@@ -333,7 +336,7 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
               case 2:
                 return CupertinoTabView(builder: (context){
                   return CupertinoPageScaffold(
-                    child:  AddCartPage());
+                    child:  CartMainPage());
                 }
                 );
               case 3:

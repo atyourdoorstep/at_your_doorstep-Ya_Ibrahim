@@ -182,7 +182,42 @@ class _EditProfileOpState extends State<EditProfileOp> {
                           Divider(),
                           GestureDetector(
                             onTap: () {
-                              logout(context);
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Row(
+                                        children: [
+                                          Image.asset("assets/atyourdoorstep.png",
+                                            height: 40,
+                                            width: 40,
+                                          ),
+                                          SizedBox(width: 5,),
+                                          Text("Logout"),
+                                        ],
+                                      ),
+                                      content: Text(
+                                          "Do you want to Logout? "),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            logout();
+                                          },
+                                          child: Text("Yes"),
+
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("No"),
+
+                                        ),
+                                      ],
+                                    );
+                                  }
+                              );
                             },
                             child: ListTile(title: Text("Sign Out", style: menuFont,),
                               leading: Icon(Icons.power_settings_new),
@@ -236,6 +271,26 @@ class _EditProfileOpState extends State<EditProfileOp> {
         ),
       ),
     );
+  }
+  void logout() async{
+
+    // logout from the server ...
+    var res = await CallApi().postData({},'/mobileLogOut');
+    var body = json.decode(res.body);
+    if(body['success']||(!body['success']&&body['message'].toString()=='Token has expired')){
+      if((!body['success']&&body['message'].toString()=='Token has expired'))
+      {
+        showMsg(context, 'Session expired please login again');
+      }
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.remove('user');
+      localStorage.remove('token');
+      Navigator.of(
+        context,
+        rootNavigator: true,).pushNamed('LoginPage');
+      Navigator.pop(context);
+    }
+
   }
 }
 

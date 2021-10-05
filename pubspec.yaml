@@ -37,6 +37,7 @@ dependencies:
   location: any
   font_awesome_flutter: any
   url_launcher:
+  geocoding: ^2.0.1
 
 
 

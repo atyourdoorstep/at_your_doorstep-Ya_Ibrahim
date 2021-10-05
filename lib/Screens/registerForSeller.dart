@@ -6,6 +6,7 @@ import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 
 class RegisterSellerOne extends StatefulWidget {
@@ -144,6 +145,19 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
       showMsg(context, "You have Successfully Register as a Service Provider.");
       Navigator.pop(context);
       getRoleUser();
+       String role = "";
+      EasyLoading.show(status: 'Setting up Your Seller Profile...');
+      var res= await CallApi().postData({},'/getRole' );
+      var body =json.decode(res.body);
+      if(res.statusCode == 200){
+        role= body['roleName'];
+        setState(() {
+          roleOfUser = role;
+        });
+        if(role.toString() == "seller"){
+          EasyLoading.dismiss();
+        }
+      }
     }
     else{
       showMsg(context,body['message']);

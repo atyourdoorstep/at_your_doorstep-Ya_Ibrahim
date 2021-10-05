@@ -70,10 +70,10 @@ class _SignupOperationState extends State<SignupOperation> {
                       SizedBox(
                         height: 20,
                       ),
-                      textfieldStyle(textHint: 'First Name', obscureText: false, textLabel1: 'First Name ',controllerText: firstNameController,keyBoardType: TextInputType.name,),
-                      textfieldStyle(textHint: 'Last Name', obscureText: false, textLabel1: 'Last Name ',controllerText: lastNameController,keyBoardType: TextInputType.name,),
-                      textfieldStyle(textHint: 'CNIC', obscureText: false, textLabel1: 'CNIC ',controllerText: CNICController,keyBoardType: TextInputType.number,),
-                      textfieldStyle(textHint: 'Phone Number', obscureText: false, textLabel1: 'Phone Number ',controllerText: contactController,keyBoardType: TextInputType.phone,),
+                      textfieldStyle(textHint: 'First Name', obscureText: false, textLabel1: 'First Name ',controllerText: firstNameController,keyBoardType: TextInputType.name,inputAction: TextInputAction.next),
+                      textfieldStyle(textHint: 'Last Name', obscureText: false, textLabel1: 'Last Name ',controllerText: lastNameController,keyBoardType: TextInputType.name,inputAction: TextInputAction.next),
+                      textfieldStyle(textHint: 'CNIC', obscureText: false, textLabel1: 'CNIC ',controllerText: CNICController,keyBoardType: TextInputType.number,inputAction: TextInputAction.next),
+                      textfieldStyle(textHint: 'Phone Number', obscureText: false, textLabel1: 'Phone Number ',controllerText: contactController,keyBoardType: TextInputType.phone,inputAction: TextInputAction.next),
                       //textfieldStyle(textHint: 'Home Address', obscureText: false, textLabel1: 'Home Address ',),
                       //textfieldStyle(textHint: 'Date of Birth', obscureText: false, textLabel1: 'Date Of Birth ',),
                       Column(
@@ -90,9 +90,9 @@ class _SignupOperationState extends State<SignupOperation> {
                           ),),
                         ],
                       ),
-                      textfieldStyle(textHint: 'Email Address', obscureText: false, textLabel1: 'Email Address ',controllerText: mailController,keyBoardType: TextInputType.emailAddress,),
-                      textfieldStyle(textHint: 'Password', obscureText: true, textLabel1: 'Password',controllerText: passwordController),
-                      textfieldStyle(textHint: 'Confirm Password', obscureText: true, textLabel1: 'Confirm Password ',controllerText: confirmPasswordController,),
+                      textfieldStyle(textHint: 'Email Address', obscureText: false, textLabel1: 'Email Address ',controllerText: mailController,keyBoardType: TextInputType.emailAddress,inputAction: TextInputAction.next),
+                      textfieldStyle(textHint: 'Password', obscureText: true, textLabel1: 'Password',controllerText: passwordController, inputAction: TextInputAction.next),
+                      textfieldStyle(textHint: 'Confirm Password', obscureText: true, textLabel1: 'Confirm Password ',controllerText: confirmPasswordController,inputAction: TextInputAction.done),
                       AYDButton(
                         buttonText: "Next",
                         onPressed: () {

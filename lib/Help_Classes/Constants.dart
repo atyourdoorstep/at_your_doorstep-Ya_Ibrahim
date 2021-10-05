@@ -56,26 +56,26 @@ late Map<String,dynamic> categoryFetch = {};
 //   token = localStorage.getString('token');
 // }
 
-void logout(BuildContext context) async{
-
-  // logout from the server ...
-  var res = await CallApi().postData({},'/mobileLogOut');
-  var body = json.decode(res.body);
-  if(body['success']||(!body['success']&&body['message'].toString()=='Token has expired')){
-    if((!body['success']&&body['message'].toString()=='Token has expired'))
-      {
-        showMsg(context, 'Session expired please login again');
-      }
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    localStorage.remove('user');
-    localStorage.remove('token');
-    Navigator.of(
-      context,
-      rootNavigator: true,).pushNamed('LoginPage');
-    Navigator.pop(context);
-  }
-
-}
+// void logout(BuildContext context) async{
+//
+//   // logout from the server ...
+//   var res = await CallApi().postData({},'/mobileLogOut');
+//   var body = json.decode(res.body);
+//   if(body['success']||(!body['success']&&body['message'].toString()=='Token has expired')){
+//     if((!body['success']&&body['message'].toString()=='Token has expired'))
+//       {
+//         showMsg(context, 'Session expired please login again');
+//       }
+//     SharedPreferences localStorage = await SharedPreferences.getInstance();
+//     localStorage.remove('user');
+//     localStorage.remove('token');
+//     Navigator.of(
+//       context,
+//       rootNavigator: true,).pushNamed('LoginPage');
+//     Navigator.pop(context);
+//   }
+//
+// }
 showMsg(BuildContext context,msg) { //
   final snackBar = SnackBar(
     backgroundColor: Colors.black54,
@@ -121,6 +121,7 @@ String profilePicUrl='https://www.pngfind.com/pngs/m/676-6764065_default-profile
 String roleOfUser ="";
 
 getRoleUser() async{
+  roleOfUser ="";
   var res= await CallApi().postData({},'/getRole' );
   var body =json.decode(res.body);
   print(  body.toString());
