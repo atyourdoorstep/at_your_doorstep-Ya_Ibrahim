@@ -104,7 +104,6 @@ class MyApp extends StatelessWidget {
         'LoginPage':(context)=>MyHomePage(title: 'AtYourDoorStep'),
         'SignUpPage':(context)=>Signup(),
         'RegisterSeller':(context)=>RegisterSellerOne(),
-        'RegisterSellerTwo':(context)=>RegisterSellerTwo(),
         'NewServiceSugestion':(context)=>SuggestNewService(),
         'SearchPage':(context)=>SearchPage(),
         'ShowFullImage':(context)=>OpenFullImage(),

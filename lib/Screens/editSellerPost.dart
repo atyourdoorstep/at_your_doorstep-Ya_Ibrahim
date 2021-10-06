@@ -257,7 +257,7 @@ class _EditPostState extends State<EditPost> {
       print(body.toString());
       showMsg(context,"Your Item Updated Successfully");
 
-      Timer(Duration(seconds: 2),(){
+      Timer(Duration(seconds: 1),(){
         Navigator.pop(context);
         Navigator.pop(context);
         Navigator.push(context, new MaterialPageRoute(

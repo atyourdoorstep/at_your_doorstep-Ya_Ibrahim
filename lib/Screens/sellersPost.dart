@@ -32,14 +32,17 @@ class _SellersPostListState extends State<SellersPostList> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Center(
-                child: Text("YOUR POSTS", style:
-                TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("YOUR POSTS", style:
+                  TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+                ),
               ),
               SizedBox(
                 height: 20,
               ),
               /////
-              SizedBox(
+              categoryItem.length >0 ? SizedBox(
                 height: 500,
                 child: ListView.builder(
                   itemCount: categoryItem.length,
@@ -115,7 +118,7 @@ class _SellersPostListState extends State<SellersPostList> {
                     );//categoryItem[index]['image']
                   },
                 ),
-              ),
+              ): ListTile(title: Center(child: Text("No Post Created Yet")),),
               /////
             ],
           ),
