@@ -38,7 +38,7 @@ class _CartMainPageState extends State<CartMainPage> {
               Stack(
                   children: [
                     Tab(text: "My Cart",icon: Icon(Icons.shopping_bag_outlined,size: 25),),
-                    CircleAvatar(backgroundColor: Colors.red,child: Text(cartCount.toString()),radius: 10,),
+                    cartCount > 0 ? CircleAvatar(backgroundColor: Colors.red,child: Text(cartCount.toString()),radius: 10,) : SizedBox(),
                   ]
               ),
             ],
