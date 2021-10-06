@@ -176,7 +176,7 @@ class _ShowItemPageState extends State<ShowItemPage> {
                    if(body["success"] == true){
                      showMsg(context, "Add to Cart Successfully",);
                      setState(() {
-                       cartCount++;
+                       cartCount = body['cart']["cart_items"].length;
                      });
                    }
                    if(body["success"] == false){
