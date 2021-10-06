@@ -163,24 +163,63 @@ class _ShowItemPageState extends State<ShowItemPage> {
               AYDButton(
                 buttonText: items['inStock'] == 1 ? "Add to cart" : "Out of Stock",
                 onPressed: items['inStock'] == 1 ? () async {
-                  EasyLoading.show(status: 'loading...');
-                  var res= await CallApi().postData(
-                      {
-                        "item_id": items['id'],
-                        "quantity": quantity,
-                      },'/addToCart' );
-                  var body =json.decode(res.body);
-                  EasyLoading.dismiss();
-                  print(body.toString());
-                  if(body["success"] == true){
-                    showMsg(context, "Add to Cart Successfully",);
-                    setState(() {
-                      cartCount++;
-                    });
-                  }
-                  if(body["success"] == false){
-                    showMsg(context, body['message'],);
-                  }
+                 if(userD['fName'] != "Guest"){
+                   EasyLoading.show(status: 'loading...');
+                   var res= await CallApi().postData(
+                       {
+                         "item_id": items['id'],
+                         "quantity": quantity,
+                       },'/addToCart' );
+                   var body =json.decode(res.body);
+                   EasyLoading.dismiss();
+                   print(body.toString());
+                   if(body["success"] == true){
+                     showMsg(context, "Add to Cart Successfully",);
+                     setState(() {
+                       cartCount++;
+                     });
+                   }
+                   if(body["success"] == false){
+                     showMsg(context, body['message'],);
+                   }
+                 }
+                 else{
+                   showDialog(
+                       context: context,
+                       builder: (BuildContext context) {
+                         return AlertDialog(
+                           title: Column(
+                             children: [
+                               Image.asset("assets/atyourdoorstep.png",
+                                 height: 40,
+                                 width: 40,
+                               ),
+                               SizedBox(height: 6,),
+                               Text("Happy For you!"),
+                             ],
+                           ),
+                           content: Text("You are login as a Guest. Do you want to Register as a Customer?"),
+                           actions: [
+                             TextButton(
+                               onPressed: () {
+                                 Navigator.pop(context);
+                                 Navigator.pop(context);
+                               },
+                               child: Text("Yes"),
+
+                             ),
+                             TextButton(
+                               onPressed: () {
+                                 Navigator.pop(context);
+                               },
+                               child: Text("No"),
+
+                             ),
+                           ],
+                         );
+                       }
+                   );
+                 }
 
                 }: null,
               ),
