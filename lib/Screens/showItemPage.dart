@@ -161,8 +161,8 @@ class _ShowItemPageState extends State<ShowItemPage> {
                 ),
               ),
               AYDButton(
-                buttonText: "Add to cart",
-                onPressed: () async {
+                buttonText: items['inStock'] == 1 ? "Add to cart" : "Out of Stock",
+                onPressed: items['inStock'] == 1 ? () async {
                   EasyLoading.show(status: 'loading...');
                   var res= await CallApi().postData(
                       {
@@ -174,12 +174,15 @@ class _ShowItemPageState extends State<ShowItemPage> {
                   print(body.toString());
                   if(body["success"] == true){
                     showMsg(context, "Add to Cart Successfully",);
+                    setState(() {
+                      cartCount++;
+                    });
                   }
                   if(body["success"] == false){
                     showMsg(context, body['message'],);
                   }
 
-                },
+                }: null,
               ),
               SizedBox(
                 height: 50.0,

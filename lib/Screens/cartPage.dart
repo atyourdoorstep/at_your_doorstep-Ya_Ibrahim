@@ -21,7 +21,15 @@ class _CartMainPageState extends State<CartMainPage> {
     return DefaultTabController(
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0.0,
+          centerTitle: true,
+          title: Text("Orders & Cart",
+              style: TextStyle(
+              fontSize: 23,
+              color: Colors.red,
+              fontFamily: "PTSans",
+              fontWeight: FontWeight.w700,
+              letterSpacing: 2.0),
+          ),
           backgroundColor: Colors.white,
           bottom: TabBar(
             labelColor: Colors.red,
@@ -30,7 +38,7 @@ class _CartMainPageState extends State<CartMainPage> {
               Stack(
                   children: [
                     Tab(text: "My Cart",icon: Icon(Icons.shopping_bag_outlined,size: 25),),
-                    CircleAvatar(backgroundColor: Colors.red,child: Text("0"),radius: 10,),
+                    CircleAvatar(backgroundColor: Colors.red,child: Text(cartCount.toString()),radius: 10,),
                   ]
               ),
             ],
@@ -38,7 +46,7 @@ class _CartMainPageState extends State<CartMainPage> {
         ),
         body: TabBarView(
           children: [
-            Center(child: Text("hello")),
+            Center(child: Text("Recent Orders")),
             AddCartPage(),
           ],
         ),
@@ -170,7 +178,9 @@ class _AddCartPageState extends State<AddCartPage> {
                                                       Navigator.pop(context);
                                                       executed = false;
                                                       getCartItems();
-
+                                                      setState(() {
+                                                        cartCount--;
+                                                      });
                                                     }
                                                   },
                                                   child: Text("Yes"),
@@ -232,7 +242,6 @@ class _AddCartPageState extends State<AddCartPage> {
     if(res.statusCode == 200){
       setState(() {
         cartItems = body['cart']['cart_items'];
-        print(cartItems.toString());
       });
       executed = true;
     }

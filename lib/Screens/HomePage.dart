@@ -91,6 +91,7 @@ class _HomePageOperationState extends State<HomePageOperation>
     if(roleOfUser == "seller") {
       getSellerInfo();
     }
+    getCartItemsCount();
     executed = false;
 
   }

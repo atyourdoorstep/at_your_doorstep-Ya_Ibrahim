@@ -50,6 +50,7 @@ const menuFont = TextStyle(
 late Map<String,dynamic> userD = {};
 late Map<String,dynamic> userSeller = {};
 late Map<String,dynamic> categoryFetch = {};
+int cartCount = 0;
 
 // getToken() async {
 //   SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -183,3 +184,13 @@ var sampleImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNWosb1
 //     return 'error';
 //   }
 // }
+
+getCartItemsCount() async {
+  //var cartItems={};
+  var res= await CallApi().postData({},'/getCart');
+  var body =json.decode(res.body);
+  if(res.statusCode == 200){
+    cartCount = body['cart']['cart_items'].length;
+    print("Cart items Count: "+cartCount.toString());
+  }
+}
