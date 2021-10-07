@@ -87,23 +87,6 @@ class _AddCartPageState extends State<AddCartPage> {
         child: Container(
           child: Column(
             children: <Widget>[
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  ClipRRect(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(40),
-                          bottomRight: Radius.circular(40),
-                      ),
-                      child: Image.network(sampleImage, fit: BoxFit.contain,)),
-                  Center(child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text("YOUR CART DETAIL",
-                      style: TextStyle(
-                          color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w700),),
-                  )),
-                ],
-              ),
               executed ? SizedBox(
                 height: cartItems.length <= 1 ? 150 :400,
                 child: cartItems.length >= 1 ? ListView.builder(
@@ -111,9 +94,8 @@ class _AddCartPageState extends State<AddCartPage> {
                   itemBuilder:(context , index){
                     return GestureDetector(
                       onTap: (){
-                       // Navigator.push(context, new MaterialPageRoute(
-                        //   builder: (context) =>ShowItemPage(itemDetails: cartItems[index]['item'])));
-                      },
+                        showMsg(context, "Rs. ${cartItems[index]['item']['price']} , Quantity(s): ${cartItems[index]['quantity']}");
+                        },
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -216,7 +198,7 @@ class _AddCartPageState extends State<AddCartPage> {
                 ):ListTile(title: Center(child: Text("Cart is Empty !!",
                  style: TextStyle(color: Colors.red),
                 )),),
-              ): SpecialSpinner(),
+              ): Center(child: SpecialSpinner(),),
               Visibility(
                 visible: cartItems.length > 0,
                 child: Align(
@@ -243,6 +225,34 @@ class _AddCartPageState extends State<AddCartPage> {
                               setState(() {
                                 cartCount = cartItems.length;
                               });
+                              ////
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("Order Created Successfully ", style:
+                                    TextStyle(fontSize: 15, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+                                    title: Column(
+                                      children: [
+                                        Image.asset("assets/atyourdoorstep.png",
+                                          height: 40,
+                                          width: 40,
+                                        ),
+                                        SizedBox(height: 5,),
+                                        Text("Order!"),
+                                      ],
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Close"),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          /////
                         }
                         else{
                           showMsg(context,"There is some issues");
@@ -281,5 +291,4 @@ class _AddCartPageState extends State<AddCartPage> {
       print(orderedItems);
     }
   }
-
 }
