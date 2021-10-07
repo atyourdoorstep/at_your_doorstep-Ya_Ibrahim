@@ -5,6 +5,7 @@ import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 
 
@@ -68,6 +69,7 @@ class _AddCartPageState extends State<AddCartPage> {
 
   late var cartItems;
   bool executed = false;
+  List<Map<String ,Object>> orderedItems = [];
 
   @override
   void initState() {
@@ -221,7 +223,32 @@ class _AddCartPageState extends State<AddCartPage> {
                   alignment: FractionalOffset.bottomCenter,
                   child: AYDButton(
                     buttonText: "Place Order",
-                    onPressed: (){},
+                    onPressed: () async {
+                      if(orderedItems.length > 0){
+                        EasyLoading.show(status: 'Creating Order...');
+                        var res= await CallApi().postData({
+                          'items': orderedItems,
+                        },'/orderCreate');
+                        var body =json.decode(res.body);
+                        EasyLoading.dismiss();
+                        if(res.statusCode == 200){
+                          showMsg(context,"Order Created Successfully!!");
+                          for(int i=0;i<cartItems.length ;i++){
+                            var res= await CallApi().postData({
+                              'id': cartItems[i]['id'],
+                            },'/removeFromCart');
+                          }
+                              executed = false;
+                              getCartItems();
+                              setState(() {
+                                cartCount = cartItems.length;
+                              });
+                        }
+                        else{
+                          showMsg(context,"There is some issues");
+                        }
+                      }
+                    },
                   ),
                 ),
               ),
@@ -236,6 +263,7 @@ class _AddCartPageState extends State<AddCartPage> {
     );
   }
   getCartItems() async {
+    orderedItems.clear();
     cartItems={};
     var res= await CallApi().postData({},'/getCart');
     var body =json.decode(res.body);
@@ -244,6 +272,13 @@ class _AddCartPageState extends State<AddCartPage> {
         cartItems = body['cart']['cart_items'];
       });
       executed = true;
+      for(int i=0;i< cartItems.length;i++){
+        orderedItems.insert(i, {
+          'item_id': cartItems[i]['item_id'],
+          'quantity': cartItems[i]['quantity']
+        });
+      }
+      print(orderedItems);
     }
   }
 
