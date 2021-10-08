@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
@@ -27,20 +29,24 @@ class _PostCreationState extends State<PostCreation> {
   bool executed1 = false;
   int categoryID= 0;
   int selectedIndex = 0;
+  int selectedIndex1 = 0;
   String parentName ="";
   int getId =0;
+  int getId1 =0;
+  late var currentServiceDetails;
   late var categoryList;
+  bool load3rd = false;
 
   getSellerRegisteredCategory()async
   {
+    currentServiceDetails = {};
     categoryList ={};
     var info= await CallApi().postData({}, '/getSellerInfo');
     var sellerV = json.decode(info.body);
     if(info.statusCode == 200) {
       setState(() {
         categoryID= sellerV['sellerProfile']["category_id"];
-        print(categoryID.toString());
-        });
+      });
       executed = true;
       getChildrenCategory();
     }
@@ -48,20 +54,22 @@ class _PostCreationState extends State<PostCreation> {
 
   getChildrenCategory()async
   {
-    print("hello" +categoryID.toString());
-    var info= await CallApi().postData({'id': categoryID}, '/getLastLvlCat');
+    var info= await CallApi().postData({}, '/getAllServicesWithChildren');
     var category = json.decode(info.body);
-    print(category.toString());
     if(info.statusCode == 200) {
       setState(() {
         categoryFetch = category;
       });
+      for(int i=0; i<categoryFetch["data"].length ;i++){
+        if(categoryFetch["data"][i]['id']== categoryID){
           setState(() {
-            categoryList=categoryFetch["children"];
-            parentName=categoryFetch["parent"]["name"];
-            var don = categoryFetch["children"].length;
+            categoryList=categoryFetch["data"][i]["children"];
+            parentName=categoryFetch["data"][i]["name"];
+            var don = categoryFetch['data'][i]["children"].length;
             print("hello $don");
           });
+        }
+      }
       executed1 = true;
     }
   }
@@ -73,6 +81,7 @@ class _PostCreationState extends State<PostCreation> {
     //getChildrenCategory();
     executed = false;
     executed1 = false;
+    load3rd = false;
     super.initState();
   }
 
@@ -111,7 +120,7 @@ class _PostCreationState extends State<PostCreation> {
               ),
               textfieldStyle(textHint: "Item Name", obscureText: false, textLabel1:'Item Name',controllerText: itemNameController,),
               textfieldStyle(textHint: "Description", obscureText: false, textLabel1:'Description',controllerText: itemDescController,),
-              textfieldStyle(textHint: "Price", obscureText: false, textLabel1:'Adjust item Price',controllerText: itemPriceController,keyBoardType: TextInputType.number,),
+              textfieldStyle(textHint: "Price", obscureText: false, textLabel1:'Adjust item Price',controllerText: itemPriceController,),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -137,11 +146,11 @@ class _PostCreationState extends State<PostCreation> {
                           child: Row(
                             children: [
                               Chip(
-                                  label: Text(ucFirst(categoryList[index]['name']),
-                                style: TextStyle(
-                                        color: selectedIndex== index ? Colors.white: Colors.black,
-                                     ),
+                                label: Text(ucFirst(categoryList[index]['name']),
+                                  style: TextStyle(
+                                    color: selectedIndex== index ? Colors.white: Colors.black,
                                   ),
+                                ),
                                 backgroundColor: selectedIndex== index ? Colors.red : null,
                               ),
                               SizedBox(width: 8),
@@ -151,13 +160,80 @@ class _PostCreationState extends State<PostCreation> {
                             setState(() {
                               selectedIndex = index;
                               getId = categoryList[index]['id'];
-                              print(getId);
+                              currentServiceDetails = categoryList[index]['children'];
+                              getId1 = 0;
+                              print("id of current service ${getId1}");
+                              print(currentServiceDetails.toString());
+                              load3rd = true;
                             });
                           },
                         );
                       }),
                 ),
               ),
+              ////
+
+              Visibility(
+                visible: load3rd,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Select the type of Service Children:", style:
+                          TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w400)),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: currentServiceDetails.length > 0 ? SizedBox(
+                        height: 35,
+                        child: ListView.builder(
+                          //physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: currentServiceDetails.length,
+                            itemBuilder:
+                                (BuildContext context, int index) {
+                              return GestureDetector(
+                                child: Row(
+                                  children: [
+                                    Chip(
+                                      label: Text(ucFirst(currentServiceDetails[index]['name']),
+                                        style: TextStyle(
+                                          color: selectedIndex1== index ? Colors.white: Colors.black,
+                                        ),
+                                      ),
+                                      backgroundColor: selectedIndex1== index ? Colors.red : null,
+                                    ),
+                                    SizedBox(width: 8),
+                                  ],
+                                ),
+                                onTap: (){
+                                  setState(() {
+                                    selectedIndex1 = index;
+                                    getId1 = currentServiceDetails[index]['id'];
+                                    print("id of current service ${getId1}");
+                                    print(getId1);
+                                  });
+                                },
+                              );
+                            }),
+                      ):  Center(
+                        child: Text("No Service Children",
+                            style: TextStyle(
+                              color: Colors.black54,
+                            ),
+                          ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ////
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CheckboxListTile(
@@ -176,28 +252,28 @@ class _PostCreationState extends State<PostCreation> {
                 ),
               ),
               AYDButton(
-                buttonText: "Upload Image & Publish",
                 onPressed: () async {
                   if(itemPriceController.text != '' && checkIn != null &&
-                      itemDescController.text != '' && getId != null &&
+                      itemDescController.text != '' && getId1 != 0 &&
                       itemNameController.text != ''){
                     SharedPreferences localStorage = await SharedPreferences.getInstance();
                     XFile image =await imgFromGallery();
                     _createPostFunc(image,{
-                      'name': itemNameController.text.toString().toLowerCase(),
-                      'description': itemDescController.text.toString().toLowerCase(),
-                      'category_id': getId,
-                      'price': int.parse(itemPriceController.text.toString()),
-                      'isBargainAble':  checkIn
+                      'token': localStorage.getString('token'),
+                      'name': itemNameController.text,
+                      'description': itemDescController.text,
+                      'category_id': getId1,
+                      'price': itemPriceController.text,
+                      'isBargainAble': checkIn
                     }
                     );
-
                   }
                   else {
-                    showMsg(context, "Fill up above Required fields");
+                    showMsg(context, "Fill up & Select above Required fields");
                   }
 
                 },
+               buttonText: "Upload Image & Publish",
               ),
               SizedBox(
                 height: 50,
@@ -212,9 +288,8 @@ class _PostCreationState extends State<PostCreation> {
   _createPostFunc(file,var data) async {
     EasyLoading.show(status: 'loading...');
     var res = await CallApi().uploadFile(file,data, '/createPost');
-    var body = (res.data);
+    var body = json.decode(res.body);
     EasyLoading.dismiss();
-
     if (body['success']!) {
       print(body.toString());
       showMsg(context,"Your Item Published Successfully");
@@ -224,100 +299,3 @@ class _PostCreationState extends State<PostCreation> {
     }
   }
 }
-
-class PostCreationTwo extends StatefulWidget {
-  late final String itemN , itemDesc, iPrice;
-  late final int checkB , CategoryId;
-
-  PostCreationTwo({required this.checkB,required this.CategoryId,required this.iPrice,required this.itemDesc,required this.itemN});
-  @override
-  _PostCreationTwoState createState() => _PostCreationTwoState();
-}
-
-class _PostCreationTwoState extends State<PostCreationTwo> {
-
-  late String itemN , itemDesc, iPrice;
-  late int checkB , CategoryId;
-
-  @override
-  void initState() {
-    itemN = widget.itemN;
-    itemDesc = widget.itemDesc;
-    iPrice = widget.iPrice;
-    checkB = widget.checkB;
-    CategoryId = widget.CategoryId;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 200,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.red),
-                  ),
-                  child: TextButton(
-                    onPressed: () async {
-                      XFile x = await imgFromGallery();
-                    },
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Icon(Icons.camera_enhance_outlined, size: 45,),
-                          Text("Upload Item Photo"),
-                        ],
-                      ),
-                    ),
-                  )
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-//Padding(
-//                             padding: const EdgeInsets.all(2.0),
-//                             child: Container(
-//                               width: MediaQuery.of(context).size.height/7,
-//                               height: 70,
-//                               decoration: BoxDecoration(
-//                                 color: selectedIndex== index ? Colors.red : null,
-//                                 border:
-//                                 Border.all(color: selectedIndex== index ?  Colors.red :  Colors.black),
-//                                 borderRadius: BorderRadius.circular(15),
-//                               ),
-//                               child: Center(
-//                                 child: Text(
-//                                     ucFirst(categoryList[index]['name']),
-//                                   overflow: TextOverflow.ellipsis,
-//                                   style: TextStyle(
-//                                     color: selectedIndex== index ? Colors.white: Colors.black,
-//                                   ),
-//                                 ),
-//                               ),
-//                             ),
-//                           ),

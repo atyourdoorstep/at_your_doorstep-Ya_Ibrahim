@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
-import 'package:at_your_doorstep/Screens/editSellerPost.dart';
+import 'package:at_your_doorstep/Screens/SellerControl/editSellerPost.dart';
 import 'package:flutter/material.dart';
 class SellersPostList extends StatefulWidget {
   const SellersPostList({Key? key}) : super(key: key);

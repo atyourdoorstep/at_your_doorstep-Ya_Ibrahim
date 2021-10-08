@@ -3,7 +3,7 @@ import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
-import 'package:at_your_doorstep/Screens/orderListPage.dart';
+import 'package:at_your_doorstep/Screens/Orders/orderListPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -196,10 +196,15 @@ class _AddCartPageState extends State<AddCartPage> {
                       ),
                     );
                   },
-                ):ListTile(title: Center(child: Text("Cart is Empty !!",
-                 style: TextStyle(color: Colors.red),
-                )),),
-              ): Center(child: SpecialSpinner(),),
+                ):Center(
+                  child: ListTile(title: Center(child: Text("Cart is Empty !!",
+                   style: TextStyle(color: Colors.red),
+                  )),),
+                ),
+              ): Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SpecialSpinner(),
+              ),
               Visibility(
                 visible: cartItems.length > 0,
                 child: Align(

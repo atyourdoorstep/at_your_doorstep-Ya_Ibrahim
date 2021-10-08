@@ -1,5 +1,5 @@
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
-import 'package:at_your_doorstep/Screens/servicesPage.dart';
+import 'package:at_your_doorstep/Screens/ServicesRelatedPages/servicesPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
