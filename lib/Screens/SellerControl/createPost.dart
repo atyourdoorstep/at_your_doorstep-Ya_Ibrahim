@@ -288,7 +288,7 @@ class _PostCreationState extends State<PostCreation> {
   _createPostFunc(file,var data) async {
     EasyLoading.show(status: 'loading...');
     var res = await CallApi().uploadFile(file,data, '/createPost');
-    var body = json.decode(res.body);
+    var body = (res.data);
     EasyLoading.dismiss();
     if (body['success']!) {
       print(body.toString());

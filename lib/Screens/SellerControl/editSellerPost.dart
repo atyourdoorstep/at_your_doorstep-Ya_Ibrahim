@@ -139,8 +139,17 @@ class _EditPostState extends State<EditPost> {
                                              onTap:() async {
                                                Navigator.of(context).pop();
                                                EasyLoading.show(status: 'loading...');
-                                               _updateItemImage(await CallApi().uploadFile(await imgFromGallery(),{}, '/updatePost'));
+                                               var res = await CallApi().uploadFile(await imgFromGallery(),{}, '/updatePost');
+                                               var body = (res.data);
                                                EasyLoading.dismiss();
+                                               if( body['success']) {
+                                                 showMsg(context, 'Image updated');
+                                                 setState(() {
+                                                   itemImage=body['item']['image'];
+                                                 });
+                                               }
+                                               else
+                                                 showMsg(context, 'error in updating image');
 
                                              },
                                              child: ListTile(
@@ -154,8 +163,17 @@ class _EditPostState extends State<EditPost> {
                                                //_imgFromCamera
                                                Navigator.of(context).pop();
                                                EasyLoading.show(status: 'loading...');
-                                               _updateItemImage(await CallApi().uploadFile(await imgFromCamera(),{}, '/updatePost'));
+                                               var res = await CallApi().uploadFile(await imgFromCamera(),{}, '/updatePost');
+                                               var body = (res.data);
                                                EasyLoading.dismiss();
+                                               if( body['success']) {
+                                                 showMsg(context, 'Image updated');
+                                                 setState(() {
+                                                   itemImage=body['item']['image'];
+                                                 });
+                                               }
+                                               else
+                                                 showMsg(context, 'error in updating image');
                                              },
                                              child: ListTile(
                                                leading: Icon(Icons.camera),
@@ -267,18 +285,6 @@ class _EditPostState extends State<EditPost> {
     if(body['success'] == false){
       showMsg(context,body['message'].toString());
     }
-  }
-  _updateItemImage(sendImage)
-  {
-    var body=json.decode(sendImage.body);
-    if( body['success']) {
-      showMsg(context, 'Image updated');
-      setState(() {
-        itemImage=body['item']['image'];
-      });
-    }
-    else
-      showMsg(context, 'error in updating image');
   }
 
 }
