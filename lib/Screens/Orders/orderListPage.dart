@@ -18,11 +18,16 @@ class _OrderInQueueState extends State<OrderInQueue> {
 
   late bool executed;
   late var orderItems;
+  var today = new DateTime.now();
+  var date = '';
+  // var formatter = DateTime(today.year,today.month,today.day);
 
   @override
   void initState() {
     executed = false;
     getOrderedItems();
+    print(today.toString().substring(0,10));
+    date = today.toString().substring(0,10);
     super.initState();
   }
 
@@ -34,25 +39,6 @@ class _OrderInQueueState extends State<OrderInQueue> {
         child: Container(
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      radius: 8,
-                      backgroundColor: Colors.red ),
-                    SizedBox(width: 4),
-                    Text("Processing"),
-                    SizedBox(width: 9),
-                    CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.green ),
-                    SizedBox(width: 4),
-                    Text("Completed"),
-                  ],
-                ),
-              ),
               SizedBox(
                 height: 500,
                 child: ListView.builder(
@@ -76,46 +62,16 @@ class _OrderInQueueState extends State<OrderInQueue> {
                                   ),
                                 ],
                               ),
-                              subtitle: Align(
-                                alignment: Alignment.topLeft,
-                                child: Wrap(
-                                  children: List<Widget>.generate(orderItems[index]['order_items'].length,
-                                          (int orderIn){
-                                    var item= orderItems[index]['order_items'];
-                                        return
-                                          Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Chip(
-                                              avatar: CircleAvatar(
-                                                radius: 10,
-                                                backgroundColor: item[orderIn]['status'] == "processing" ? Colors.red : Colors.green,),
-                                              shape: StadiumBorder(side: BorderSide(color: Color(0xffD60024), width: 2)),
-                                              label:Column(
-                                                children: [
-                                                  InkResponse(
-                                                    onTap:(){
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                              builder: (context) => ShowItemPage(itemDetails: item[orderIn]['item'])));
-                                                    },
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child: Text(ucFirst(item[orderIn]['item']['name']),
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: TextStyle(
-                                                          color: Color(0xffD60024),fontWeight: FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              backgroundColor: Color(0xFFFFE7E7) ,
-                                            ),
-                                          );
-                                      }
-                                  ).toList(),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text("Ordered Date: ", style:
+                                    TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                    Text(orderItems[index]['order_items'][0]['created_at'].substring(0,10), style:
+                                    TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                  ],
                                 ),
                               ),
                               trailing: Padding(
