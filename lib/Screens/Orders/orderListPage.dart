@@ -34,6 +34,25 @@ class _OrderInQueueState extends State<OrderInQueue> {
         child: Container(
           child: Column(
             children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 8,
+                      backgroundColor: Colors.red ),
+                    SizedBox(width: 4),
+                    Text("Processing"),
+                    SizedBox(width: 9),
+                    CircleAvatar(
+                        radius: 8,
+                        backgroundColor: Colors.green ),
+                    SizedBox(width: 4),
+                    Text("Completed"),
+                  ],
+                ),
+              ),
               SizedBox(
                 height: 500,
                 child: ListView.builder(
@@ -67,6 +86,9 @@ class _OrderInQueueState extends State<OrderInQueue> {
                                           Padding(
                                             padding: const EdgeInsets.all(5.0),
                                             child: Chip(
+                                              avatar: CircleAvatar(
+                                                radius: 10,
+                                                backgroundColor: item[orderIn]['status'] == "processing" ? Colors.red : Colors.green,),
                                               shape: StadiumBorder(side: BorderSide(color: Color(0xffD60024), width: 2)),
                                               label:Column(
                                                 children: [
@@ -85,11 +107,6 @@ class _OrderInQueueState extends State<OrderInQueue> {
                                                           color: Color(0xffD60024),fontWeight: FontWeight.w500,
                                                         ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                  Text("(${ucFirst(item[orderIn]['status'])})",
-                                                    style: TextStyle(
-                                                      color: Colors.red,fontWeight: FontWeight.w500,
                                                     ),
                                                   ),
                                                 ],
