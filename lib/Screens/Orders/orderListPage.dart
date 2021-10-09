@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
-import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
+import 'package:at_your_doorstep/Screens/LandingPages/showItemPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class OrderInQueue extends StatefulWidget {
   const OrderInQueue({Key? key}) : super(key: key);
@@ -30,14 +29,14 @@ class _OrderInQueueState extends State<OrderInQueue> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: executed ? SingleChildScrollView(
         child: Container(
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: 400,
+                height: 500,
                 child: ListView.builder(
-                  itemCount: 8,
+                  itemCount: orderItems.length,
                   itemBuilder:(context , index){
                     return GestureDetector(
                       onTap: (){
@@ -54,36 +53,69 @@ class _OrderInQueueState extends State<OrderInQueue> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text("Order #${index}",
+                                      child: Text("Order #${index+1}",
                                         overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
                                         style: TextStyle(
-                                            color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text("Rs. ", style: TextStyle(
-                                            color: Colors.blue,
-                                          ),),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(", Quantity(s): ", style: TextStyle(
-                                            color: Colors.blue,
-                                          ),),
-                                        ),
-                                      ],
+                                            color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.w700),),
                                     ),
                                   ],
                                 ),
+                                subtitle: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Wrap(
+                                    children: List<Widget>.generate(orderItems[index]['order_items'].length,
+                                            (int orderIn){
+                                      var item= orderItems[index]['order_items'];
+                                          return
+                                            GestureDetector(
+                                              onTap: (){
+                                                // Navigator.push(
+                                                //     context,
+                                                //     new MaterialPageRoute(
+                                                //         builder: (context) => ));
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(5.0),
+                                                child: Chip(
+                                                  shape: StadiumBorder(side: BorderSide(color: Color(0xffD60024), width: 2)),
+                                                  label:Column(
+                                                    children: [
+                                                      InkResponse(
+                                                        onTap:(){
+                                                          Navigator.push(
+                                                              context,
+                                                              new MaterialPageRoute(
+                                                                  builder: (context) => ShowItemPage(itemDetails: item[orderIn]['item'])));
+                                                        },
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.all(8.0),
+                                                          child: Text(ucFirst(item[orderIn]['item']['name']),
+                                                            overflow: TextOverflow.ellipsis,
+                                                            style: TextStyle(
+                                                              color: Color(0xffD60024),fontWeight: FontWeight.w500,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Text("(${ucFirst(item[orderIn]['status'])})",
+                                                        style: TextStyle(
+                                                          color: Colors.red,fontWeight: FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  backgroundColor: Color(0xFFFFE7E7) ,
+                                                ),
+                                              ),
+                                            );
+                                        }
+                                    ).toList(),
+                                  ),
+                                ),
                                 trailing: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: OutlinedButton(
-                                      onPressed: () {
-                                      },
-                                      child: Icon(Icons.delete_forever)),
+                                  child: OutlinedButton(onPressed: () {  },
+                                  child: Text("For Order Details")),
                                 ),
                               ),
                               Padding(
@@ -104,7 +136,7 @@ class _OrderInQueueState extends State<OrderInQueue> {
             ],
           ),
         ),
-      ),
+      ): SpecialSpinner(),
     );
   }
   getOrderedItems() async {
