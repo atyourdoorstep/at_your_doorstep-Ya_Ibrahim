@@ -3,6 +3,7 @@ import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
+import 'package:at_your_doorstep/Screens/Orders/allOrders.dart';
 import 'package:at_your_doorstep/Screens/SellerControl/createPost.dart';
 import 'package:at_your_doorstep/Screens/ServicesRelatedPages/requestNewService.dart';
 import 'package:at_your_doorstep/Screens/SellerControl/sellerProfileUpdate.dart';
@@ -106,8 +107,14 @@ class _EditProfileOpState extends State<EditProfileOp> {
                             ),
                           ),
                           Divider(),
-                          ListTile(title: Text("Orders", style: menuFont,),
-                            leading: Icon(Icons.shopping_bag_outlined),
+                          GestureDetector(
+                            onTap:(){
+
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => OrderHistory()),);
+                            },
+                            child: ListTile(title: Text("Orders", style: menuFont,),
+                              leading: Icon(Icons.shopping_bag_outlined),
+                            ),
                           ),
                         ],
                       ),
