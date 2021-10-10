@@ -14,21 +14,29 @@ class OrderInQueue extends StatefulWidget {
   _OrderInQueueState createState() => _OrderInQueueState();
 }
 
-class _OrderInQueueState extends State<OrderInQueue> {
+class _OrderInQueueState extends State<OrderInQueue>
+with SingleTickerProviderStateMixin{
 
   late bool executed;
   late var orderItems;
   var today = new DateTime.now();
   var date = '';
-  // var formatter = DateTime(today.year,today.month,today.day);
+  late AnimationController _animationController;
 
   @override
   void initState() {
     executed = false;
     getOrderedItems();
-    print(today.toString().substring(0,10));
     date = today.toString().substring(0,10);
+    _animationController = new AnimationController(vsync: this , duration: Duration(seconds: 1));
+    _animationController.repeat(reverse: true);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
 
@@ -39,7 +47,7 @@ class _OrderInQueueState extends State<OrderInQueue> {
         child: Container(
           child: Column(
             children: <Widget>[
-              SizedBox(
+              orderItems.length > 0 ? SizedBox(
                 height: 500,
                 child: ListView.builder(
                   itemCount: orderItems.length,
@@ -71,6 +79,16 @@ class _OrderInQueueState extends State<OrderInQueue> {
                                     TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                                     Text(orderItems[index]['order_items'][0]['created_at'].substring(0,10), style:
                                     TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                    SizedBox(width: 10),
+                                   date == orderItems[index]['order_items'][0]['created_at'].substring(0,10) ? FadeTransition(
+                                     opacity: _animationController,
+                                     child: Container(
+                                       color: Colors.red,
+                                       child: Text(" New ", style:
+                                        TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                                     ),
+                                   ): SizedBox(),
+
                                   ],
                                 ),
                               ),
@@ -91,11 +109,10 @@ class _OrderInQueueState extends State<OrderInQueue> {
                       ),
                     );
                   },
-                // )//:ListTile(title: Center(child: Text("No Order Place Yet!",
-                //   style: TextStyle(color: Colors.red),
-                // )),
-              )
               ),
+              ): ListTile(title: Center(child: Text("No Order Place Yet!",
+          style: TextStyle(color: Colors.red),
+        ))),
             ],
           ),
         ),
