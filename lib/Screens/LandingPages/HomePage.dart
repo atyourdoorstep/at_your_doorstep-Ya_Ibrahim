@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:at_your_doorstep/Screens/Cart/cartPage.dart';
+import 'package:at_your_doorstep/mapPage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
@@ -107,7 +108,7 @@ class _HomePageOperationState extends State<HomePageOperation>
               actions: [
                 IconButton(
                     onPressed: (){},
-                    icon: Icon(Icons.shopping_bag_outlined),
+                    icon: Icon(Icons.notifications_none_rounded, size: 25),
                 ),
               ],
               title: Column(
@@ -123,6 +124,11 @@ class _HomePageOperationState extends State<HomePageOperation>
                       TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans" )):
                       Text('Your Location',style:
                       TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans" )),
+                       GestureDetector(onTap: () {
+                         Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                             GoogleMapClass()),);
+                       },
+                       child: Icon(Icons.keyboard_arrow_down_outlined, )),
                     ],
                   ),
                 ],
