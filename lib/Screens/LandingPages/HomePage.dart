@@ -125,8 +125,9 @@ class _HomePageOperationState extends State<HomePageOperation>
                       Text('Your Location',style:
                       TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans" )),
                        GestureDetector(onTap: () {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                             GoogleMapClass()),);
+                         Navigator.of(
+                           context,
+                           rootNavigator: true,).pushNamed('mapsGoogle');
                        },
                        child: Icon(Icons.keyboard_arrow_down_outlined, )),
                     ],

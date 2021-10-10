@@ -14,6 +14,7 @@ import 'package:at_your_doorstep/Screens/ServicesRelatedPages/requestNewService.
 import 'package:at_your_doorstep/Screens/SellerControl/sellerProfileUpdate.dart';
 import 'package:at_your_doorstep/Screens/LandingPages/signup_page.dart';
 import 'package:at_your_doorstep/Screens/userProfile.dart';
+import 'package:at_your_doorstep/mapPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         'SearchPage':(context)=>SearchPage(),
         'ShowFullImage':(context)=>OpenFullImage(),
         'sellerUpdateProfile':(context)=>UpdateSellerProfile(),
+        'mapsGoogle':(context)=>GoogleMapClass(),
       },
       builder: EasyLoading.init(),
     );

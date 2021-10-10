@@ -38,7 +38,6 @@ dependencies:
   url_launcher:
   geocoding: ^2.0.1
   google_maps_flutter:
-  geolocator: ^7.7.0
 
 
 
