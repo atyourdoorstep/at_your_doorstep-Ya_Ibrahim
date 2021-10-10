@@ -81,6 +81,17 @@ with SingleTickerProviderStateMixin{
                               title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  date == orderItems[index]['order_items'][0]['created_at'].substring(0,10) ? FadeTransition(
+                                    opacity: _animationController,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: Container(
+                                        color: Colors.red,
+                                        child: Text(" New ", style:
+                                        TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                                      ),
+                                    ),
+                                  ): SizedBox(),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text("Order #${index+1}",
@@ -99,16 +110,6 @@ with SingleTickerProviderStateMixin{
                                     TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                                     Text(orderItems[index]['order_items'][0]['created_at'].substring(0,10), style:
                                     TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                                    SizedBox(width: 10),
-                                   date == orderItems[index]['order_items'][0]['created_at'].substring(0,10) ? FadeTransition(
-                                     opacity: _animationController,
-                                     child: Container(
-                                       color: Colors.red,
-                                       child: Text(" New ", style:
-                                        TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                                     ),
-                                   ): SizedBox(),
-
                                   ],
                                 ),
                               ),
