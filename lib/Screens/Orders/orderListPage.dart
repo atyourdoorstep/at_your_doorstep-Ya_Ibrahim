@@ -95,7 +95,10 @@ with SingleTickerProviderStateMixin{
                               trailing: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ElevatedButton(onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrderDetails()),);
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                      OrderDetails(orderNo: "Order #${index+1}",
+                                        ordersDetails: orderItems[index]['order_items'],
+                                      )),);
                                 },
                                 child: Text("Order Details")),
                               ),
