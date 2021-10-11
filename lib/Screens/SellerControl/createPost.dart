@@ -282,7 +282,10 @@ class _PostCreationState extends State<PostCreation> {
                           for(int i=0; i< isSelected.length; i++){
                             isSelected[i]= i == index;
                            if(isSelected[i] == true){
-                             selectedType = isType[i];
+                             setState(() {
+                               selectedType = isType[i];
+                             });
+                             print(selectedType);
                            }
                           }
                         });

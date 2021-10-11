@@ -23,6 +23,7 @@ class _ShowItemPageState extends State<ShowItemPage> {
   void initState() {
     items = widget.itemDetails;
     quantity = 1;
+    print(items.toString());
     super.initState();
   }
 
@@ -125,9 +126,9 @@ class _ShowItemPageState extends State<ShowItemPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Text("Price: ", style:
+                    Text(items['type'] == "product" ?"Price: ":"Charges: ", style:
                     TextStyle(fontSize: 17, color: Colors.green, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
-                    Text(items['type'] == "product" ?"   Rs. "+items['price'].toString() : "   Charges. "+items['price'].toString(), style:
+                    Text(items['type'] == "product" ?"   Rs. "+items['price'].toString() : "   Rs. "+items['price'].toString(), style:
                     TextStyle(fontSize: 25, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                   ],
                 ),
