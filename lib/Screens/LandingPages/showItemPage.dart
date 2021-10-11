@@ -99,15 +99,20 @@ class _ShowItemPageState extends State<ShowItemPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(items['inStock'] == 1? "In Stock" :"Out of Stock", style:
-                TextStyle(fontSize: 17, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w400 )),
+                child: Text(items['type'] == "product" ?
+                (items['inStock'] == 1? "In Stock" :"Out of Stock"):
+                (items['inStock'] == 1? "Available" :"Not Available"),
+                    style: TextStyle(fontSize: 17, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w400 )),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
                     Icon(Icons.assistant_photo_outlined),
-                    Text(items['isBargainAble'] == 1? " It's Bargainable Product " :" This Product or service is not Bargainable.", style:
+                    Text(items['type'] == 'product' ?
+                    (items['isBargainAble'] == 1? " Bargainable Product " :" Product is not Bargainable."):
+                    (items['isBargainAble'] == 1? " Bargainable Service " :" Service is not Bargainable.")
+                        , style:
                     TextStyle(fontSize: 16, color: Colors.green, fontFamily: "PTSans", fontWeight: FontWeight.w400 )),
                   ],
                 ),
@@ -122,12 +127,12 @@ class _ShowItemPageState extends State<ShowItemPage> {
                   children: [
                     Text("Price: ", style:
                     TextStyle(fontSize: 17, color: Colors.green, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
-                    Text("   Rs. "+items['price'].toString(), style:
+                    Text(items['type'] == "product" ?"   Rs. "+items['price'].toString() : "   Charges. "+items['price'].toString(), style:
                     TextStyle(fontSize: 25, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                   ],
                 ),
               ),
-              Padding(
+              items['type'] == "product" ? Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
@@ -159,9 +164,11 @@ class _ShowItemPageState extends State<ShowItemPage> {
 
                   ],
                 ),
-              ),
+              ): SizedBox(),
               AYDButton(
-                buttonText: items['inStock'] == 1 ? "Add to cart" : "Out of Stock",
+                buttonText: items['type'] == "product" ?
+                (items['inStock'] == 1 ? "Add to cart" : "Out of Stock"):
+                (items['inStock'] == 1 ? "Avail it" : "Not Available"),
                 onPressed: items['inStock'] == 1 ? () async {
                  if(userD['fName'] != "Guest"){
                    EasyLoading.show(status: 'loading...');
