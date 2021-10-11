@@ -36,6 +36,9 @@ class _PostCreationState extends State<PostCreation> {
   late var currentServiceDetails;
   late var categoryList;
   bool load3rd = false;
+  late List<bool> isSelected;
+  late List<String> isType;
+  late String selectedType;
 
   getSellerRegisteredCategory()async
   {
@@ -82,6 +85,10 @@ class _PostCreationState extends State<PostCreation> {
     executed = false;
     executed1 = false;
     load3rd = false;
+    isSelected = [true , false];
+    isType = ['product', 'service'];
+    selectedType = isType[0];
+    print(selectedType);
     super.initState();
   }
 
@@ -251,6 +258,39 @@ class _PostCreationState extends State<PostCreation> {
                     }
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text("Type of Post:"),
+                  trailing: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ToggleButtons(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      isSelected: isSelected,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Product"),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Service"),
+                        ),
+                      ],
+                      onPressed: (int index){
+                        setState(() {
+                          for(int i=0; i< isSelected.length; i++){
+                            isSelected[i]= i == index;
+                           if(isSelected[i] == true){
+                             selectedType = isType[i];
+                           }
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
               AYDButton(
                 onPressed: () async {
                   if(itemPriceController.text != '' && checkIn != null &&
@@ -264,7 +304,8 @@ class _PostCreationState extends State<PostCreation> {
                       'description': itemDescController.text,
                       'category_id': getId1,
                       'price': itemPriceController.text,
-                      'isBargainAble': checkIn
+                      'isBargainAble': checkIn,
+                      'type': selectedType,
                     }
                     );
                   }
