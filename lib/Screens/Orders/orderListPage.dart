@@ -22,11 +22,10 @@ with SingleTickerProviderStateMixin{
   var today = new DateTime.now();
   var date = '';
   late AnimationController _animationController;
-  bool reverseOrder = true;
+  late var reverseOrder;
 
   @override
   void initState() {
-    reverseOrder = true;
     executed = false;
     getOrderedItems();
     date = today.toString().substring(0,10);
@@ -54,14 +53,14 @@ with SingleTickerProviderStateMixin{
                 child: GestureDetector(
                   onTap: (){
                    setState(() {
-                     reverseOrder = !reverseOrder;
+                     orderItems = orderItems.reversed.toList();
                    });
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text("Filter "),
-                      Icon(Icons.filter_alt_outlined),
+                      Text("Sort by "),
+                      Icon(Icons.sort),
                     ],
                   ),
                 ),
@@ -69,7 +68,6 @@ with SingleTickerProviderStateMixin{
               orderItems.length > 0 ? SizedBox(
                 height: 500,
                 child: ListView.builder(
-                  reverse: reverseOrder,
                   itemCount: orderItems.length,
                   itemBuilder:(context , index){
                     return Center(
