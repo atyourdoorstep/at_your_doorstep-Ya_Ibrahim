@@ -5,6 +5,7 @@ import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/Orders/allOrders.dart';
 import 'package:at_your_doorstep/Screens/SellerControl/createPost.dart';
+import 'package:at_your_doorstep/Screens/SellerControl/notifiedOrders.dart';
 import 'package:at_your_doorstep/Screens/ServicesRelatedPages/requestNewService.dart';
 import 'package:at_your_doorstep/Screens/SellerControl/sellerProfileUpdate.dart';
 import 'package:flutter/material.dart';
@@ -68,9 +69,17 @@ class _EditProfileOpState extends State<EditProfileOp> {
                           TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w500 )):SizedBox(),
                         ],
                       ),
-                      roleOfUser == "seller" ? IconButton(
-                        onPressed: (){},
-                        icon: Icon(Icons.notifications_none_rounded, size: 25),
+                      roleOfUser == "seller" ? Stack(
+                          alignment: AlignmentDirectional.topEnd,
+                        children: [
+                          IconButton(
+                            onPressed: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
+                            },
+                            icon: Icon(Icons.notifications_none_rounded, size: 25),
+                          ),
+                          sellerOrdersCounts > 0 ?CircleAvatar(backgroundColor: Colors.red,child: Text(sellerOrdersCounts.toString()),radius: 10,): SizedBox(),
+                        ],
                       ): SizedBox(),
                     ],
                   ),

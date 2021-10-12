@@ -51,6 +51,7 @@ late Map<String,dynamic> userD = {};
 late Map<String,dynamic> userSeller = {};
 late Map<String,dynamic> categoryFetch = {};
 int cartCount = 0;
+int sellerOrdersCounts =0;
 
 // getToken() async {
 //   SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -202,5 +203,23 @@ getCartItemsCount() async {
   if(res.statusCode == 200){
     cartCount = body['cart']['cart_items'].length;
     print("Cart items Count: "+cartCount.toString());
+  }
+}
+
+getSellerNewOrdersCount() async {
+  var today = new DateTime.now();
+  var date = '';
+  date = today.toString().substring(0,10);
+  sellerOrdersCounts =0;
+
+  var res= await CallApi().postData({'check':1},'/getOrders');
+  var body =json.decode(res.body);
+  print(body[0].toString());
+  if(res.statusCode == 200){
+    for(int i=0;i<body.length;i++){
+      if(body[i]['created_at'].substring(0,10) == date){
+        sellerOrdersCounts++;
+      }
+    }
   }
 }
