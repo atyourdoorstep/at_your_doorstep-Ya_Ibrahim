@@ -214,7 +214,6 @@ getSellerNewOrdersCount() async {
 
   var res= await CallApi().postData({'check':1},'/getOrders');
   var body =json.decode(res.body);
-  print(body[0].toString());
   if(res.statusCode == 200){
     for(int i=0;i<body.length;i++){
       if(body[i]['created_at'].substring(0,10) == date){

@@ -88,13 +88,11 @@ class _HomePageOperationState extends State<HomePageOperation>
     getUserInfo();
     getProfilePicture();
     getParentServices();
-    getRoleUser();
     if(roleOfUser == "seller") {
       getSellerInfo();
     }
     getCartItemsCount();
     getSellerNewOrdersCount();
-    getSellerData();
     executed = false;
 
   }
@@ -272,6 +270,8 @@ class _HomePageOperationState extends State<HomePageOperation>
         serviceNames = res;
       });
       executed = true;
+      getRoleUser();
+      getSellerData();
     }
     return res;
   }

@@ -40,7 +40,6 @@ class _EditProfileOpState extends State<EditProfileOp> {
     // TODO: implement initState
     super.initState();
     userData=userD;
-    getSellerData();
     fullNameController.text=ucFirst(userData['fName'].toString())+' '+ucFirst(userData['fName'].toString());
   }
   @override

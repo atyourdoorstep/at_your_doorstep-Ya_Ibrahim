@@ -144,7 +144,7 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
     if(body['success']){
       showMsg(context, "You have Successfully Register as a Service Provider.");
       Navigator.pop(context);
-      getRoleUser();
+      //getRoleUser();
        String role = "";
       EasyLoading.show(status: 'Setting up Your Seller Profile...');
       var res= await CallApi().postData({},'/getRole' );

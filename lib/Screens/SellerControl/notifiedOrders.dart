@@ -141,6 +141,7 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
       });
       print(orderItems1.toString());
       executed3 = true;
+      orderItems1 = orderItems1.reversed.toList();
     }
   }
 }
