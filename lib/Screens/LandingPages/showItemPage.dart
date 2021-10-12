@@ -169,7 +169,7 @@ class _ShowItemPageState extends State<ShowItemPage> {
               AYDButton(
                 buttonText: items['type'] == "product" ?
                 (items['inStock'] == 1 ? "Add to cart" : "Out of Stock"):
-                (items['inStock'] == 1 ? "Avail it" : "Not Available"),
+                (items['inStock'] == 1 ? "Book now" : "Not Available"),
                 onPressed: items['inStock'] == 1 ? () async {
                  if(userD['fName'] != "Guest"){
                    EasyLoading.show(status: 'loading...');

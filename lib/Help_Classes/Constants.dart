@@ -131,6 +131,16 @@ getRoleUser() async{
   }
   print(roleOfUser.toString());
 }
+String sellerTitle='';
+
+getSellerData() async {
+  var res= await CallApi().postData({},'/getSellerInfo' );
+  var body =json.decode(res.body);
+  print(  body['sellerProfile']['user_name'].toString());
+  if(res.statusCode == 200){
+    sellerTitle = body['sellerProfile']['user_name'].toString();
+  }
+}
 
 getSellerInfo() async {
   var res = await CallApi().postData( {},'/sells');

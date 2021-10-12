@@ -33,30 +33,13 @@ class EditProfileOp extends StatefulWidget {
 class _EditProfileOpState extends State<EditProfileOp> {
   late Map<String,dynamic> userData;
   TextEditingController fullNameController = TextEditingController();
-  // _getUserInfo() async {
-  //   SharedPreferences localStorage = await SharedPreferences.getInstance();
-  //   var userJson = localStorage.getString('user');
-  //   var user = json.decode(userJson!);
-  //   setState(() {
-  //     userData = user;
-  //   });
-  //   return user;
-  // }
-  // _ucFirst(String str)
-  // {
-  //   if(str.isEmpty)
-  //     return null;
-  //   if(str.length<=1)
-  //     return str.toUpperCase();
-  //   var x=str.toString();
-  //   return x.substring(0,1).toUpperCase()+x.substring(1);
-  // }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     userData=userD;
-    // _getUserInfo();
+    getSellerData();
     fullNameController.text=ucFirst(userData['fName'].toString())+' '+ucFirst(userData['fName'].toString());
   }
   @override
@@ -79,11 +62,16 @@ class _EditProfileOpState extends State<EditProfileOp> {
                         children: [
                           Text("Hello!", style:
                           TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
-                          // Text('${(userD['fName'].toString())} ${(userD['lName'].toString())}', style:
                           Text('${ucFirst((userD['fName'].toString()))} ${ucFirst((userD['lName'].toString()))}', style:
                           TextStyle(fontSize: 26, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
+                          roleOfUser == "seller" ?Text("(Seller id: ${sellerTitle})", style:
+                          TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w500 )):SizedBox(),
                         ],
                       ),
+                      roleOfUser == "seller" ? IconButton(
+                        onPressed: (){},
+                        icon: Icon(Icons.notifications_none_rounded, size: 25),
+                      ): SizedBox(),
                     ],
                   ),
                 ),
