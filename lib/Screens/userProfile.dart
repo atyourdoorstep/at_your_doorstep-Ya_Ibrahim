@@ -40,6 +40,7 @@ class _EditProfileOpState extends State<EditProfileOp> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getSellerAddressForPostCreation(context);
     userData=userD;
     fullNameController.text=ucFirst(userData['fName'].toString())+' '+ucFirst(userData['fName'].toString());
   }
@@ -156,8 +157,37 @@ class _EditProfileOpState extends State<EditProfileOp> {
                               children: [
                                 GestureDetector(
                                   onTap:(){
-                                     Navigator.push(context, new MaterialPageRoute(
-                                         builder: (context) =>PostCreation()));
+                                     if(sAddress.length > 1){
+                                       Navigator.push(context, new MaterialPageRoute(
+                                           builder: (context) =>PostCreation()));
+                                     }
+                                     else{
+                                       showDialog(
+                                           context: context,
+                                           builder: (BuildContext context) {
+                                             return AlertDialog(
+                                               content: Text("For Creating post you have to Add your Address in \'My Address\' option"),
+                                               title:Row(
+                                                 children: [
+                                                   Image.asset("assets/atyourdoorstep.png",
+                                                     height: 40,
+                                                     width: 40,
+                                                   ),
+                                                   SizedBox(width: 5,),
+                                                   Text("Warning!"),
+                                                 ],
+                                               ),
+                                               actions: [
+                                                 TextButton(
+                                                   onPressed: () {
+                                                     Navigator.pop(context);
+                                                   },
+                                                   child: Text("Close"),
+                                                 ),
+                                               ],
+                                             );
+                                           });
+                                     }
                                   },
                                   child: ListTile(title: Text("Create New Post / Add Item", style: menuFont,),
                                     leading: Icon(Icons.create_outlined),
@@ -167,15 +197,22 @@ class _EditProfileOpState extends State<EditProfileOp> {
                               ],
                             ),
                           ),
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => AddAddress()),);
-                            },
-                            child: ListTile(title: Text("My Address", style: menuFont,),
-                              leading: Icon(Icons.location_on),
+                          Visibility(
+                            visible: roleOfUser == "seller",
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddAddress()),);
+                                  },
+                                  child: ListTile(title: Text("My Address", style: menuFont,),
+                                    leading: Icon(Icons.location_on),
+                                  ),
+                                ),
+                                Divider(),
+                              ],
                             ),
                           ),
-                          Divider(),
                           ListTile(title: Text("Complaints", style: menuFont,),
                             leading: Icon(Icons.edit),
                           ),

@@ -6,6 +6,7 @@ import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/SellerControl/sellerProfileUpdate.dart';
+import 'package:at_your_doorstep/Screens/userProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -44,51 +45,54 @@ class _AddAddressState extends State<AddAddress> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
         ),
       ),
-      body: executed ? SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Text("YOUR ADDRESS", style:
-                    TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  textfieldStyle(textHint: "14 Rajgarh, lahore", obscureText: false, textLabel1:'Enter Hometown Address', controllerText: addressController,),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  AYDButton(
-                    onPressed: (){
-                      if(addressController.text.length>0)
-                      {
-                        updateSellerAddress({
-                          'name': addressController.text.toString(),
-                          'lat': 31.3556691,
-                          'long': 74.2193974,
-                        });
-                      }
-                      else {
-                        AddSellerAddress({
-                          'name': addressController.text.toString(),
-                          'lat': 31.3556691,
-                          'long': 74.2193974,
-                        });
-                      }
-                    },
-                    buttonText: "Add",
-                  ),
-
-                ],
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Center(
+                child: Text("YOUR ADDRESS", style:
+                TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
               ),
-            ),
+              SizedBox(
+                height: 20,
+              ),
+              textfieldStyle(textHint: "14 Rajgarh, lahore", obscureText: false, textLabel1:'Enter Hometown Address', controllerText: addressController,),
+              SizedBox(
+                height: 10,
+              ),
+              Visibility(
+                visible: addressName == "",
+                child: AYDButton(
+                  onPressed: (){
+                    AddSellerAddress({
+                      'name': addressController.text.toString(),
+                      'lat': 31.3556691,
+                      'long': 74.2193974,
+                    });
+                  },
+                  buttonText: "Add",
+                ),
+              ),
+              Visibility(
+                visible: addressName.length > 0,
+                child: AYDButton(
+                  onPressed: (){
+                    updateSellerAddress({
+                      'name': addressController.text.toString(),
+                      'lat': 31.3556691,
+                      'long': 74.2193974,
+                    });
+                  },
+                  buttonText: "Update",
+                ),
+              ),
+
+            ],
           ),
         ),
-      ): SpecialSpinner(),
+      ),
     );
   }
   AddSellerAddress(var data) async{
@@ -97,6 +101,12 @@ class _AddAddressState extends State<AddAddress> {
     print(  body.toString());
     if(res.statusCode == 200){
       showMsg(context, 'Address updated');
+      if(sAddress == ""){
+        sAddress = addressController.text;
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => editProfile()),);
+
+      }
     }
   }
   updateSellerAddress(var data) async{
@@ -115,8 +125,9 @@ class _AddAddressState extends State<AddAddress> {
     if(res.statusCode == 200){
       print(  body.toString());
       setState(() {
-        executed = true;
+        //executed = true;
         addressController.text = body['name'].toString();
+        addressName = body['name'].toString();
         address=body;
       });
     }

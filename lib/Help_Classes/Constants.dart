@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -220,5 +219,19 @@ getSellerNewOrdersCount() async {
         sellerOrdersCounts++;
       }
     }
+  }
+}
+
+String sAddress="";
+getSellerAddressForPostCreation(BuildContext context) async{
+  var res= await CallApi().postData({},'/getSellersAddress' );
+  var body =json.decode(res.body);
+  if(res.statusCode == 200){
+      sAddress = body['name'].toString();
+      print(sAddress);
+      showMsg(context, "Data Fetched...");
+  }
+  if(body['success'] == false){
+    sAddress = "";
   }
 }

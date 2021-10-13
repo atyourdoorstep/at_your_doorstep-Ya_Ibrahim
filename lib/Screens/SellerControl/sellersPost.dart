@@ -47,69 +47,80 @@ class _SellersPostListState extends State<SellersPostList> {
                 child: ListView.builder(
                   itemCount: categoryItem.length,
                   itemBuilder:(context , index){
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        width: double.infinity,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0.0,1.0),
-                              blurRadius: 6.0,
+                    return GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => EditPost(
+                                  postId: categoryItem[index]['id'],
+                                  itemDetails: categoryItem[index],
+                                )));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          width: double.infinity,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(0.0,1.0),
+                                blurRadius: 6.0,
+                              ),
+                            ],
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
                             ),
-                          ],
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
+                            //border: Border.all(color: Colors.red),
                           ),
-                          //border: Border.all(color: Colors.red),
-                        ),
-                        child: Center(
-                          child: ListTile(
-                            leading: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  minWidth: 60,
-                                  minHeight: 80,
-                                  maxHeight: 140,
-                                  maxWidth: 120,
-                                ),
-                                child: CircleAvatar(
-                                  //foregroundImage: NetworkImage(sampleImage,),
-                                  child: Text((index+1).toString()),)), //Image.network(categoryItem[index]['image'], fit: BoxFit.cover,)
-                            title: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(ucFirst(categoryItem[index]['name']),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
-                            ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(ucFirst(categoryItem[index]['description'], ),
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Colors.black26, fontSize: 15.0),),
-                            ),
-                            trailing: TextButton(
-                              onPressed: () {
-
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (context) => EditPost(
-                                          postId: categoryItem[index]['id'],
-                                          itemDetails: categoryItem[index],
-                                        )));
-
-                              },
-                              child: Padding(
+                          child: Center(
+                            child: ListTile(
+                              leading: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    minWidth: 60,
+                                    minHeight: 80,
+                                    maxHeight: 140,
+                                    maxWidth: 120,
+                                  ),
+                                  child: CircleAvatar(
+                                    foregroundImage: NetworkImage(categoryItem[index]['image'],),
+                                    child: Text((index+1).toString()),)), //Image.network(categoryItem[index]['image'], fit: BoxFit.cover,)
+                              title: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text("Edit", style: TextStyle(
-                                  color: Colors.blue,
-                                ),),
+                                child: Text(ucFirst(categoryItem[index]['name']),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                              ),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(ucFirst(categoryItem[index]['description'], ),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Colors.black26, fontSize: 15.0),),
+                              ),
+                              trailing: TextButton(
+                                onPressed: () {
+
+                                  Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => EditPost(
+                                            postId: categoryItem[index]['id'],
+                                            itemDetails: categoryItem[index],
+                                          )));
+
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Edit", style: TextStyle(
+                                    color: Colors.blue,
+                                  ),),
+                                ),
                               ),
                             ),
                           ),

@@ -92,7 +92,7 @@ class _HomePageOperationState extends State<HomePageOperation>
       getSellerInfo();
     }
     getCartItemsCount();
-    getSellerNewOrdersCount();
+    //getSellerNewOrdersCount();
     executed = false;
 
   }
