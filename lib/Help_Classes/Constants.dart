@@ -228,7 +228,8 @@ getSellerAddressForPostCreation(BuildContext context) async{
   var res= await CallApi().postData({},'/getSellersAddress' );
   var body =json.decode(res.body);
   if(res.statusCode == 200){
-      sAddress = body['name'].toString();
+
+      sAddress = body['address']['name'].toString();
       print(sAddress);
       showMsg(context, "Data Fetched...");
   }

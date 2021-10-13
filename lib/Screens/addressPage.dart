@@ -125,12 +125,19 @@ class _AddAddressState extends State<AddAddress> {
     if(res.statusCode == 200){
       print(  body.toString());
       setState(() {
-        //executed = true;
-        addressController.text = body['name'].toString();
-        addressName = body['name'].toString();
-        address=body;
+        addressController.text = body['address']['name'].toString();
+        addressName = body['address']['name'].toString();
+        address=body['address'];
       });
     }
-    return body;
+    else if (res.statusCode == 404){
+      setState(() {
+        addressController.text='';
+        address['name']='';
+        address['lat']='';
+        address['long']='';
+      });
+    }
+    return address;
   }
 }
