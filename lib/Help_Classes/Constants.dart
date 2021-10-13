@@ -224,6 +224,7 @@ getSellerNewOrdersCount() async {
 
 String sAddress="";
 getSellerAddressForPostCreation(BuildContext context) async{
+  sAddress = "";
   var res= await CallApi().postData({},'/getSellersAddress' );
   var body =json.decode(res.body);
   if(res.statusCode == 200){
