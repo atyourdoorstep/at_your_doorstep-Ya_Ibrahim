@@ -302,7 +302,6 @@ class _PostCreationState extends State<PostCreation> {
                     SharedPreferences localStorage = await SharedPreferences.getInstance();
                     XFile image =await imgFromGallery();
                     _createPostFunc(image,{
-                      'token': localStorage.getString('token'),
                       'name': itemNameController.text,
                       'description': itemDescController.text,
                       'category_id': getId1,

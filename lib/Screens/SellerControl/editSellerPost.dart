@@ -139,11 +139,12 @@ class _EditPostState extends State<EditPost> {
                                              onTap:() async {
                                                Navigator.of(context).pop();
                                                EasyLoading.show(status: 'loading...');
-                                               var res = await CallApi().uploadFile(await imgFromGallery(),{}, '/updatePost');
+                                               var res = await CallApi().uploadFile(await imgFromGallery(),{'id':postId}, '/updatePost');
+                                               print (res);
                                                var body = (res.data);
                                                EasyLoading.dismiss();
                                                if( body['success']) {
-                                                 showMsg(context, 'Image updated');
+                                                 // showMsg(context, 'Image updated');
                                                  setState(() {
                                                    itemImage=body['item']['image'];
                                                  });
@@ -163,11 +164,11 @@ class _EditPostState extends State<EditPost> {
                                                //_imgFromCamera
                                                Navigator.of(context).pop();
                                                EasyLoading.show(status: 'loading...');
-                                               var res = await CallApi().uploadFile(await imgFromCamera(),{}, '/updatePost');
+                                               var res = await CallApi().uploadFile(await imgFromCamera(),{'id':postId}, '/updatePost');
                                                var body = (res.data);
                                                EasyLoading.dismiss();
                                                if( body['success']) {
-                                                 showMsg(context, 'Image updated');
+                                                 // showMsg(context, 'Image updated');
                                                  setState(() {
                                                    itemImage=body['item']['image'];
                                                  });

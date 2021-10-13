@@ -8,6 +8,7 @@ import 'package:at_your_doorstep/Screens/SellerControl/createPost.dart';
 import 'package:at_your_doorstep/Screens/SellerControl/notifiedOrders.dart';
 import 'package:at_your_doorstep/Screens/ServicesRelatedPages/requestNewService.dart';
 import 'package:at_your_doorstep/Screens/SellerControl/sellerProfileUpdate.dart';
+import 'package:at_your_doorstep/Screens/addressPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
@@ -166,8 +167,13 @@ class _EditProfileOpState extends State<EditProfileOp> {
                               ],
                             ),
                           ),
-                          ListTile(title: Text("My Address", style: menuFont,),
-                            leading: Icon(Icons.location_on),
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => AddAddress()),);
+                            },
+                            child: ListTile(title: Text("My Address", style: menuFont,),
+                              leading: Icon(Icons.location_on),
+                            ),
                           ),
                           Divider(),
                           ListTile(title: Text("Complaints", style: menuFont,),

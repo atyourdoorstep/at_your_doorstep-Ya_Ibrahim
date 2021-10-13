@@ -18,7 +18,7 @@ class AYDButton extends StatelessWidget {
           TextStyle(fontSize: 18, color: Colors.white, fontFamily: "PTSans" )),
           style: ElevatedButton.styleFrom(
             primary: Colors.red,
-            fixedSize: Size(double.maxFinite,50),
+            fixedSize: Size(double.maxFinite,55),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
@@ -46,7 +46,7 @@ class AYDOutlinedButton extends StatelessWidget {
           TextStyle(fontSize: 18, color: Colors.red, fontFamily: "PTSans" )),
           style: OutlinedButton.styleFrom(
             primary: Colors.red,
-            fixedSize: Size(double.maxFinite,50),
+            fixedSize: Size(double.maxFinite,55),
             side: BorderSide(color: Colors.red),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -75,7 +75,7 @@ class AYDWithoutOutlinedButton extends StatelessWidget {
           TextStyle(fontSize: 18, color: Colors.red, fontFamily: "PTSans" )),
           style: ElevatedButton.styleFrom(
             primary: Colors.white,
-            fixedSize: Size(double.maxFinite,50),
+            fixedSize: Size(double.maxFinite,55),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
