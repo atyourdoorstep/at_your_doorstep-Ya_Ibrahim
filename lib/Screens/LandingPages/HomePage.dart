@@ -307,7 +307,7 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
   @override
   Widget build(BuildContext context) {
     return guestCheck ? WillPopScope(
-      onWillPop: ()async => false,
+      onWillPop: onWillPop,
       child: CupertinoTabScaffold(
         backgroundColor: Colors.transparent,
           tabBar: CupertinoTabBar(
@@ -394,4 +394,16 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
         }
     );
   }
+
+  Future<bool> onWillPop()async{
+    DateTime currentTime = DateTime.now();
+    bool backButton = currentBackPressTime == null || currentTime.difference(currentBackPressTime) > Duration(seconds: 3);
+    if(backButton){
+    currentBackPressTime = currentTime;
+    showMsg(context, "Double Click to exit App");
+    return false;
+  }
+    return true;
+  }
+
 }

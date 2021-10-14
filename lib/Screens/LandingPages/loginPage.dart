@@ -62,10 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (body['success']!=null) {
         if (body['success']) {
           EasyLoading.dismiss();
-          Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => CupertinoHomePage(userName:"LoginUser")));
+          Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(builder: (context) => CupertinoHomePage(userName:"LoginUser")), (Route<dynamic> route)=> false);
         }
       }
       else {
@@ -268,10 +265,8 @@ class _MyHomePageState extends State<MyHomePage> {
               .getInstance();
           localStorage.setString('token', body['token']);
           localStorage.setString('user', json.encode(body['user']));
-          Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => CupertinoHomePage(userName: "loginUser",)));
+
+          Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(builder: (context) => CupertinoHomePage(userName:"LoginUser")), (Route<dynamic> route)=> false);
         } else {
           showMsg(context, body['message']);
           //EasyLoading.showToast(body['message']);
