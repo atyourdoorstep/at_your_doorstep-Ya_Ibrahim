@@ -121,7 +121,7 @@ class _EditProfileOpState extends State<EditProfileOp> {
                 ),
                 //
                 SizedBox(
-                  height: roleOfUser == "seller"?400:290,
+                  height: roleOfUser == "seller"?460:290,
                   child: Padding(
                     padding: const EdgeInsets.all(7.0),
                     child: Card(
@@ -197,6 +197,10 @@ class _EditProfileOpState extends State<EditProfileOp> {
                               ],
                             ),
                           ),
+                          ListTile(title: Text("Order Invoice", style: menuFont,),
+                            leading: Icon(Icons.reorder),
+                          ),
+                          Divider(),
                           Visibility(
                             visible: roleOfUser == "seller",
                             child: Column(
@@ -297,26 +301,29 @@ class _EditProfileOpState extends State<EditProfileOp> {
                 ),
                 Align(
                   alignment: FractionalOffset.bottomCenter,
-                    child: Row(
-                      children: [
-                        TextButton(
-                          onPressed: () async {
-                            const url = 'https://atyourdoorstep-pk.herokuapp.com/';
-                            if(await canLaunch(url)){
-                              await launch(url);
-                            }
-                            else{
-                              throw 'Could not launch $url';
-                            }
-                          },
-                          child: Text("About", style: TextStyle(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          TextButton(
+                            onPressed: () async {
+                              const url = 'https://atyourdoorstep-pk.herokuapp.com/';
+                              if(await canLaunch(url)){
+                                await launch(url);
+                              }
+                              else{
+                                throw 'Could not launch $url';
+                              }
+                            },
+                            child: Text("About", style: TextStyle(
+                              color: Colors.black45,
+                            )),
+                          ),
+                          Text("|  Version: 1.0.0", style: TextStyle(
                             color: Colors.black45,
                           )),
-                        ),
-                        Text("|  Version: 1.0.0", style: TextStyle(
-                          color: Colors.black45,
-                        )),
-                      ],
+                        ],
+                      ),
                     ),),
               ],
             ),
