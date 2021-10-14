@@ -297,19 +297,26 @@ class _EditProfileOpState extends State<EditProfileOp> {
                 ),
                 Align(
                   alignment: FractionalOffset.bottomCenter,
-                    child: TextButton(
-                      onPressed: () async {
-                        const url = 'https://atyourdoorstep-pk.herokuapp.com/';
-                        if(await canLaunch(url)){
-                          await launch(url);
-                        }
-                        else{
-                          throw 'Could not launch $url';
-                        }
-                      },
-                      child: Text("About", style: TextStyle(
-                        color: Colors.black45,
-                      )),
+                    child: Row(
+                      children: [
+                        TextButton(
+                          onPressed: () async {
+                            const url = 'https://atyourdoorstep-pk.herokuapp.com/';
+                            if(await canLaunch(url)){
+                              await launch(url);
+                            }
+                            else{
+                              throw 'Could not launch $url';
+                            }
+                          },
+                          child: Text("About", style: TextStyle(
+                            color: Colors.black45,
+                          )),
+                        ),
+                        Text("|  Version: 1.0.0", style: TextStyle(
+                          color: Colors.black45,
+                        )),
+                      ],
                     ),),
               ],
             ),

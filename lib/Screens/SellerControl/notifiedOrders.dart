@@ -4,6 +4,7 @@ import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Screens/LandingPages/showItemPage.dart';
 import 'package:at_your_doorstep/Screens/Orders/orderDetailPage.dart';
+import 'package:at_your_doorstep/Screens/Orders/sellerOrderDetails.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -69,59 +70,68 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
                 child: ListView.builder(
                   itemCount: orderItems1.length,
                   itemBuilder:(context , index){
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  date == orderItems1[index]['created_at'].substring(0,10) ? FadeTransition(
-                                    opacity: _animationController,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Container(
-                                        color: Colors.red,
-                                        child: Text(" New ", style:
-                                        TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                                      ),
-                                    ),
-                                  ): SizedBox(),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text("New Order",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.w700),),
-                                  ),
-                                ],
-                              ),
-                              subtitle: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                    return GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                            OrderDetailsForSeller(
+                              OrdersItem: orderItems1[index]['orders'][0]['order_items'],
+                              userDetails: orderItems1[index],
+                              )),);
+                      },
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Ordered Date: ", style:
-                                    TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                                    Text(orderItems1[index]['created_at'].substring(0,10), style:
-                                    TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                    date == orderItems1[index]['orders'][0]['created_at'].substring(0,10) ? FadeTransition(
+                                      opacity: _animationController,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: Container(
+                                          color: Colors.red,
+                                          child: Text(" New ", style:
+                                          TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                                        ),
+                                      ),
+                                    ): SizedBox(),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(date == orderItems1[index]['orders'][0]['created_at'].substring(0,10) ? "New Order Request" : "Order In-progress",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.w700),),
+                                    ),
                                   ],
                                 ),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text("Ordered Date: ", style:
+                                      TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                      Text(orderItems1[index]['orders'][0]['created_at'].substring(0,10), style:
+                                      TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Divider(),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Divider(),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
                   },
                 ),
-              ): ListTile(title: Center(child: Text("No Notification Order!",
+              ): ListTile(title: Center(child: Text("No Order Notification!",
                 style: TextStyle(color: Colors.red),
               ))),
             ],
@@ -137,7 +147,7 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
     print(body[0].toString());
     if(res.statusCode == 200){
       setState(() {
-       orderItems1 = body;
+       orderItems1 = body[0];
       });
       print(orderItems1.toString());
       executed3 = true;
