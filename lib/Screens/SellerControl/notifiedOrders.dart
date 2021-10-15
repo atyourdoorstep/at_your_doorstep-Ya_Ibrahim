@@ -23,6 +23,8 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
   var today = new DateTime.now();
   var date = '';
   late AnimationController _animationController;
+  //List<Map<String ,Object>> order_items = [];
+  List<int> order_items = [];
 
   @override
   void initState() {
@@ -72,10 +74,19 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
                   itemBuilder:(context , index){
                     return GestureDetector(
                       onTap: (){
+                        order_items.clear();
+                        var orders = orderItems1[index]['orders'][0]['order_items'];
+                        print(orders.length);
+                        for(int i=0;i< orders.length ; i++){
+                          order_items.insert(i, orders[i]['id']);
+                        }
+                        print(order_items);
+
                         Navigator.push(context, MaterialPageRoute(builder: (context) =>
                             OrderDetailsForSeller(
                               OrdersItem: orderItems1[index]['orders'][0]['order_items'],
                               userDetails: orderItems1[index],
+                              ordersIdList: order_items,
                               )),);
                       },
                       child: Center(

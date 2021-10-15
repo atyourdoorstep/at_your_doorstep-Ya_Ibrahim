@@ -1,17 +1,20 @@
 import 'dart:convert';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
+import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Screens/LandingPages/showItemPage.dart';
 import 'package:at_your_doorstep/Screens/Orders/orderDetailPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 
 class OrderDetailsForSeller extends StatefulWidget {
   final OrdersItem;
   final userDetails;
-  OrderDetailsForSeller({this.OrdersItem,this.userDetails});
+  final ordersIdList;
+  OrderDetailsForSeller({this.OrdersItem,this.userDetails,this.ordersIdList});
 
 
   @override
@@ -22,11 +25,13 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
 
   var ordersItem;
   var userDetails;
+  var ordersIdList;
 
   @override
   void initState() {
     ordersItem = widget.OrdersItem;
    userDetails = widget.userDetails;
+    ordersIdList = widget.ordersIdList;
     super.initState();
   }
 
@@ -98,7 +103,7 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                 itemBuilder:(context , index){
                   return GestureDetector(
                     onTap: (){
-                      showMsg(context, "Rs. ${ordersItem[index]['item']['price']} , Quantity(s): ${ordersItem[index]['quantity']}");
+                      showMsg(context, "Rs. ${ordersItem[index]['item']['price']} , Quantity(s): ${ordersItem[index]['quantity']} , id : ${ordersItem[index]['id']}");
                     },
                     child: Center(
                       child: Padding(
@@ -162,6 +167,33 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                 )),),
               ),
             ),
+            Align(
+              alignment: FractionalOffset.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    AYDButton(onPressed: ()async{
+                      EasyLoading.show(status: 'loading...');
+                        var res= await CallApi().postData({
+                          'seller_id': sellerID,
+                          'user_id': userDetails['id'],
+                          'order_items': ordersIdList,
+                        },'/createInvoice');
+                        var body =json.decode(res.body);
+                        EasyLoading.dismiss();
+                        if(res.statusCode == 200){
+                          print(body.toString());
+                          showMsg(context, "Order Confirmed!!");
+                        }
+                    },
+                      buttonText: "Confirm Order!",
+                    ),
+                    AYDOutlinedButton(onPressed: (){},buttonText: "Cancel",)
+                  ],
+                ),
+              ),),
+            SizedBox(height: 20,),
           ],
         ),
       ),

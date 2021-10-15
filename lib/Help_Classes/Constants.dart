@@ -223,14 +223,19 @@ getSellerNewOrdersCount() async {
 }
 
 String sAddress="";
+int sellerID = 0;
 getSellerAddressForPostCreation(BuildContext context) async{
   sAddress = "";
   var res= await CallApi().postData({},'/getSellersAddress' );
   var body =json.decode(res.body);
   if(res.statusCode == 200){
 
+
       sAddress = body['address']['name'].toString();
+      sellerID = body['address']['seller_id'];
+      print(body.toString());
       print(sAddress);
+      print(sellerID);
       showMsg(context, "Data Fetched...");
   }
   if(body['success'] == false){
