@@ -4,6 +4,7 @@ import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
+import 'package:at_your_doorstep/Screens/userProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -138,26 +139,19 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
       'category_id' : idCat,
     };
     var resp;
+    EasyLoading.show(status: 'Register as a Service Provider...');
     resp= await CallApi().postData(data, '/registerSeller');
     var body = json.decode(resp.body);
     print(body.toString());
     if(body['success']){
       showMsg(context, "You have Successfully Register as a Service Provider.");
+      getRoleUser();
+      setState(() {
+        roleOfUser = "seller";
+      });
+      EasyLoading.dismiss();
       Navigator.pop(context);
-      //getRoleUser();
-       String role = "";
-      EasyLoading.show(status: 'Setting up Your Seller Profile...');
-      var res= await CallApi().postData({},'/getRole' );
-      var body =json.decode(res.body);
-      if(res.statusCode == 200){
-        role= body['roleName'];
-        setState(() {
-          roleOfUser = role;
-        });
-        if(role.toString() == "seller"){
-          EasyLoading.dismiss();
-        }
-      }
+      Navigator.push(context, MaterialPageRoute(builder: (context) => editProfile()),);
     }
     else{
       showMsg(context,body['message']);
