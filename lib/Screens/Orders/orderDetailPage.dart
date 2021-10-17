@@ -105,7 +105,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 ),
                                 trailing:  Padding(
                                   padding: const EdgeInsets.all(5.0),
-                                  child: Chip(
+                                  child: ordersDetails[index]['status'] == "processing" ? Chip(
                                     shape: StadiumBorder(side: BorderSide(color: Color(0xffD60024), width: 2)),
                                     label:Text(ucFirst(ordersDetails[index]['status']),
                                       style: TextStyle(
@@ -113,6 +113,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                                       ),
                                     ),
                                     backgroundColor: Color(0xFFFFE7E7) ,
+                                  ): Chip(
+                                    shape: StadiumBorder(side: BorderSide(color: Color(0xff0060F0), width: 2)),
+                                    label:Text(ucFirst(ordersDetails[index]['status']),
+                                      style: TextStyle(
+                                        color: Color(0xff0060F0),fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    backgroundColor: Color(0xFFE2EDFF) ,
                                   ),
                                 ),
                               ),

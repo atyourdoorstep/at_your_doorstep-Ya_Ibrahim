@@ -5,6 +5,7 @@ import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Screens/LandingPages/showItemPage.dart';
 import 'package:at_your_doorstep/Screens/Orders/orderDetailPage.dart';
+import 'package:at_your_doorstep/Screens/SellerControl/notifiedOrders.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -32,6 +33,10 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
     ordersItem = widget.OrdersItem;
    userDetails = widget.userDetails;
     ordersIdList = widget.ordersIdList;
+
+    // print(ordersItem[0]['orders'][0]['id']);
+    // print(ordersItem[0]['orders'][0]['order_items'][0]['id']);
+
     super.initState();
   }
 
@@ -139,7 +144,7 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                                 ),
                                 trailing:  Padding(
                                   padding: const EdgeInsets.all(5.0),
-                                  child: Chip(
+                                  child: ordersItem[index]['status'] == "processing" ? Chip(
                                     shape: StadiumBorder(side: BorderSide(color: Color(0xffD60024), width: 2)),
                                     label:Text(ucFirst(ordersItem[index]['status']),
                                       style: TextStyle(
@@ -147,6 +152,14 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                                       ),
                                     ),
                                     backgroundColor: Color(0xFFFFE7E7) ,
+                                  ): Chip(
+                                    shape: StadiumBorder(side: BorderSide(color: Color(0xff0060F0), width: 2)),
+                                    label:Text(ucFirst(ordersItem[index]['status']),
+                                      style: TextStyle(
+                                        color: Color(0xff0060F0),fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    backgroundColor: Color(0xFFE2EDFF) ,
                                   ),
                                 ),
                               ),
@@ -167,7 +180,7 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                 )),),
               ),
             ),
-            Align(
+            ordersItem[0]['status'] == "confirmed" ?SizedBox(): Align(
               alignment: FractionalOffset.bottomCenter,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -185,6 +198,9 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                         if(res.statusCode == 200){
                           print(body.toString());
                           showMsg(context, "Order Confirmed!!");
+
+                          Navigator.pop(context);
+                          Navigator.pop(context);
                         }
                     },
                       buttonText: "Confirm Order!",

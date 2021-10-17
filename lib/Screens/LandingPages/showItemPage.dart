@@ -166,70 +166,125 @@ class _ShowItemPageState extends State<ShowItemPage> {
                   ],
                 ),
               ): SizedBox(),
-              AYDButton(
-                buttonText: items['type'] == "product" ?
-                (items['inStock'] == 1 ? "Add to cart" : "Out of Stock"):
-                (items['inStock'] == 1 ? "Book now" : "Not Available"),
-                onPressed: items['inStock'] == 1 ? () async {
-                 if(userD['fName'] != "Guest"){
-                   EasyLoading.show(status: 'loading...');
-                   var res= await CallApi().postData(
-                       {
-                         "item_id": items['id'],
-                         "quantity": quantity,
-                       },'/addToCart' );
-                   var body =json.decode(res.body);
-                   EasyLoading.dismiss();
-                   print(body.toString());
-                   if(body["success"] == true){
-                     showMsg(context, "Add to Cart Successfully",);
-                     setState(() {
-                       cartCount = body['cart']["cart_items"].length;
-                     });
+              Visibility(
+                visible: items['type'] == "product" ,
+                child: AYDButton(
+                  buttonText: items['inStock'] == 1 ? "Add to cart" : "Out of Stock",
+                  onPressed: items['inStock'] == 1 ? () async {
+                   if(userD['fName'] != "Guest"){
+                     EasyLoading.show(status: 'loading...');
+                     var res= await CallApi().postData(
+                         {
+                           "item_id": items['id'],
+                           "quantity": quantity,
+                         },'/addToCart' );
+                     var body =json.decode(res.body);
+                     EasyLoading.dismiss();
+                     print(body.toString());
+                     if(body["success"] == true){
+                       showMsg(context, "Add to Cart Successfully",);
+                       setState(() {
+                         cartCount = body['cart']["cart_items"].length;
+                       });
+                     }
+                     if(body["success"] == false){
+                       showMsg(context, body['message'],);
+                     }
                    }
-                   if(body["success"] == false){
-                     showMsg(context, body['message'],);
-                   }
-                 }
-                 else{
-                   showDialog(
-                       context: context,
-                       builder: (BuildContext context) {
-                         return AlertDialog(
-                           title: Column(
-                             children: [
-                               Image.asset("assets/atyourdoorstep.png",
-                                 height: 40,
-                                 width: 40,
+                   else{
+                     showDialog(
+                         context: context,
+                         builder: (BuildContext context) {
+                           return AlertDialog(
+                             title: Column(
+                               children: [
+                                 Image.asset("assets/atyourdoorstep.png",
+                                   height: 40,
+                                   width: 40,
+                                 ),
+                                 SizedBox(height: 6,),
+                                 Text("Happy For you!"),
+                               ],
+                             ),
+                             content: Text("You are login as a Guest. Do you want to Register as a Customer?"),
+                             actions: [
+                               TextButton(
+                                 onPressed: () {
+                                   Navigator.pop(context);
+                                   Navigator.pop(context);
+                                 },
+                                 child: Text("Yes"),
+
                                ),
-                               SizedBox(height: 6,),
-                               Text("Happy For you!"),
+                               TextButton(
+                                 onPressed: () {
+                                   Navigator.pop(context);
+                                 },
+                                 child: Text("No"),
+
+                               ),
                              ],
-                           ),
-                           content: Text("You are login as a Guest. Do you want to Register as a Customer?"),
-                           actions: [
-                             TextButton(
-                               onPressed: () {
-                                 Navigator.pop(context);
-                                 Navigator.pop(context);
-                               },
-                               child: Text("Yes"),
+                           );
+                         }
+                     );
+                   }
 
-                             ),
-                             TextButton(
-                               onPressed: () {
-                                 Navigator.pop(context);
-                               },
-                               child: Text("No"),
-
-                             ),
-                           ],
-                         );
-                       }
-                   );
-                 }
-
-                }: null,
+                  }: null,
+                ),
+              ),
+              Visibility(
+                visible: items['type'] == "service",
+                child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: AYDButton(
+                    buttonText: "Book Now",
+                    onPressed: () async {
+                        EasyLoading.show(status: 'Creating Order...');
+                        var res= await CallApi().postData({
+                          'items': [ {
+                            'item_id': items['id'],
+                            'quantity': 1,
+                          }],
+                        },'/orderCreate');
+                        var body =json.decode(res.body);
+                        print(body.toString());
+                        EasyLoading.dismiss();
+                        if(res.statusCode == 200){
+                          showMsg(context,"Service Booked Successfully!!");
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text("Order Created Successfully ", style:
+                                  TextStyle(fontSize: 15, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+                                  title: Column(
+                                    children: [
+                                      Image.asset("assets/atyourdoorstep.png",
+                                        height: 40,
+                                        width: 40,
+                                      ),
+                                      SizedBox(height: 5,),
+                                      Text("Order!"),
+                                    ],
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("Close"),
+                                    ),
+                                  ],
+                                );
+                              });
+                          /////
+                        }
+                        else{
+                          showMsg(context,"There is some issues");
+                        }
+                    },
+                  ),
+                ),
               ),
               SizedBox(
                 height: 50.0,
