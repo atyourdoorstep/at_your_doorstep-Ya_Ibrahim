@@ -206,7 +206,7 @@ class _ShowItemPageState extends State<ShowItemPage> {
                                  Text("Happy For you!"),
                                ],
                              ),
-                             content: Text("You are login as a Guest. Do you want to Register as a Customer?"),
+                             content: Text("You logged in as a Guest. Do you want to Register as a Customer?"),
                              actions: [
                                TextButton(
                                  onPressed: () {
@@ -238,7 +238,8 @@ class _ShowItemPageState extends State<ShowItemPage> {
                   alignment: FractionalOffset.bottomCenter,
                   child: AYDButton(
                     buttonText: "Book Now",
-                    onPressed: () async {
+                    onPressed: items['inStock'] == 1 ? () async {
+                      if(userD['fName'] != "Guest"){
                         EasyLoading.show(status: 'Creating Order...');
                         var res= await CallApi().postData({
                           'items': [ {
@@ -282,7 +283,45 @@ class _ShowItemPageState extends State<ShowItemPage> {
                         else{
                           showMsg(context,"There is some issues");
                         }
-                    },
+                        }
+                      else{
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Column(
+                                  children: [
+                                    Image.asset("assets/atyourdoorstep.png",
+                                      height: 40,
+                                      width: 40,
+                                    ),
+                                    SizedBox(height: 6,),
+                                    Text("Happy For you!"),
+                                  ],
+                                ),
+                                content: Text("You logged in as a Guest. Do you want to Register as a Customer?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("Yes"),
+
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("No"),
+
+                                  ),
+                                ],
+                              );
+                            }
+                        );
+                      }
+                    }: null,
                   ),
                 ),
               ),
