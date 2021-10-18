@@ -97,7 +97,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Text("Quantity(s): "+ordersDetails[index]['quantity'].toString(), style: TextStyle(
+                                      child: ordersDetails[index]['item']['type'] == 'product' ? Text("Quantity(s): "+ordersDetails[index]['quantity'].toString(), style: TextStyle(
+                                        color: Colors.blue,
+                                      ),): Text("Service is Booked ", style: TextStyle(
                                         color: Colors.blue,
                                       ),),
                                     ),
