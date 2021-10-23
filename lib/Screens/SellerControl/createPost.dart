@@ -12,7 +12,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PostCreation extends StatefulWidget {
-  const PostCreation({Key? key}) : super(key: key);
+  final String typeofPost;
+  PostCreation({required this.typeofPost});
 
   @override
   _PostCreationState createState() => _PostCreationState();
@@ -20,6 +21,7 @@ class PostCreation extends StatefulWidget {
 
 class _PostCreationState extends State<PostCreation> {
 
+  late String typeofPost;
   TextEditingController itemNameController = TextEditingController();
   TextEditingController itemDescController = TextEditingController();
   TextEditingController itemPriceController = TextEditingController();
@@ -36,9 +38,6 @@ class _PostCreationState extends State<PostCreation> {
   late var currentServiceDetails;
   late var categoryList;
   bool load3rd = false;
-  late List<bool> isSelected;
-  late List<String> isType;
-  late String selectedType;
 
   getSellerRegisteredCategory()async
   {
@@ -80,15 +79,12 @@ class _PostCreationState extends State<PostCreation> {
 
   @override
   void initState() {
+    typeofPost = widget.typeofPost;
     getSellerRegisteredCategory();
     //getChildrenCategory();
     executed = false;
     executed1 = false;
     load3rd = false;
-    isSelected = [true , false];
-    isType = ['product', 'service'];
-    selectedType = isType[0];
-    print(selectedType);
     super.initState();
   }
 
@@ -125,9 +121,9 @@ class _PostCreationState extends State<PostCreation> {
               SizedBox(
                 height: 30.0,
               ),
-              textfieldStyle(textHint: "Item Name", obscureText: false, textLabel1:'Item Name',controllerText: itemNameController,),
+              textfieldStyle(textHint: typeofPost == 'product' ? "Item Name" : "Service Title", obscureText: false, textLabel1:typeofPost == 'product' ? "Item Name" : "Service Title",controllerText: itemNameController,),
               textfieldStyle(textHint: "Description", obscureText: false, textLabel1:'Description',controllerText: itemDescController,),
-              textfieldStyle(textHint: "Price", obscureText: false, textLabel1:'Adjust item Price',controllerText: itemPriceController,),
+              textfieldStyle(textHint: typeofPost == 'product' ? "Price" : "Charges", obscureText: false, textLabel1:typeofPost == 'product' ? "Adjust item Price" : "Charges/Consultancy fees",controllerText: itemPriceController,),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -258,42 +254,6 @@ class _PostCreationState extends State<PostCreation> {
                     }
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text("Type of Post:"),
-                  trailing: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ToggleButtons(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      isSelected: isSelected,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Product"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Service"),
-                        ),
-                      ],
-                      onPressed: (int index){
-                        setState(() {
-                          for(int i=0; i< isSelected.length; i++){
-                            isSelected[i]= i == index;
-                           if(isSelected[i] == true){
-                             setState(() {
-                               selectedType = isType[i];
-                             });
-                             print(selectedType);
-                           }
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
               AYDButton(
                 onPressed: () async {
                   if(itemPriceController.text != '' && checkIn != null &&
@@ -307,7 +267,7 @@ class _PostCreationState extends State<PostCreation> {
                       'category_id': getId1,
                       'price': itemPriceController.text,
                       'isBargainAble': checkIn,
-                      'type': selectedType,
+                      'type': typeofPost,
                     }
                     );
                   }

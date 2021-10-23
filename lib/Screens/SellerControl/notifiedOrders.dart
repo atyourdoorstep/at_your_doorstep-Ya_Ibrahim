@@ -22,7 +22,7 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
   bool executed3 = false;
   var today = new DateTime.now();
   var date = '';
-  late AnimationController _animationController;
+  //late AnimationController _animationController;
   //List<Map<String ,Object>> order_items = [];
   List<int> order_items = [];
 
@@ -30,15 +30,15 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
   void initState() {
     executed3 = false;
     date = today.toString().substring(0,10);
-    _animationController = new AnimationController(vsync: this , duration: Duration(seconds: 1));
-    _animationController.repeat(reverse: true);
+   // _animationController = new AnimationController(vsync: this , duration: Duration(seconds: 1));
+   // _animationController.repeat(reverse: true);
     getOrderedItemsSeller();
     super.initState();
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+   // _animationController.dispose();
     super.dispose();
   }
 
@@ -98,17 +98,17 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
                                 title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    date == orderItems1[index]['orders'][0]['created_at'].substring(0,10) ? FadeTransition(
-                                      opacity: _animationController,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                        child: Container(
-                                          color: Colors.red,
-                                          child: Text(" New ", style:
-                                          TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                                        ),
-                                      ),
-                                    ): SizedBox(),
+                                    // date == orderItems1[index]['orders'][0]['created_at'].substring(0,10) ? FadeTransition(
+                                    //   opacity: _animationController,
+                                    //   child: Padding(
+                                    //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                    //     child: Container(
+                                    //       color: Colors.red,
+                                    //       child: Text(" New ", style:
+                                    //       TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                                    //     ),
+                                    //   ),
+                                    // ): SizedBox(),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(date == orderItems1[index]['orders'][0]['created_at'].substring(0,10) ? "New Order Request" : "Order In-progress",

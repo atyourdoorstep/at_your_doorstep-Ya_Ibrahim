@@ -158,8 +158,64 @@ class _EditProfileOpState extends State<EditProfileOp> {
                                 GestureDetector(
                                   onTap:(){
                                      if(sAddress.length > 1){
-                                       Navigator.push(context, new MaterialPageRoute(
-                                           builder: (context) =>PostCreation()));
+                                       showModalBottomSheet(
+                                         elevation: 20.0,
+                                         context: context,
+                                         builder: (context) => Container(
+                                           height: 250,
+                                           color: Colors.transparent,
+                                           child: Column(
+                                             crossAxisAlignment: CrossAxisAlignment.start,
+                                             children: [
+                                               Padding(
+                                                 padding: const EdgeInsets.all(9.0),
+                                                 child: Text("Create New Post", style:
+                                                 TextStyle(fontSize: 20, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                               ),
+
+                                               Container(
+                                                 decoration: BoxDecoration(
+                                                   color: Colors.white,
+                                                   borderRadius: BorderRadius.only(
+                                                     topLeft: Radius.circular(10.0),
+                                                     topRight: Radius.circular(10.0),
+                                                   ),
+                                                 ),
+                                                 child: Padding(
+                                                   padding: const EdgeInsets.all(8.0),
+                                                   child: Column(
+                                                     children: [
+                                                       GestureDetector(
+                                                         onTap:() async {
+                                                           Navigator.push(context, new MaterialPageRoute(
+                                                               builder: (context) =>PostCreation(typeofPost: "product",)));
+                                                         },
+                                                         child: ListTile(
+                                                           leading: CircleAvatar(child: Icon(Icons.shopping_bag_outlined)),
+                                                           title: Text("Items", style: menuFont,),
+                                                         ),
+                                                       ),
+                                                       Divider(),
+                                                       GestureDetector(
+                                                         onTap:() async {
+                                                           Navigator.push(context, new MaterialPageRoute(
+                                                               builder: (context) =>PostCreation(typeofPost: "service",)));
+                                                         },
+                                                         child: ListTile(
+                                                           leading: CircleAvatar(child: Icon(Icons.home_repair_service)),
+                                                           title: Text("Service", style: menuFont,),
+                                                         ),
+                                                       ),
+                                                     ],
+                                                   ),
+                                                 ),
+                                               ),
+                                             ],
+                                           ),
+                                         ),
+                                       );
+                                       // Navigator.push(context, new MaterialPageRoute(
+                                       //     builder: (context) =>PostCreation()));
                                      }
                                      else{
                                        showDialog(

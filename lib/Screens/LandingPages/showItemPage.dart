@@ -244,8 +244,7 @@ class _ShowItemPageState extends State<ShowItemPage> {
                         var res= await CallApi().postData({
                           'items': [ {
                             'item_id': items['id'],
-                            'quantity': 1,
-                          }],
+                            'quantity': 1,}],
                         },'/orderCreate');
                         var body =json.decode(res.body);
                         print(body.toString());
