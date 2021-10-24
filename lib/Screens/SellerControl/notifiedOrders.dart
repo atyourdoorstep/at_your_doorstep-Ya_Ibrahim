@@ -74,20 +74,23 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
                   itemBuilder:(context , index){
                     return GestureDetector(
                       onTap: (){
-                        order_items.clear();
-                        var orders = orderItems1[index]['orders'][0]['order_items'];
-                        print(orders.length);
-                        for(int i=0;i< orders.length ; i++){
-                          order_items.insert(i, orders[i]['id']);
-                        }
-                        print(order_items);
+                        // order_items.clear();
+                        // var orders = orderItems1[index]['orders'][0]['order_items'];
+                        // print(orders.length);
+                        // for(int i=0;i< orders.length ; i++){
+                        //   order_items.insert(i, orders[i]['id']);
+                        // }
+                        // print(order_items);
 
                         Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                            OrderDetailsForSeller(
-                              OrdersItem: orderItems1[index]['orders'][0]['order_items'],
-                              userDetails: orderItems1[index],
-                              ordersIdList: order_items,
-                              )),);
+                            OrdersListSellerSide(orderItems: orderItems1[index]['orders'],)),);
+
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                        //     OrderDetailsForSeller(
+                        //       OrdersItem: orderItems1[index]['orders'][0]['order_items'],
+                        //       userDetails: orderItems1[index],
+                        //       ordersIdList: order_items,
+                        //       )),);
                       },
                       child: Center(
                         child: Padding(
@@ -111,7 +114,7 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
                                     // ): SizedBox(),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text(date == orderItems1[index]['orders'][0]['created_at'].substring(0,10) ? "New Order Request" : "Order In-progress",
+                                      child: Text("${ucFirst(orderItems1[index]['fName'])} ${ucFirst(orderItems1[index]['lName'])}",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                             color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.w700),),
@@ -123,12 +126,17 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Text("Ordered Date: ", style:
+                                      Text("Customer ID: ", style:
                                       TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                                      Text(orderItems1[index]['orders'][0]['created_at'].substring(0,10), style:
+                                      Text("${orderItems1[index]['id']}", style:
                                       TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                                     ],
                                   ),
+                                ),
+                                trailing: Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Text("No of Orders: ${orderItems1[index]['orders'].length}", style:
+                                  TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                                 ),
                               ),
                               Padding(
@@ -160,9 +168,107 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
       setState(() {
        orderItems1 = body[0];
       });
+      orderItems1 = orderItems1.reversed.toList();
       print(orderItems1.toString());
       executed3 = true;
-      orderItems1 = orderItems1.reversed.toList();
     }
+  }
+}
+
+class OrdersListSellerSide extends StatefulWidget {
+  final orderItems;
+  OrdersListSellerSide({this.orderItems});
+
+  @override
+  _OrdersListSellerSideState createState() => _OrdersListSellerSideState();
+}
+
+class _OrdersListSellerSideState extends State<OrdersListSellerSide> {
+  var orderItems;
+
+  @override
+  void initState() {
+    orderItems = widget.orderItems;
+    orderItems = orderItems.reversed.toList();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+        ),
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 500,
+              child: ListView.builder(
+                itemCount: orderItems.length,
+                itemBuilder:(context , index){
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Order #${index+1}",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.w700),),
+                                ),
+                              ],
+                            ),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text("Ordered Date: ", style:
+                                  TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                  Text(orderItems[index]['order_items'][0]['created_at'].substring(0,10), style:
+                                  TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                ],
+                              ),
+                            ),
+                            trailing: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ElevatedButton(onPressed: () {
+                                // Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                //     OrderDetails(orderNo: "Order #${index+1}",
+                                //       ordersDetails: orderItems[index]['order_items'],
+                                //     )),);
+                              },
+                                  child: Text("Order Details")),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Divider(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

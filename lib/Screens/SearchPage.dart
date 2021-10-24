@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Screens/LandingPages/showItemPage.dart';
+import 'package:at_your_doorstep/Screens/SellerControl/showSellerProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -165,40 +166,46 @@ class _SearchPageState extends State<SearchPage> {
               child: ListView.builder(
                 itemCount: searchItem1.length,
                 itemBuilder:(context , index){
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0.0,1.0),
-                              blurRadius: 6.0,
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                           title: Text(ucFirst(searchItem1[index]['user_name']),
-                             overflow: TextOverflow.ellipsis,
-                             style: TextStyle(
-                                 color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
-                            trailing: searchItem1[index]['is_active'] == 1 ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Available", style: TextStyle(
-                                color: Colors.green,
-                              ),),
-                            ):Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Not Available", style: TextStyle(
-                                color: Colors.red,
-                              ),),
-                            ),
+                  return GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, new MaterialPageRoute(
+                          builder: (context) =>ShowSellerProfile(sellerID: searchItem1[index]['id'],)));
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(0.0,1.0),
+                                blurRadius: 6.0,
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                             title: Text(ucFirst(searchItem1[index]['user_name']),
+                               overflow: TextOverflow.ellipsis,
+                               style: TextStyle(
+                                   color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                              trailing: searchItem1[index]['is_active'] == 1 ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Available", style: TextStyle(
+                                  color: Colors.green,
+                                ),),
+                              ):Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Not Available", style: TextStyle(
+                                  color: Colors.red,
+                                ),),
+                              ),
 
+                            ),
                           ),
                         ),
                       ),

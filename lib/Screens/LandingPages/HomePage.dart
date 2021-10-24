@@ -225,7 +225,7 @@ class _HomePageOperationState extends State<HomePageOperation>
                                 child: Center(
                                     child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(serviceNames["data"][index]['name'],),
+                                child: Text(serviceNames["data"][index]['name'],style: TextStyle(fontWeight: FontWeight.w500),),
                               )),
                                 shadowColor: Colors.grey[300],
                                 shape: RoundedRectangleBorder(

@@ -70,14 +70,15 @@ class _EditProfileOpState extends State<EditProfileOp> {
                           TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w500 )):SizedBox(),
                         ],
                       ),
+                      SizedBox(width: 12.0),
                       roleOfUser == "seller" ? Stack(
                           alignment: AlignmentDirectional.topEnd,
                         children: [
-                          IconButton(
-                            onPressed: (){
+                          ElevatedButton(
+                            onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
                             },
-                            icon: Icon(Icons.notifications_none_rounded, size: 25),
+                            child: Text("Orders"),
                           ),
                           sellerOrdersCounts > 0 ?CircleAvatar(backgroundColor: Colors.red,child: Text(sellerOrdersCounts.toString()),radius: 10,): SizedBox(),
                         ],
