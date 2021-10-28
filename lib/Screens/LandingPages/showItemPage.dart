@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
+import 'package:at_your_doorstep/paymentPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -240,48 +241,53 @@ class _ShowItemPageState extends State<ShowItemPage> {
                     buttonText: "Book Now",
                     onPressed: items['inStock'] == 1 ? () async {
                       if(userD['fName'] != "Guest"){
-                        EasyLoading.show(status: 'Creating Order...');
-                        var res= await CallApi().postData({
-                          'items': [ {
-                            'item_id': items['id'],
-                            'quantity': 1,}],
-                        },'/orderCreate');
-                        var body =json.decode(res.body);
-                        print(body.toString());
-                        EasyLoading.dismiss();
-                        if(res.statusCode == 200){
-                          showMsg(context,"Service Booked Successfully!!");
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Text("Order Created Successfully ", style:
-                                  TextStyle(fontSize: 15, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
-                                  title: Column(
-                                    children: [
-                                      Image.asset("assets/atyourdoorstep.png",
-                                        height: 40,
-                                        width: 40,
-                                      ),
-                                      SizedBox(height: 5,),
-                                      Text("Order!"),
-                                    ],
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("Close"),
-                                    ),
-                                  ],
-                                );
-                              });
-                          /////
-                        }
-                        else{
-                          showMsg(context,"There is some issues");
-                        }
+
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => PaymentPage(ordersList: [ {'item_id': items['id'], 'quantity': 1,}],)));
+                        // EasyLoading.show(status: 'Creating Order...');
+                        // var res= await CallApi().postData({
+                        //   'items': [ {
+                        //     'item_id': items['id'],
+                        //     'quantity': 1,}],
+                        // },'/orderCreate');
+                        // var body =json.decode(res.body);
+                        // print(body.toString());
+                        // EasyLoading.dismiss();
+                        // if(res.statusCode == 200){
+                        //   showMsg(context,"Service Booked Successfully!!");
+                        //   showDialog(
+                        //       context: context,
+                        //       builder: (BuildContext context) {
+                        //         return AlertDialog(
+                        //           content: Text("Order Created Successfully ", style:
+                        //           TextStyle(fontSize: 15, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+                        //           title: Column(
+                        //             children: [
+                        //               Image.asset("assets/atyourdoorstep.png",
+                        //                 height: 40,
+                        //                 width: 40,
+                        //               ),
+                        //               SizedBox(height: 5,),
+                        //               Text("Order!"),
+                        //             ],
+                        //           ),
+                        //           actions: [
+                        //             TextButton(
+                        //               onPressed: () {
+                        //                 Navigator.pop(context);
+                        //               },
+                        //               child: Text("Close"),
+                        //             ),
+                        //           ],
+                        //         );
+                        //       });
+                        //   /////
+                        // }
+                        // else{
+                        //   showMsg(context,"There is some issues");
+                        // }
                         }
                       else{
                         showDialog(
