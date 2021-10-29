@@ -9,6 +9,7 @@ import 'package:at_your_doorstep/Screens/Orders/orderDetailPage.dart';
 import 'package:at_your_doorstep/Screens/Orders/sellerOrderDetails.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class PaymentPage extends StatefulWidget {
   final ordersList;
@@ -26,6 +27,7 @@ class _PaymentPageState extends State<PaymentPage> {
   TextEditingController expYearController = TextEditingController();
   TextEditingController expMonthController = TextEditingController();
   var ordersList;
+  var stripToken;
 
   @override
   void initState() {
@@ -69,18 +71,43 @@ class _PaymentPageState extends State<PaymentPage> {
             Row(
               children: [
                 Expanded(child: textfieldStyle(textHint: 'Expiry  Month', obscureText: false, textLabel1: 'Expiry  Month ',controllerText: expMonthController,keyBoardType: TextInputType.number,inputAction: TextInputAction.next)),
-                Expanded(child: textfieldStyle(textHint: 'Expiry Year', obscureText: true, textLabel1: 'Expiry Year',controllerText: expYearController, inputAction: TextInputAction.next, keyBoardType: TextInputType.number)),
+                Expanded(child: textfieldStyle(textHint: 'Expiry Year', obscureText: false, textLabel1: 'Expiry Year',controllerText: expYearController, inputAction: TextInputAction.next, keyBoardType: TextInputType.number)),
               ],
             ),
             textfieldStyle(textHint: 'CVC', obscureText: false, textLabel1: 'CVC ',controllerText: cvcController,keyBoardType: TextInputType.number,inputAction: TextInputAction.done),
             SizedBox(height: 30),
             AYDButton(
               buttonText: "Pay now",
-              onPressed: (){},
+              onPressed: (){
+                getStripeToken({
+                  'number': cardNoController.text,
+                  'exp_month': expMonthController.text,
+                  'cvc': cvcController.text,
+                  'exp_year': expYearController.text,
+                });
+              },
             )
           ],
         ),
       ),
     );
   }
+
+  getStripeToken(var data) async {
+    stripToken={};
+    EasyLoading.show(status: 'Generating Token...');
+    var res= await CallApi().postData(data,'/getStripToken');
+    var body =json.decode(res.body);
+    EasyLoading.dismiss();
+    if(res.statusCode == 200){
+      setState(() {
+        stripToken = body;
+      });
+      print(stripToken.toString());
+    }
+    if(body['success']== false){
+      showMsg(context, body['message']);
+    }
+  }
+
 }
