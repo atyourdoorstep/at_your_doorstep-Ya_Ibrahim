@@ -48,19 +48,97 @@ class _ShowSellerProfileState extends State<ShowSellerProfile> {
           //sellerResult['catItems'].length
           children: [
             SizedBox(
-              height: 200,
+              height: 700,
               child: ListView.builder(
                 itemCount: sellerResult['catItems'].length,
                 itemBuilder: (context , index){
                   return
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(ucFirst(sellerResult['catItems'][index]['name']),
-                        style: TextStyle(
-                          color: Color(0xffD60024),fontWeight: FontWeight.w600,
-                          fontSize: 20,
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(ucFirst(sellerResult['catItems'][index]['name']),
+                            style: TextStyle(
+                              color: Color(0xffD60024),fontWeight: FontWeight.w600,
+                              fontSize: 25,
+                            ),
+                          ),
                         ),
-                      ),
+                        ////
+                        ListView.builder(
+                          physics: ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: sellerResult['catItems'][index]['items'].length,
+                          itemBuilder:(context , index1){
+                            return GestureDetector(
+                              onTap: (){
+                                Navigator.push(context, new MaterialPageRoute(
+                                    builder: (context) =>ShowItemPage(itemDetails: sellerResult['catItems'][index]['items'][index1],)));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 120,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        offset: Offset(0.0,1.0),
+                                        blurRadius: 6.0,
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0),
+                                    ),
+                                    //border: Border.all(color: Colors.red),
+                                  ),
+                                  child: Center(
+                                    child: ListTile(
+                                      leading: ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                            minWidth: 60,
+                                            minHeight: 80,
+                                            maxHeight: 140,
+                                            maxWidth: 120,
+                                          ),
+                                          child: Image.network(sellerResult['catItems'][index]['items'][index1]['image'], fit: BoxFit.cover,)),
+                                      title: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(ucFirst(sellerResult['catItems'][index]['items'][index1]['name']),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                              color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                                      ),
+                                      subtitle: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(ucFirst(sellerResult['catItems'][index]['items'][index1]['description'], ),
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              color: Colors.black26, fontSize: 15.0),),
+                                      ),
+                                      trailing: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                          child: Text("Rs. "+sellerResult['catItems'][index]['items'][index1]['price'].toString(), style: TextStyle(
+                                            color: Colors.blue,
+                                          ),),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );//categoryItem[index]['image']
+                          },
+                        ),
+                        ////
+                      ],
                     );
                 },
               ),
