@@ -9,7 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 
 class SuggestNewService extends StatefulWidget {
-  const SuggestNewService({Key? key}) : super(key: key);
+  final title;
+  SuggestNewService({this.title});
 
   @override
   _SuggestNewServiceState createState() => _SuggestNewServiceState();
@@ -20,12 +21,14 @@ class _SuggestNewServiceState extends State<SuggestNewService> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController desNameController = TextEditingController();
   TextEditingController mailController = TextEditingController();
+  late String title;
 
   @override
   void initState() {
     // TODO: implement initState
     mailController.text= userD['email'].toString();
     firstNameController.text= userD['fName'].toString();
+    title = widget.title;
     super.initState();
   }
 
@@ -59,7 +62,7 @@ class _SuggestNewServiceState extends State<SuggestNewService> {
                           height: 40,
                         ),
                         Center(
-                          child: Text("REQUEST FOR NEW SERVICE", style:
+                          child: Text(title, style:
                           TextStyle(fontSize: 25, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
                         ),
                         SizedBox(

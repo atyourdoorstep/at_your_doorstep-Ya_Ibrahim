@@ -42,6 +42,8 @@ class _EditProfileOpState extends State<EditProfileOp> {
     super.initState();
     getSellerAddressForPostCreation(context);
     userData=userD;
+    print(userD['address'].toString());
+    //userD['address'] == null
     fullNameController.text=ucFirst(userData['fName'].toString())+' '+ucFirst(userData['fName'].toString());
   }
   @override
@@ -274,13 +276,19 @@ class _EditProfileOpState extends State<EditProfileOp> {
                               ],
                             ),
                           ),
-                          ListTile(title: Text("Complaints", style: menuFont,),
-                            leading: Icon(Icons.edit),
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => SuggestNewService(title: "Complaints",)),);
+
+                            },
+                            child: ListTile(title: Text("Complaints", style: menuFont,),
+                              leading: Icon(Icons.edit),
+                            ),
                           ),
                           Divider(),
                           GestureDetector(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SuggestNewService()),);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => SuggestNewService(title: "REQUEST FOR NEW SERVICE")),);
                             },
                             child: ListTile(title: Text("Suggest New Service", style: menuFont,),
                               leading: Icon(Icons.add_chart),

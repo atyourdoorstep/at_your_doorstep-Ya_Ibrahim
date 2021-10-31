@@ -7,6 +7,8 @@ import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
 import 'package:at_your_doorstep/Screens/LandingPages/showItemPage.dart';
 import 'package:at_your_doorstep/Screens/Orders/orderDetailPage.dart';
 import 'package:at_your_doorstep/Screens/Orders/sellerOrderDetails.dart';
+import 'package:at_your_doorstep/Screens/checkOutPage.dart';
+import 'package:at_your_doorstep/Screens/getAddressFromCustomer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -56,7 +58,11 @@ class _PaymentPageState extends State<PaymentPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
-              child: Text("AYD PAYMENT", style:
+              child: Text("AT YOUR DOORSTEP", style:
+              TextStyle(fontSize: 20, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+            ),
+            Center(
+              child: Text("PAYMENT", style:
               TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
             ),
             SizedBox(
@@ -103,7 +109,15 @@ class _PaymentPageState extends State<PaymentPage> {
       setState(() {
         stripToken = body;
       });
-      print(stripToken.toString());
+      print(stripToken['token']['id'].toString());
+       if(userD['address'] == null){
+         Navigator.push(context, new MaterialPageRoute(
+             builder: (context) =>AskingForAddressOrderTime(striprToken: stripToken['token']['id'],ordersList: ordersList,)));
+       }
+       else{
+         Navigator.push(context, new MaterialPageRoute(
+             builder: (context) =>CheckoutPage(stripToken: stripToken['token']['id'],ordersList: ordersList,)));
+       }
     }
     if(body['success']== false){
       showMsg(context, body['message']);

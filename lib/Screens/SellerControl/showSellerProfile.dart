@@ -61,26 +61,29 @@ class _ShowSellerProfileState extends State<ShowSellerProfile> {
                   ),
                 ),
               ),
-              TextButton(
-                onPressed: () async {
-                  //const url = sellerResult['profile']['url'];
-                  if(await canLaunch(sellerResult['profile']['url'])){
-                    await launch(sellerResult['profile']['url']);
-                  }
-                  else{
-                    throw 'Could not launch ${sellerResult['profile']['url']}';
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(ucFirst(sellerResult['profile']['url']),
-                    style: TextStyle(
-                      color: Colors.black26,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-              ),
+              // Visibility(
+              //   visible: sellerResult['profile']['url'] == null,
+              //   child: TextButton(
+              //     onPressed: () async {
+              //       //const url = sellerResult['profile']['url'];
+              //       if(await canLaunch(sellerResult['profile']['url'])){
+              //         await launch(sellerResult['profile']['url']);
+              //       }
+              //       else{
+              //         throw 'Could not launch ${sellerResult['profile']['url']}';
+              //       }
+              //     },
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(10.0),
+              //       child: Text(ucFirst(sellerResult['profile']['url']),
+              //         style: TextStyle(
+              //           color: Colors.black26,
+              //           fontSize: 15,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
 
     SizedBox(
                 height: 700,
