@@ -15,8 +15,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class PaymentPage extends StatefulWidget {
   final ordersList;
+  final itemsDetails;
 
-  PaymentPage({this.ordersList});
+  PaymentPage({this.ordersList, this.itemsDetails});
 
   @override
   _PaymentPageState createState() => _PaymentPageState();
@@ -29,11 +30,13 @@ class _PaymentPageState extends State<PaymentPage> {
   TextEditingController expYearController = TextEditingController();
   TextEditingController expMonthController = TextEditingController();
   var ordersList;
+  var itemsDetails;
   var stripToken;
 
   @override
   void initState() {
     ordersList = widget.ordersList;
+    itemsDetails = widget.itemsDetails;
     print(ordersList.toString());
     super.initState();
   }
@@ -76,7 +79,7 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
             Row(
               children: [
-                Expanded(child: textfieldStyle(textHint: 'Expiry  Month', obscureText: false, textLabel1: 'Expiry  Month ',controllerText: expMonthController,keyBoardType: TextInputType.number,inputAction: TextInputAction.next)),
+                Expanded(child: textfieldStyle(textHint: 'Expiry Month', obscureText: false, textLabel1: 'Expiry Month ',controllerText: expMonthController,keyBoardType: TextInputType.number,inputAction: TextInputAction.next)),
                 Expanded(child: textfieldStyle(textHint: 'Expiry Year', obscureText: false, textLabel1: 'Expiry Year',controllerText: expYearController, inputAction: TextInputAction.next, keyBoardType: TextInputType.number)),
               ],
             ),
@@ -112,11 +115,11 @@ class _PaymentPageState extends State<PaymentPage> {
       print(stripToken['token']['id'].toString());
        if(userD['address'] == null){
          Navigator.push(context, new MaterialPageRoute(
-             builder: (context) =>AskingForAddressOrderTime(striprToken: stripToken['token']['id'],ordersList: ordersList,)));
+             builder: (context) =>AskingForAddressOrderTime(striprToken: stripToken['token']['id'],ordersList: ordersList,itemsDetails: itemsDetails,)));
        }
        else{
          Navigator.push(context, new MaterialPageRoute(
-             builder: (context) =>CheckoutPage(stripToken: stripToken['token']['id'],ordersList: ordersList,)));
+             builder: (context) =>CheckoutPage(stripToken: stripToken['token']['id'],ordersList: ordersList, itemsDetails: itemsDetails,)));
        }
     }
     if(body['success']== false){

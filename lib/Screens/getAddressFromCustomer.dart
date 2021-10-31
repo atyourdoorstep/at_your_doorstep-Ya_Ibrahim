@@ -15,7 +15,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 class AskingForAddressOrderTime extends StatefulWidget {
   final striprToken;
   final ordersList;
-  AskingForAddressOrderTime({this.ordersList,this.striprToken});
+  final itemsDetails;
+  AskingForAddressOrderTime({this.ordersList,this.striprToken, this.itemsDetails});
 
   @override
   _AskingForAddressOrderTimeState createState() => _AskingForAddressOrderTimeState();
@@ -26,12 +27,14 @@ class _AskingForAddressOrderTimeState extends State<AskingForAddressOrderTime> {
   TextEditingController addressController = TextEditingController();
   var striprToken;
   var ordersList;
+  var itemsDetails;
 
   @override
   void initState() {
     addressController.text = userD['address'].toString();
     striprToken = widget.striprToken;
     ordersList = widget.ordersList;
+    itemsDetails = widget.itemsDetails;
     super.initState();
   }
 
@@ -74,7 +77,7 @@ class _AskingForAddressOrderTimeState extends State<AskingForAddressOrderTime> {
                     var body = json.decode(res.body);
                     EasyLoading.dismiss();
                     Navigator.push(context, new MaterialPageRoute(
-                        builder: (context) =>CheckoutPage(stripToken: striprToken,ordersList: ordersList,)));
+                        builder: (context) =>CheckoutPage(stripToken: striprToken,ordersList: ordersList,itemsDetails: itemsDetails,)));
 
                   }
                 },

@@ -14,7 +14,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 class CheckoutPage extends StatefulWidget {
   final stripToken;
   final ordersList;
-  CheckoutPage({this.ordersList,this.stripToken});
+  final itemsDetails;
+
+  CheckoutPage({this.ordersList,this.stripToken, this.itemsDetails});
 
   @override
   _CheckoutPageState createState() => _CheckoutPageState();
@@ -24,11 +26,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   var stripToken;
   var ordersList;
+  var itemsDetails;
 
   @override
   void initState() {
     stripToken = widget.stripToken;
     ordersList = widget.ordersList;
+    itemsDetails = widget.itemsDetails;
+    print(itemsDetails);
     super.initState();
   }
 
@@ -48,19 +53,81 @@ class _CheckoutPageState extends State<CheckoutPage> {
       ),
       body: Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(width: 20,),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text("Hello!", style:
-                TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
                 Text('${ucFirst((userD['fName'].toString()))} ${ucFirst((userD['lName'].toString()))}', style:
-                TextStyle(fontSize: 26, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
+                TextStyle(fontSize: 15, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
                 Text('Deliver to: ${ucFirst((userD['address'].toString()))}', style:
-                TextStyle(fontSize: 20, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
+                TextStyle(fontSize: 12, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
               ],
             ),
+            SizedBox(height: 7),
+            Text("Order Details"),
+            SizedBox(
+              height: itemsDetails.length == 1 ? 140 : 270,
+              child: ListView.builder(
+                itemCount:  itemsDetails.length,
+                itemBuilder:(context , index){
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0,1.0),
+                            blurRadius: 6.0,
+                          ),
+                        ],
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        //border: Border.all(color: Colors.red),
+                      ),
+                      child: Center(
+                        child: ListTile(
+                          leading: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                minWidth: 60,
+                                minHeight: 80,
+                                maxHeight: 140,
+                                maxWidth: 120,
+                              ),
+                              child: Image.network( itemsDetails[index]['image'], fit: BoxFit.cover,)),
+                          title: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(ucFirst( itemsDetails[index]['name']),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                          ),
+                          trailing: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                              child: Text("Rs. "+ itemsDetails[index]['price'].toString(), style: TextStyle(
+                                color: Colors.blue,
+                              ),),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );//categoryItem[index]['image']
+                },
+              ),
+            ),
+            ////
             AYDButton(
               buttonText: "Place Order!",
               onPressed: () async {
@@ -92,8 +159,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           ),
                           actions: [
                             TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
+                              onPressed: () async {
+                                for(int i=0;i<ordersList.length ;i++){
+                                                            var res= await CallApi().postData({
+                                                              'id': ordersList[i]['item_id'],
+                                                            },'/removeFromCart');
+                                                          }
                                 Navigator.pop(context);
                                 Navigator.pop(context);
                               },

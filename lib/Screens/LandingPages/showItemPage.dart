@@ -245,7 +245,10 @@ class _ShowItemPageState extends State<ShowItemPage> {
                         Navigator.push(
                             context,
                             new MaterialPageRoute(
-                                builder: (context) => PaymentPage(ordersList: [ {'item_id': items['id'], 'quantity': 1,}],)));
+                                builder: (context) => PaymentPage(
+                                  ordersList: [ {'item_id': items['id'], 'quantity': 1,}],
+                                  itemsDetails: [{'name': items['name'], 'price': items['price'], 'image': items['image']}],
+                                )));
                         // EasyLoading.show(status: 'Creating Order...');
                         // var res= await CallApi().postData({
                         //   'items': [ {

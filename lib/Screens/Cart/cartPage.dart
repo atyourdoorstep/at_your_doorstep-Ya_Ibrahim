@@ -4,6 +4,7 @@ import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Screens/Orders/orderListPage.dart';
+import 'package:at_your_doorstep/paymentPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -71,6 +72,8 @@ class _AddCartPageState extends State<AddCartPage> {
   late var cartItems;
   bool executed = false;
   List<Map<String ,Object>> orderedItems = [];
+
+  List<Map<String ,Object>> itemDetails = [];
 
   @override
   void initState() {
@@ -212,58 +215,18 @@ class _AddCartPageState extends State<AddCartPage> {
                   child: AYDButton(
                     buttonText: "Place Order",
                     onPressed: () async {
-                      if(orderedItems.length > 0){
-                        EasyLoading.show(status: 'Creating Order...');
-                        var res= await CallApi().postData({
-                          'items': orderedItems,
-                        },'/orderCreate');
-                        var body =json.decode(res.body);
-                        EasyLoading.dismiss();
-                        if(res.statusCode == 200){
-                          showMsg(context,"Order Created Successfully!!");
-                          for(int i=0;i<cartItems.length ;i++){
-                            var res= await CallApi().postData({
-                              'id': cartItems[i]['id'],
-                            },'/removeFromCart');
-                          }
-                              executed = false;
-                              getCartItems();
-                              setState(() {
-                                cartCount = cartItems.length;
-                              });
-                              ////
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    content: Text("Order Created Successfully ", style:
-                                    TextStyle(fontSize: 15, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
-                                    title: Column(
-                                      children: [
-                                        Image.asset("assets/atyourdoorstep.png",
-                                          height: 40,
-                                          width: 40,
-                                        ),
-                                        SizedBox(height: 5,),
-                                        Text("Order!"),
-                                      ],
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text("Close"),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          /////
-                        }
-                        else{
-                          showMsg(context,"There is some issues");
-                        }
-                      }
+                      //for(int i=0;i<cartItems.length ;i++){
+                      //                             var res= await CallApi().postData({
+                      //                               'id': cartItems[i]['id'],
+                      //                             },'/removeFromCart');
+                      //                           }
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => PaymentPage(
+                                ordersList: orderedItems,
+                                itemsDetails: itemDetails,
+                              )));
                     },
                   ),
                 ),
@@ -293,8 +256,16 @@ class _AddCartPageState extends State<AddCartPage> {
           'item_id': cartItems[i]['item_id'],
           'quantity': cartItems[i]['quantity']
         });
+
+        itemDetails.insert(i, {
+          'name': cartItems[i]['item']['name'],
+          'price': cartItems[i]['item']['price'],
+          'image': cartItems[i]['item']['image'],
+        });
       }
+      //print(cartItems);
       print(orderedItems);
+      print(itemDetails);
     }
   }
 }
