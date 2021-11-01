@@ -71,6 +71,7 @@ class _AddCartPageState extends State<AddCartPage> {
 
   late var cartItems;
   bool executed = false;
+  late int totalMoney=0;
   List<Map<String ,Object>> orderedItems = [];
 
   List<Map<String ,Object>> itemDetails = [];
@@ -212,22 +213,44 @@ class _AddCartPageState extends State<AddCartPage> {
                 visible: cartItems.length > 0,
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
-                  child: AYDButton(
-                    buttonText: "Place Order",
-                    onPressed: () async {
-                      //for(int i=0;i<cartItems.length ;i++){
-                      //                             var res= await CallApi().postData({
-                      //                               'id': cartItems[i]['id'],
-                      //                             },'/removeFromCart');
-                      //                           }
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => PaymentPage(
-                                ordersList: orderedItems,
-                                itemsDetails: itemDetails,
-                              )));
-                    },
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Grand Total: ",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                            Text("${totalMoney} PKR ",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.w500),),
+                          ],
+                        ),
+                      ),
+                      AYDButton(
+                        buttonText: "Place Order",
+                        onPressed: () async {
+                          //for(int i=0;i<cartItems.length ;i++){
+                          //                             var res= await CallApi().postData({
+                          //                               'id': cartItems[i]['id'],
+                          //                             },'/removeFromCart');
+                          //                           }
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => PaymentPage(
+                                    ordersList: orderedItems,
+                                    itemsDetails: itemDetails,
+                                  )));
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -243,6 +266,7 @@ class _AddCartPageState extends State<AddCartPage> {
   }
   getCartItems() async {
     orderedItems.clear();
+    totalMoney =0;
     cartItems={};
     var res= await CallApi().postData({},'/getCart');
     var body =json.decode(res.body);
@@ -263,9 +287,17 @@ class _AddCartPageState extends State<AddCartPage> {
           'image': cartItems[i]['item']['image'],
         });
       }
+
+      for(int i=0;i< cartItems.length; i++){
+        int money = (cartItems[i]['item']['price'] * cartItems[i]['quantity']);
+        totalMoney = totalMoney + money;
+
+      }
+
       //print(cartItems);
       print(orderedItems);
       print(itemDetails);
+      print(totalMoney);
     }
   }
 }
