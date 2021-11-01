@@ -4,9 +4,11 @@ import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
+import 'package:at_your_doorstep/Screens/Cart/cartPage.dart';
 import 'package:at_your_doorstep/Screens/LandingPages/showItemPage.dart';
 import 'package:at_your_doorstep/Screens/Orders/orderDetailPage.dart';
 import 'package:at_your_doorstep/Screens/Orders/sellerOrderDetails.dart';
+import 'package:at_your_doorstep/orderCompletePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -60,15 +62,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text('${ucFirst((userD['fName'].toString()))} ${ucFirst((userD['lName'].toString()))}', style:
-                TextStyle(fontSize: 15, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
+                TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
                 Text('Deliver to: ${ucFirst((userD['address'].toString()))}', style:
-                TextStyle(fontSize: 12, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
+                TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
               ],
             ),
-            SizedBox(height: 7),
+            SizedBox(height: 10),
             Text("Order Details"),
             SizedBox(
-              height: itemsDetails.length == 1 ? 140 : 270,
+              height: itemsDetails.length == 1 ? 140 : 300,
               child: ListView.builder(
                 itemCount:  itemsDetails.length,
                 itemBuilder:(context , index){
@@ -141,38 +143,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 EasyLoading.dismiss();
                 if(res.statusCode == 200){
                   showMsg(context,"Order Created Successfully!!");
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: Text("Order Created Successfully ", style:
-                          TextStyle(fontSize: 15, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
-                          title: Column(
-                            children: [
-                              Image.asset("assets/atyourdoorstep.png",
-                                height: 40,
-                                width: 40,
-                              ),
-                              SizedBox(height: 5,),
-                              Text("Order!"),
-                            ],
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () async {
-                                for(int i=0;i<ordersList.length ;i++){
-                                                            var res= await CallApi().postData({
-                                                              'id': ordersList[i]['item_id'],
-                                                            },'/removeFromCart');
-                                                          }
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              },
-                              child: Text("Close"),
-                            ),
-                          ],
-                        );
-                      });
+                  Navigator.push(context, new MaterialPageRoute(
+                      builder: (context) =>OrderComplete(orderList: ordersList,)));
+
                   /////
                 }
                 else{
