@@ -50,40 +50,46 @@ class _ShowSellerProfileState extends State<ShowSellerProfile> {
             children: [
           CircleAvatar(
             radius: 60,
-          foregroundImage: NetworkImage(sellerResult['profile']['image'],),
+          foregroundImage: NetworkImage(
+            sellerResult['profile']['image'] == null ?
+            'https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png' :
+            sellerResult['profile']['image'],),
+
           child: Text(sellerResult['profile']['id'].toString()),),
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Text(ucFirst(sellerResult['profile']['title']),
+                child: Text(ucFirst(sellerResult['profile']['title'] == null ? "No title" : sellerResult['profile']['title']),
                   style: TextStyle(
                     color: Colors.black54,fontWeight: FontWeight.w600,
                     fontSize: 18,
                   ),
                 ),
               ),
-              // Visibility(
-              //   visible: sellerResult['profile']['url'] == null,
-              //   child: TextButton(
-              //     onPressed: () async {
-              //       //const url = sellerResult['profile']['url'];
-              //       if(await canLaunch(sellerResult['profile']['url'])){
-              //         await launch(sellerResult['profile']['url']);
-              //       }
-              //       else{
-              //         throw 'Could not launch ${sellerResult['profile']['url']}';
-              //       }
-              //     },
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(10.0),
-              //       child: Text(ucFirst(sellerResult['profile']['url']),
-              //         style: TextStyle(
-              //           color: Colors.black26,
-              //           fontSize: 15,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              sellerResult['profile']['url'] == null ? SizedBox() :TextButton(
+                onPressed: () async {
+                  if(await canLaunch(sellerResult['profile']['url'])){
+                    await launch(sellerResult['profile']['url']);
+                  }
+                  else{
+                    throw 'Could not launch ${sellerResult['profile']['url']}';
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.link_outlined),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(ucFirst(sellerResult['profile']['url']),
+                        style: TextStyle(
+                          color: Colors.black26,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
     SizedBox(
                 height: 700,
