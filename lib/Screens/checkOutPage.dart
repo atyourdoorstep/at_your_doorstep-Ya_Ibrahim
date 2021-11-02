@@ -8,9 +8,11 @@ import 'package:at_your_doorstep/Screens/Cart/cartPage.dart';
 import 'package:at_your_doorstep/Screens/LandingPages/showItemPage.dart';
 import 'package:at_your_doorstep/Screens/Orders/orderDetailPage.dart';
 import 'package:at_your_doorstep/Screens/Orders/sellerOrderDetails.dart';
+import 'package:at_your_doorstep/Screens/getAddressFromCustomer.dart';
 import 'package:at_your_doorstep/orderCompletePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class CheckoutPage extends StatefulWidget {
@@ -29,9 +31,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
   var stripToken;
   var ordersList;
   var itemsDetails;
+  bool executed = false;
 
   @override
   void initState() {
+    executed = false;
+    getCurrentUserInfo();
     stripToken = widget.stripToken;
     ordersList = widget.ordersList;
     itemsDetails = widget.itemsDetails;
@@ -53,7 +58,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           icon: Icon(Icons.close, color: Colors.red,size: 35,),
         ),
       ),
-      body: Container(
+      body: executed ? Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -63,12 +68,30 @@ class _CheckoutPageState extends State<CheckoutPage> {
               children: [
                 Text('${ucFirst((userD['fName'].toString()))} ${ucFirst((userD['lName'].toString()))}', style:
                 TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
-                Text('Deliver to: ${ucFirst((userD['address'].toString()))}', style:
-                TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Deliver to: ${ucFirst(currentAddress)}', style:
+                    TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
+                    TextButton(onPressed: (){
+                      Navigator.pushReplacement(context, new MaterialPageRoute(
+                          builder: (context) =>AskingForAddressOrderTime(
+                            striprToken: stripToken,
+                            ordersList: ordersList,
+                            itemsDetails: itemsDetails,
+                          )));
+
+                    },
+                        child: Icon(Icons.edit)),
+                  ],
+                ),
               ],
             ),
             SizedBox(height: 10),
-            Text("Order Details"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Order Details", style: TextStyle(fontWeight: FontWeight.w600 , ),),
+            ),
             SizedBox(
               height: itemsDetails.length == 1 ? 140 : 300,
               child: ListView.builder(
@@ -155,7 +178,22 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
           ],
         ),
-      ),
+      ): SpecialSpinner(),
     );
   }
+// currentAddress = body['user']['address'];
+  //var res = await CallApi().postData({}, '/getCurrentUser');
+  getCurrentUserInfo()async {
+    currentAddress ="";
+    var res= await CallApi().postData({},'/getCurrentUser');
+    var body =json.decode(res.body);
+    if(res.statusCode == 200){
+      setState(() {
+        currentAddress = body['user']['address'];
+      });
+      executed = true;
+      print(currentAddress);
+    }
+  }
+
 }

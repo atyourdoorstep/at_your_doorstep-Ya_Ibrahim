@@ -93,7 +93,7 @@ class _AddCartPageState extends State<AddCartPage> {
           child: Column(
             children: <Widget>[
               executed ? SizedBox(
-                height: cartItems.length <= 1 ? 150 :400,
+                height: cartItems.length <= 1 ? 150 :350,
                 child: cartItems.length >= 1 ? ListView.builder(
                   itemCount: cartItems.length,
                   itemBuilder:(context , index){

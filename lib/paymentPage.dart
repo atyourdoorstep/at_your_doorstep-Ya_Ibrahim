@@ -71,7 +71,9 @@ class _PaymentPageState extends State<PaymentPage> {
             SizedBox(
               height: 20,
             ),
-            textfieldStyle(textHint: 'Enter Card Number', obscureText: false, textLabel1: 'Card Number ',controllerText: cardNoController,keyBoardType: TextInputType.number,
+            textfieldStyle(
+              maxLength: 16,
+              textHint: 'Enter Card Number', obscureText: false, textLabel1: 'Card Number ',controllerText: cardNoController,keyBoardType: TextInputType.number,
                 inputAction: TextInputAction.next,
                 suffixButton: IconButton(
                   icon: Icon(Icons.credit_card_sharp), onPressed: () {  },
@@ -79,12 +81,11 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
             Row(
               children: [
-                Expanded(child: textfieldStyle(textHint: 'Expiry Month', obscureText: false, textLabel1: 'Expiry Month ',controllerText: expMonthController,keyBoardType: TextInputType.number,inputAction: TextInputAction.next)),
-                Expanded(child: textfieldStyle(textHint: 'Expiry Year', obscureText: false, textLabel1: 'Expiry Year',controllerText: expYearController, inputAction: TextInputAction.next, keyBoardType: TextInputType.number)),
+                Expanded(child: textfieldStyle(maxLength: 2,textHint: 'Expiry Month', obscureText: false, textLabel1: 'Expiry Month ',controllerText: expMonthController,keyBoardType: TextInputType.number,inputAction: TextInputAction.next)),
+                Expanded(child: textfieldStyle(maxLength: 4,textHint: 'Expiry Year', obscureText: false, textLabel1: 'Expiry Year',controllerText: expYearController, inputAction: TextInputAction.next, keyBoardType: TextInputType.number)),
               ],
             ),
-            textfieldStyle(textHint: 'CVC', obscureText: false, textLabel1: 'CVC ',controllerText: cvcController,keyBoardType: TextInputType.number,inputAction: TextInputAction.done),
-            SizedBox(height: 30),
+            textfieldStyle(maxLength: 3,textHint: 'CVV', obscureText: false, textLabel1: 'CVV ',controllerText: cvcController,keyBoardType: TextInputType.number,inputAction: TextInputAction.done),
             AYDButton(
               buttonText: "Pay now",
               onPressed: (){
@@ -113,14 +114,18 @@ class _PaymentPageState extends State<PaymentPage> {
         stripToken = body;
       });
       print(stripToken['token']['id'].toString());
-       if(userD['address'] == null){
-         Navigator.push(context, new MaterialPageRoute(
-             builder: (context) =>AskingForAddressOrderTime(striprToken: stripToken['token']['id'],ordersList: ordersList,itemsDetails: itemsDetails,)));
-       }
-       else{
-         Navigator.push(context, new MaterialPageRoute(
-             builder: (context) =>CheckoutPage(stripToken: stripToken['token']['id'],ordersList: ordersList, itemsDetails: itemsDetails,)));
-       }
+
+      Navigator.push(context, new MaterialPageRoute(
+          builder: (context) =>CheckoutPage(stripToken: stripToken['token']['id'],ordersList: ordersList, itemsDetails: itemsDetails,)));
+
+      // if(userD['address'] == null){
+       //   Navigator.push(context, new MaterialPageRoute(
+       //       builder: (context) =>AskingForAddressOrderTime(striprToken: stripToken['token']['id'],ordersList: ordersList,itemsDetails: itemsDetails,)));
+       // }
+       // else{
+       //   Navigator.push(context, new MaterialPageRoute(
+       //       builder: (context) =>CheckoutPage(stripToken: stripToken['token']['id'],ordersList: ordersList, itemsDetails: itemsDetails,)));
+       // }
     }
     if(body['success']== false){
       showMsg(context, body['message']);

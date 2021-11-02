@@ -28,10 +28,13 @@ class _AskingForAddressOrderTimeState extends State<AskingForAddressOrderTime> {
   var striprToken;
   var ordersList;
   var itemsDetails;
+  bool executed = false;
 
   @override
   void initState() {
-    addressController.text = userD['address'].toString();
+    executed = false;
+    getCurrentUserInfo1();
+    addressController.text = currentAddress.toString();
     striprToken = widget.striprToken;
     ordersList = widget.ordersList;
     itemsDetails = widget.itemsDetails;
@@ -52,7 +55,7 @@ class _AskingForAddressOrderTimeState extends State<AskingForAddressOrderTime> {
           icon: Icon(Icons.close, color: Colors.red,size: 35,),
         ),
       ),
-      body: SafeArea(
+      body: executed ? SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -72,12 +75,21 @@ class _AskingForAddressOrderTimeState extends State<AskingForAddressOrderTime> {
               AYDButton(
                 onPressed: () async {
                   if(addressController.text.length > 5 ){
-                    EasyLoading.show(status: 'loading...');
+                    EasyLoading.show(status: 'Loading...');
                     var res = await CallApi().postData({'address': addressController.text.toLowerCase()}, '/updateUser');
                     var body = json.decode(res.body);
+                    setState(() {
+                      showMsg(context, body['message']);
+                      currentAddress = body['user']['address'];
+                    });
                     EasyLoading.dismiss();
-                    Navigator.push(context, new MaterialPageRoute(
-                        builder: (context) =>CheckoutPage(stripToken: striprToken,ordersList: ordersList,itemsDetails: itemsDetails,)));
+                    //Navigator.pop(context);
+                    Navigator.pushReplacement(context, new MaterialPageRoute(
+                        builder: (context) =>CheckoutPage(
+                          stripToken: striprToken,
+                          ordersList: ordersList,
+                          itemsDetails: itemsDetails,
+                        )));
 
                   }
                 },
@@ -86,7 +98,23 @@ class _AskingForAddressOrderTimeState extends State<AskingForAddressOrderTime> {
             ],
           ),
         ),
-      ),
+      ): SpecialSpinner(),
     );
   }
+
+  getCurrentUserInfo1()async {
+    currentAddress ="";
+    var res= await CallApi().postData({},'/getCurrentUser');
+    var body =json.decode(res.body);
+    EasyLoading.dismiss();
+    if(res.statusCode == 200){
+      setState(() {
+        currentAddress = body['user']['address'];
+        addressController.text = currentAddress;
+      });
+      executed = true;
+      print(currentAddress);
+    }
+  }
+
 }

@@ -14,9 +14,10 @@ class textfieldStyle extends StatelessWidget {
   final focus;
   final contentP;
   final inputAction;
+  final maxLength;
 
   textfieldStyle(
-      {this.textLabel1, this.inputAction,
+      {this.textLabel1, this.inputAction,this.maxLength,
         this.keyBoardType,
         this.Icon1,
         this.contentP,
@@ -32,6 +33,7 @@ class textfieldStyle extends StatelessWidget {
         padding: const EdgeInsets.all(5.0),
         child: TextFormField(
           textInputAction: inputAction,
+          maxLength: maxLength,
           focusNode: focus,
           obscureText: obscureText,
           onChanged: onChange,

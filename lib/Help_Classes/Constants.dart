@@ -242,3 +242,5 @@ getSellerAddressForPostCreation(BuildContext context) async{
     sAddress = "";
   }
 }
+
+String currentAddress ="";
