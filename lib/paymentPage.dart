@@ -32,12 +32,17 @@ class _PaymentPageState extends State<PaymentPage> {
   var ordersList;
   var itemsDetails;
   var stripToken;
+  var currentAddress1;
+  bool executed = false;
 
   @override
   void initState() {
+    executed = false;
+    getCurrentUserInfo2();
     ordersList = widget.ordersList;
     itemsDetails = widget.itemsDetails;
     print(ordersList.toString());
+    print(currentAddress1);
     super.initState();
   }
 
@@ -55,7 +60,7 @@ class _PaymentPageState extends State<PaymentPage> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
         ),
       ),
-      body: Container(
+      body: executed ? Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -99,7 +104,7 @@ class _PaymentPageState extends State<PaymentPage> {
             )
           ],
         ),
-      ),
+      ): SpecialSpinner(),
     );
   }
 
@@ -115,20 +120,34 @@ class _PaymentPageState extends State<PaymentPage> {
       });
       print(stripToken['token']['id'].toString());
 
-      Navigator.push(context, new MaterialPageRoute(
-          builder: (context) =>CheckoutPage(stripToken: stripToken['token']['id'],ordersList: ordersList, itemsDetails: itemsDetails,)));
+      // Navigator.push(context, new MaterialPageRoute(
+      //     builder: (context) =>CheckoutPage(stripToken: stripToken['token']['id'],ordersList: ordersList, itemsDetails: itemsDetails,)));
 
-      // if(userD['address'] == null){
-       //   Navigator.push(context, new MaterialPageRoute(
-       //       builder: (context) =>AskingForAddressOrderTime(striprToken: stripToken['token']['id'],ordersList: ordersList,itemsDetails: itemsDetails,)));
-       // }
-       // else{
-       //   Navigator.push(context, new MaterialPageRoute(
-       //       builder: (context) =>CheckoutPage(stripToken: stripToken['token']['id'],ordersList: ordersList, itemsDetails: itemsDetails,)));
-       // }
+      if(currentAddress1 == null){
+         Navigator.push(context, new MaterialPageRoute(
+             builder: (context) =>AskingForAddressOrderTime(striprToken: stripToken['token']['id'],ordersList: ordersList,itemsDetails: itemsDetails,)));
+       }
+       else{
+         Navigator.push(context, new MaterialPageRoute(
+             builder: (context) =>CheckoutPage(stripToken: stripToken['token']['id'],ordersList: ordersList, itemsDetails: itemsDetails,)));
+       }
     }
     if(body['success']== false){
       showMsg(context, body['message']);
+    }
+  }
+
+  getCurrentUserInfo2()async {
+    currentAddress1 ="";
+    var res= await CallApi().postData({},'/getCurrentUser');
+    var body =json.decode(res.body);
+    EasyLoading.dismiss();
+    if(res.statusCode == 200){
+      setState(() {
+        currentAddress1 = body['user']['address'];
+      });
+      executed = true;
+      print(currentAddress1);
     }
   }
 

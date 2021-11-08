@@ -103,14 +103,18 @@ class _AskingForAddressOrderTimeState extends State<AskingForAddressOrderTime> {
   }
 
   getCurrentUserInfo1()async {
-    currentAddress ="";
     var res= await CallApi().postData({},'/getCurrentUser');
     var body =json.decode(res.body);
     EasyLoading.dismiss();
     if(res.statusCode == 200){
       setState(() {
-        currentAddress = body['user']['address'];
-        addressController.text = currentAddress;
+        if(body['user']['address'] == null){
+          addressController.text = "Your address here..";
+        }
+        else{
+          currentAddress = body['user']['address'];
+          addressController.text = currentAddress;
+        }
       });
       executed = true;
       print(currentAddress);

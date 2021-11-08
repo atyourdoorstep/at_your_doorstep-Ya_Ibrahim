@@ -71,8 +71,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Deliver to: ${ucFirst(currentAddress)}', style:
-                    TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Deliver to: ${currentAddress}', style:
+                      TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
+                    ),
                     TextButton(onPressed: (){
                       Navigator.pushReplacement(context, new MaterialPageRoute(
                           builder: (context) =>AskingForAddressOrderTime(
@@ -101,7 +104,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
                       width: double.infinity,
-                      height: 120,
+                      height: 100,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
@@ -134,6 +137,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               style: TextStyle(
                                   color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
                           ),
+                          subtitle:  Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text("Quantity ${ordersList[index]['quantity']}",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: Colors.black26, fontSize: 12.0, fontWeight: FontWeight.w700 ),),
+                          ),
                           trailing: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ClipRRect(
@@ -154,7 +165,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
             ////
             AYDButton(
-              buttonText: "Place Order!",
+              buttonText: "Checkout!",
               onPressed: () async {
                 EasyLoading.show(status: 'Creating Order...');
                 var res= await CallApi().postData({
