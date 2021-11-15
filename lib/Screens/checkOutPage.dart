@@ -32,6 +32,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   var ordersList;
   var itemsDetails;
   bool executed = false;
+  TextEditingController dCodeController = TextEditingController();
 
   @override
   void initState() {
@@ -58,136 +59,161 @@ class _CheckoutPageState extends State<CheckoutPage> {
           icon: Icon(Icons.close, color: Colors.red,size: 35,),
         ),
       ),
-      body: executed ? Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(width: 20,),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text('${ucFirst((userD['fName'].toString()))} ${ucFirst((userD['lName'].toString()))}', style:
-                TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Deliver to: ${currentAddress}', style:
-                      TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
-                    ),
-                    TextButton(onPressed: (){
-                      Navigator.pushReplacement(context, new MaterialPageRoute(
-                          builder: (context) =>AskingForAddressOrderTime(
-                            striprToken: stripToken,
-                            ordersList: ordersList,
-                            itemsDetails: itemsDetails,
-                          )));
-
-                    },
-                        child: Icon(Icons.edit)),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Order Details", style: TextStyle(fontWeight: FontWeight.w600 , ),),
-            ),
-            SizedBox(
-              height: itemsDetails.length == 1 ? 140 : 300,
-              child: ListView.builder(
-                itemCount:  itemsDetails.length,
-                itemBuilder:(context , index){
-                  return Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0.0,1.0),
-                            blurRadius: 6.0,
-                          ),
-                        ],
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                        //border: Border.all(color: Colors.red),
+      body: executed ? SingleChildScrollView(
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(width: 20,),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text('${ucFirst((userD['fName'].toString()))} ${ucFirst((userD['lName'].toString()))}', style:
+                  TextStyle(fontSize: 17, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Deliver to: ${currentAddress}', style:
+                        TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
                       ),
-                      child: Center(
-                        child: ListTile(
-                          leading: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                minWidth: 60,
-                                minHeight: 80,
-                                maxHeight: 140,
-                                maxWidth: 120,
-                              ),
-                              child: Image.network( itemsDetails[index]['image'], fit: BoxFit.cover,)),
-                          title: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(ucFirst( itemsDetails[index]['name']),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: TextStyle(
-                                  color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                      TextButton(onPressed: (){
+                        Navigator.pushReplacement(context, new MaterialPageRoute(
+                            builder: (context) =>AskingForAddressOrderTime(
+                              striprToken: stripToken,
+                              ordersList: ordersList,
+                              itemsDetails: itemsDetails,
+                            )));
+
+                      },
+                          child: Icon(Icons.edit)),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Order Details", style: TextStyle(fontWeight: FontWeight.w600 , ),),
+              ),
+              SizedBox(
+                height: itemsDetails.length == 1 ? 140 : 300,
+                child: ListView.builder(
+                  itemCount:  itemsDetails.length,
+                  itemBuilder:(context , index){
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        width: double.infinity,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0.0,1.0),
+                              blurRadius: 6.0,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
                           ),
-                          subtitle:  Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("Quantity ${ordersList[index]['quantity']}",
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: TextStyle(
-                                  color: Colors.black26, fontSize: 12.0, fontWeight: FontWeight.w700 ),),
-                          ),
-                          trailing: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
+                          //border: Border.all(color: Colors.red),
+                        ),
+                        child: Center(
+                          child: ListTile(
+                            leading: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minWidth: 60,
+                                  minHeight: 80,
+                                  maxHeight: 140,
+                                  maxWidth: 120,
+                                ),
+                                child: Image.network( itemsDetails[index]['image'], fit: BoxFit.cover,)),
+                            title: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(ucFirst( itemsDetails[index]['name']),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: TextStyle(
+                                    color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                            ),
+                            subtitle:  Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("Quantity ${ordersList[index]['quantity']}",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: TextStyle(
+                                    color: Colors.black26, fontSize: 12.0, fontWeight: FontWeight.w700 ),),
+                            ),
+                            trailing: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                                child: Text("Rs. "+ itemsDetails[index]['price'].toString(), style: TextStyle(
+                                  color: Colors.blue,
+                                ),),
                               ),
-                              child: Text("Rs. "+ itemsDetails[index]['price'].toString(), style: TextStyle(
-                                color: Colors.blue,
-                              ),),
                             ),
                           ),
                         ),
                       ),
+                    );//categoryItem[index]['image']
+                  },
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText:  ' Enter Your Discount code',
+                          suffixIcon:  ElevatedButton(
+                              onPressed: (){
+                            print(dCodeController.text);
+                          }, child: Text("Apply Code")),
+                        ),
+                        obscureText: false,
+                        controller: dCodeController,
+                        onSubmitted: (value){
+                          print(value);
+                        },
+                      ),
                     ),
-                  );//categoryItem[index]['image']
+                  ],
+                ),
+              ),
+              AYDButton(
+                buttonText: "Checkout!",
+                onPressed: () async {
+                  EasyLoading.show(status: 'Creating Order...');
+                  var res= await CallApi().postData({
+                    'items': ordersList,
+                    'stripe_token': stripToken,
+                    'cur': "PKR",
+                  },'/orderCreate');
+                  var body =json.decode(res.body);
+                  EasyLoading.dismiss();
+                  if(res.statusCode == 200){
+                    showMsg(context,"Order Created Successfully!!");
+                    Navigator.push(context, new MaterialPageRoute(
+                        builder: (context) =>OrderComplete(orderList: ordersList,)));
+
+                    /////
+                  }
+                  else{
+                    showMsg(context,"There is some issues");
+                  }
                 },
               ),
-            ),
-            ////
-            AYDButton(
-              buttonText: "Checkout!",
-              onPressed: () async {
-                EasyLoading.show(status: 'Creating Order...');
-                var res= await CallApi().postData({
-                  'items': ordersList,
-                  'stripe_token': stripToken,
-                  'cur': "PKR",
-                },'/orderCreate');
-                var body =json.decode(res.body);
-                EasyLoading.dismiss();
-                if(res.statusCode == 200){
-                  showMsg(context,"Order Created Successfully!!");
-                  Navigator.push(context, new MaterialPageRoute(
-                      builder: (context) =>OrderComplete(orderList: ordersList,)));
-
-                  /////
-                }
-                else{
-                  showMsg(context,"There is some issues");
-                }
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ): SpecialSpinner(),
     );
