@@ -73,34 +73,38 @@ class _EditProfileOpState extends State<EditProfileOp> {
                         ],
                       ),
                       SizedBox(width: 12.0),
-                      roleOfUser == "seller" ? Stack(
-                          alignment: AlignmentDirectional.topEnd,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
-                            },
-                            child: Text("Orders"),
-                          ),
-                          sellerOrdersCounts > 0 ?CircleAvatar(backgroundColor: Colors.red,child: Text(sellerOrdersCounts.toString()),radius: 10,): SizedBox(),
-                        ],
-                      ): SizedBox(),
-                      ///
-                      SizedBox(width: 5),
-                      roleOfUser == "seller" ? Stack(
-                        alignment: AlignmentDirectional.topEnd,
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.green,
-                            ),
-                            onPressed: () {
-                              //Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
-                            },
-                            child: Text("Create Discount Code"),
-                          ),
-                          ],
-                      ): SizedBox(),
+                     Wrap(
+                       children:[
+                         roleOfUser == "seller" ? Stack(
+                           alignment: AlignmentDirectional.topEnd,
+                           children: [
+                             ElevatedButton(
+                               onPressed: () {
+                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
+                               },
+                               child: Text("Orders"),
+                             ),
+                             sellerOrdersCounts > 0 ?CircleAvatar(backgroundColor: Colors.red,child: Text(sellerOrdersCounts.toString()),radius: 10,): SizedBox(),
+                           ],
+                         ): SizedBox(),
+                         ///
+                         SizedBox(width: 5),
+                         roleOfUser == "seller" ? Stack(
+                           alignment: AlignmentDirectional.topEnd,
+                           children: [
+                             ElevatedButton(
+                               style: ElevatedButton.styleFrom(
+                                 primary: Colors.green,
+                               ),
+                               onPressed: () {
+                                 //Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
+                               },
+                               child: Text("Create Discount Code"),
+                             ),
+                           ],
+                         ): SizedBox(),
+                       ]
+                     ),
                     ],
                   ),
                 ),

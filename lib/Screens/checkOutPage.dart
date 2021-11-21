@@ -68,11 +68,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('${ucFirst((userD['fName'].toString()))} ${ucFirst((userD['lName'].toString()))}', style:
-                    TextStyle(fontSize: 18, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
-                  ),
+                  SizedBox(height: 10),
+                  Text('${ucFirst((userD['fName'].toString()))} ${ucFirst((userD['lName'].toString()))}', style:
+                  TextStyle(fontSize: 18, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
