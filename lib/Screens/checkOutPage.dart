@@ -174,10 +174,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       child: TextField(
                         decoration: InputDecoration(
                           hintText:  ' Enter Your Discount code',
-                          suffixIcon:  ElevatedButton(
-                              onPressed: (){
-                            print(dCodeController.text);
-                          }, child: Text("Apply Code")),
+                          suffixIcon:  Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: ElevatedButton(
+                                onPressed: (){
+                              print(dCodeController.text);
+                            }, child: Text("Apply Code")),
+                          ),
                         ),
                         obscureText: false,
                         controller: dCodeController,
