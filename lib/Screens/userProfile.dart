@@ -388,43 +388,42 @@ class _EditProfileOpState extends State<EditProfileOp> {
       ),
       floatingActionButton:  Visibility(
         visible: roleOfUser == "seller",
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: CircularMenu(
-              alignment: Alignment.topRight,
-              toggleButtonColor: Colors.red,
-              items: [
-                CircularMenuItem(
-                    icon: Icons.post_add,
-                    color: Colors.green,
-                    onTap: () {
-                      setState(() {
-                        _color = Colors.green;
-                        _colorName = 'Green';
-                      });
-                    }),
-                CircularMenuItem(
-                    icon: Icons.menu,
-                    color: Colors.blue,
-                    onTap: () {
-                      setState(() {
-                        _color = Colors.blue;
-                        _colorName = 'Blue';
-                      });
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
-                    }),
-                CircularMenuItem(
-                    icon: Icons.countertops_rounded,
-                    color: Colors.purple,
-                    onTap: () {
-                      setState(() {
-                        _color = Colors.purple;
-                        _colorName = 'Purple';
-                      });
-                    }),
-              ],
-            ),
+        child: Padding(
+          padding: const EdgeInsets.only(top:30.0),
+          child: CircularMenu(
+            toggleButtonSize: 35,
+            alignment: Alignment.topRight,
+            toggleButtonColor: Colors.red,
+            items: [
+              CircularMenuItem(
+                  icon: Icons.post_add,
+                  color: Colors.green,
+                  onTap: () {
+                    setState(() {
+                      _color = Colors.green;
+                      _colorName = 'Green';
+                    });
+                  }),
+              CircularMenuItem(
+                  icon: Icons.menu,
+                  color: Colors.blue,
+                  onTap: () {
+                    setState(() {
+                      _color = Colors.blue;
+                      _colorName = 'Blue';
+                    });
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
+                  }),
+              CircularMenuItem(
+                  icon: Icons.countertops_rounded,
+                  color: Colors.purple,
+                  onTap: () {
+                    setState(() {
+                      _color = Colors.purple;
+                      _colorName = 'Purple';
+                    });
+                  }),
+            ],
           ),
         ),
       ),
