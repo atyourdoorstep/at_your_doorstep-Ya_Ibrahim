@@ -14,6 +14,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:circular_menu/circular_menu.dart';
 
 
 class editProfile extends StatelessWidget {
@@ -35,6 +36,8 @@ class EditProfileOp extends StatefulWidget {
 class _EditProfileOpState extends State<EditProfileOp> {
   late Map<String,dynamic> userData;
   TextEditingController fullNameController = TextEditingController();
+  String _colorName = 'No';
+  Color _color = Colors.black;
 
   @override
   void initState() {
@@ -73,38 +76,6 @@ class _EditProfileOpState extends State<EditProfileOp> {
                         ],
                       ),
                       SizedBox(width: 12.0),
-                     Wrap(
-                       children:[
-                         roleOfUser == "seller" ? Stack(
-                           alignment: AlignmentDirectional.topEnd,
-                           children: [
-                             ElevatedButton(
-                               onPressed: () {
-                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
-                               },
-                               child: Text("Orders"),
-                             ),
-                             sellerOrdersCounts > 0 ?CircleAvatar(backgroundColor: Colors.red,child: Text(sellerOrdersCounts.toString()),radius: 10,): SizedBox(),
-                           ],
-                         ): SizedBox(),
-                         ///
-                         SizedBox(width: 5),
-                         roleOfUser == "seller" ? Stack(
-                           alignment: AlignmentDirectional.topEnd,
-                           children: [
-                             ElevatedButton(
-                               style: ElevatedButton.styleFrom(
-                                 primary: Colors.green,
-                               ),
-                               onPressed: () {
-                                 //Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
-                               },
-                               child: Text("Create Discount Code"),
-                             ),
-                           ],
-                         ): SizedBox(),
-                       ]
-                     ),
                     ],
                   ),
                 ),
@@ -410,6 +381,48 @@ class _EditProfileOpState extends State<EditProfileOp> {
                         ],
                       ),
                     ),),
+              ],
+            ),
+          ),
+        ),
+      ),
+      floatingActionButton:  Visibility(
+        visible: roleOfUser == "seller",
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: CircularMenu(
+              alignment: Alignment.topRight,
+              toggleButtonColor: Colors.red,
+              items: [
+                CircularMenuItem(
+                    icon: Icons.post_add,
+                    color: Colors.green,
+                    onTap: () {
+                      setState(() {
+                        _color = Colors.green;
+                        _colorName = 'Green';
+                      });
+                    }),
+                CircularMenuItem(
+                    icon: Icons.menu,
+                    color: Colors.blue,
+                    onTap: () {
+                      setState(() {
+                        _color = Colors.blue;
+                        _colorName = 'Blue';
+                      });
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
+                    }),
+                CircularMenuItem(
+                    icon: Icons.countertops_rounded,
+                    color: Colors.purple,
+                    onTap: () {
+                      setState(() {
+                        _color = Colors.purple;
+                        _colorName = 'Purple';
+                      });
+                    }),
               ],
             ),
           ),
