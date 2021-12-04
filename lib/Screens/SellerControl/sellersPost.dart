@@ -144,6 +144,7 @@ class _SellersPostListState extends State<SellersPostList> {
     if(res.statusCode == 200){
       setState(() {
         categoryItem = body['items'];
+        print(categoryItem);
       });
       executed = true;
     }

@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:at_your_doorstep/Screens/createDiscountCodePage.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
@@ -36,7 +38,6 @@ class EditProfileOp extends StatefulWidget {
 class _EditProfileOpState extends State<EditProfileOp> {
   late Map<String,dynamic> userData;
   TextEditingController fullNameController = TextEditingController();
-  String _colorName = 'No';
   Color _color = Colors.black;
 
   @override
@@ -399,29 +400,22 @@ class _EditProfileOpState extends State<EditProfileOp> {
                   icon: Icons.post_add,
                   color: Colors.green,
                   onTap: () {
-                    setState(() {
-                      _color = Colors.green;
-                      _colorName = 'Green';
-                    });
+                   // Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
+
                   }),
               CircularMenuItem(
-                  icon: Icons.menu,
+                  icon: FontAwesomeIcons.bookOpen,
                   color: Colors.blue,
+                  iconSize: 25,
                   onTap: () {
-                    setState(() {
-                      _color = Colors.blue;
-                      _colorName = 'Blue';
-                    });
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
                   }),
               CircularMenuItem(
-                  icon: Icons.countertops_rounded,
+                  icon: FontAwesomeIcons.ticketAlt,
                   color: Colors.purple,
+                  iconSize: 25,
                   onTap: () {
-                    setState(() {
-                      _color = Colors.purple;
-                      _colorName = 'Purple';
-                    });
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateDiscountCodePage()));
                   }),
             ],
           ),
