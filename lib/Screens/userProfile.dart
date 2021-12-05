@@ -415,7 +415,9 @@ class _EditProfileOpState extends State<EditProfileOp> {
                   color: Colors.purple,
                   iconSize: 25,
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateDiscountCodePage()));
+                    Navigator.of(
+                      context,
+                      rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>CreateDiscountCodePage()));
                   }),
             ],
           ),

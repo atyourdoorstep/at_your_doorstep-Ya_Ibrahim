@@ -50,8 +50,11 @@ class _CreateDiscountCodePageState extends State<CreateDiscountCodePage> {
         child: Container(
           child: Column(
             children: [
-              Text("Choose Item or Service: ", style:
-              TextStyle(fontSize: 17, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Choose Item or Service: ", style:
+                TextStyle(fontSize: 17, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+              ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: SizedBox(
@@ -105,9 +108,9 @@ class _CreateDiscountCodePageState extends State<CreateDiscountCodePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Quantity: ", style:
+                    Text("  Quantity: ", style:
                     TextStyle(fontSize: 17, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
-                    SizedBox(width: 10),
+                    SizedBox(width: 2),
                     TextButton(
                       onPressed: () {
                         if(quantity>1){
@@ -139,16 +142,27 @@ class _CreateDiscountCodePageState extends State<CreateDiscountCodePage> {
                 buttonText: "Add Item",
                 onPressed: (){
                  setState(() {
-                   if(checkProduct(itemsList ,itemDetails['id'])==1){
-                     showMsg(context, "Item Already Added");
+                   if(checkProduct(itemsList ,itemDetails['id'])== 1){
+                     for(int i=0;i<itemsList.length;i++){
+                       if(itemsList[i]['item_id']== itemDetails['id']){
+                         itemsList[i]['quantity'] = quantity;
+                         itemsList[i]['discount'] = discountC.text;
+                       }
+                     }
+                     showMsg(context, "Item Updated");
                    }
                    else{
-                     itemsList.add({
-                       'item_id': itemDetails['id'],
-                       'name': itemDetails['name'],
-                       'discount': discountC.text,
-                       'quantity': quantity,
-                     });
+                     if(discountC.text.isNotEmpty) {
+                       itemsList.add({
+                         'item_id': itemDetails['id'],
+                         'name': itemDetails['name'],
+                         'discount': discountC.text,
+                         'quantity': quantity,
+                       });
+                     }
+                     else{
+                       showMsg(context, "Add Discount");
+                     }
                    }
                  });
                 },
@@ -181,6 +195,15 @@ class _CreateDiscountCodePageState extends State<CreateDiscountCodePage> {
           ),
         ),
       ): SpecialSpinner(),
+      floatingActionButton: FloatingActionButton(
+        elevation: 3,
+        backgroundColor: Colors.red,
+        child: Icon(Icons.check),
+        onPressed: () {
+          Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateDiscountCodeSecondPage()));
+
+        },
+      ),
     );
   }
   getItemsForDiscount() async {
@@ -197,11 +220,42 @@ class _CreateDiscountCodePageState extends State<CreateDiscountCodePage> {
     }
   }
   checkProduct(categoryItem1 , int id){
+    int flag = 0;
     for(int i=0;i<categoryItem1.length;i++){
       if(categoryItem1[i]['item_id']== id){
         return 1;
       }
     }
     return 0;
+  }
+}
+
+
+class CreateDiscountCodeSecondPage extends StatefulWidget {
+  CreateDiscountCodeSecondPage();
+
+  @override
+  _CreateDiscountCodeSecondPageState createState() => _CreateDiscountCodeSecondPageState();
+}
+
+class _CreateDiscountCodeSecondPageState extends State<CreateDiscountCodeSecondPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        // title: Text("Create Discount Code", style: TextStyle(fontSize: 18,
+        //   color: Colors.red,
+        //   fontFamily: "PTSans",
+        //   fontWeight: FontWeight.w500,),),
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+        ),
+      ),
+    );
   }
 }
