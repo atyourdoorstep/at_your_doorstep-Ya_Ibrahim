@@ -36,6 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController passwordController = TextEditingController();
   String emailF = "mussabayubawan2@gmail.com";
   String passwordF = "mussabzgr8123";
+  bool showPass = true;
 
   @override
   void deactivate() {
@@ -135,7 +136,16 @@ class _MyHomePageState extends State<MyHomePage> {
                           height: 30,
                         ),
                         textfieldStyle(textHint: 'Email Address', obscureText: false, textLabel1: 'Email Address',controllerText: mailController,inputAction: TextInputAction.next,),
-                        textfieldStyle(textHint: 'password', obscureText: true, textLabel1: 'Password ',controllerText: passwordController,inputAction: TextInputAction.done),
+                        textfieldStyle(textHint: 'password', obscureText: showPass, textLabel1: 'Password ',controllerText: passwordController,inputAction: TextInputAction.done
+                            ,suffixButton: IconButton(
+                            icon: Icon(showPass? Icons.remove_red_eye_sharp : Icons.remove_red_eye_outlined),
+                            onPressed: () {
+                              setState(() {
+                                showPass =!showPass;
+                              });
+                            },
+                          ),
+                        ),
                         AYDButton(
                           buttonText: "Login",
                           onPressed: () async {
