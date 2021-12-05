@@ -1,6 +1,9 @@
 import 'dart:convert';
 
+import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
+import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
@@ -13,17 +16,19 @@ class CreateDiscountCodePage extends StatefulWidget {
 class _CreateDiscountCodePageState extends State<CreateDiscountCodePage> {
   var categoryItem;
   bool executed = false;
+  int selectedIndex = 0;
   List<Map<String ,Object>> itemsList = [];
+  String? value="";
+  TextEditingController discountC = TextEditingController();
 
+  int quantity=1;
+  var itemDetails = {};
   @override
   void initState() {
-    // TODO: implement initState
     executed = false;
     getItemsForDiscount();
     super.initState();
   }
-  String dropdownValue = 'Home';
-  int idCat = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,58 +46,141 @@ class _CreateDiscountCodePageState extends State<CreateDiscountCodePage> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
         ),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                child: Card(
-                  color: Colors.white,
-                  //padding: EdgeInsets.all(0.0),
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    focusColor: Colors.white,
-                    value: dropdownValue,
-                    underline: Container(
-                      height: 2,
-                      color: Colors.white,
-                    ),
-                    iconEnabledColor: Colors.black,
-                    style: const TextStyle(color: Colors.red),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue!;
-                        if(dropdownValue== 'Home')
-                          idCat=1;
-                        else if(dropdownValue== 'Electronics')
-                          idCat=2;
-                        else if(dropdownValue== 'Medical & Pharma')
-                          idCat=3;
-                        else
-                          idCat=8;
-
-                        print(idCat);
-                      });
-                    },
-                    items: <String>['Home', 'Electronics', 'Medical & Pharma', 'Education']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(value),
-                        ),
+      body: executed ? SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              Text("Choose Item or Service: ", style:
+              TextStyle(fontSize: 17, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SizedBox(
+                  height: 130,
+                  child: GridView.builder(
+                    itemCount: categoryItem.length,
+                    scrollDirection: Axis.horizontal,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+                    itemBuilder: (context , index){
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedIndex = index;
+                            print("List Rank ${index}");
+                            itemDetails = categoryItem[index];
+                            print("Item ID ${categoryItem[index]['id']}");
+                          });
+                        },
+                        child: Card(
+                          color: selectedIndex== index ? Colors.red.withOpacity(0.2): Colors.white,
+                          child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                        aspectRatio: 3/2,
+                                    child: Image.network(categoryItem[index]['image'])),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(ucFirst(categoryItem[index]['name']),
+                                        overflow: TextOverflow.ellipsis
+                                        ,style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          shadowColor: Colors.grey[300],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0),
+                            ),
+                            side: BorderSide(color: Colors.red),
+                          ),),
                       );
-                    }).toList(),
-                    hint: Text("Please select the service type"),
+                    },
                   ),
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Quantity: ", style:
+                    TextStyle(fontSize: 17, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
+                    SizedBox(width: 10),
+                    TextButton(
+                      onPressed: () {
+                        if(quantity>1){
+                          setState(() {
+                            quantity--;
+                          });
+                        }
+                      },
+                      child: Text("-", style:
+                      TextStyle(fontSize: 25, color: Colors.grey, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    ),
+                    Text(quantity.toString(), style:
+                    TextStyle(fontSize: 22, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          quantity++;
+                        });
+                      },
+                      child: Text("+".toString(), style:
+                      TextStyle(fontSize: 25, color: Colors.grey, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    ),
+                    Expanded(child: textfieldStyle(textHint: 'Discount Price', obscureText: false, textLabel1: 'Discount',controllerText: discountC ,keyBoardType: TextInputType.number,inputAction: TextInputAction.next)),
+
+                  ],
+                ),
+              ),
+              AYDButton(
+                buttonText: "Add Item",
+                onPressed: (){
+                 setState(() {
+                   if(checkProduct(itemsList ,itemDetails['id'])==1){
+                     showMsg(context, "Item Already Added");
+                   }
+                   else{
+                     itemsList.add({
+                       'item_id': itemDetails['id'],
+                       'name': itemDetails['name'],
+                       'discount': discountC.text,
+                       'quantity': quantity,
+                     });
+                   }
+                 });
+                },
+              ),
+              ////
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  height: 220,
+                  child: ListView.builder(
+                    //physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: itemsList.length,
+                      itemBuilder:
+                          (BuildContext context, int index) {
+                        return ListTile(
+                          title: Text(itemsList[index]['name'].toString()),
+                          subtitle: Text("Discount: ${itemsList[index]['discount'].toString()}  Quantity: ${itemsList[index]['quantity'].toString()}"),
+                          trailing: TextButton(onPressed: () {
+                            setState(() {
+                              itemsList.removeAt(index);
+                            });
+                          },
+                          child: Icon(Icons.restore_from_trash)),
+                        );
+                      }),
+                ),
+              ),
+              ],
+          ),
         ),
-      ),
+      ): SpecialSpinner(),
     );
   }
   getItemsForDiscount() async {
@@ -103,15 +191,17 @@ class _CreateDiscountCodePageState extends State<CreateDiscountCodePage> {
       setState(() {
         categoryItem = body['items'];
       });
-      for(int i=0;i<categoryItem.length;i++){
-        itemsList.insert(i, {
-          'item_id': categoryItem[i]['id'],
-          'name': categoryItem[i]['name'],
-          'description': categoryItem[i]['description'],
-        });
-      }
+      itemDetails = categoryItem[0];
       print(itemsList);
       executed = true;
     }
+  }
+  checkProduct(categoryItem1 , int id){
+    for(int i=0;i<categoryItem1.length;i++){
+      if(categoryItem1[i]['item_id']== id){
+        return 1;
+      }
+    }
+    return 0;
   }
 }
