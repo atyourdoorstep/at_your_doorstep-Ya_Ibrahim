@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class CreateDiscountCodePage extends StatefulWidget {
   @override
@@ -200,8 +201,12 @@ class _CreateDiscountCodePageState extends State<CreateDiscountCodePage> {
         backgroundColor: Colors.red,
         child: Icon(Icons.check),
         onPressed: () {
-          Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateDiscountCodeSecondPage()));
-
+          if(itemsList.isNotEmpty){
+            Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateDiscountCodeSecondPage(listOfItemsWithDiscount: itemsList,)));
+          }
+          else{
+            showMsg(context, "Add one or more items");
+          }
         },
       ),
     );
@@ -232,13 +237,25 @@ class _CreateDiscountCodePageState extends State<CreateDiscountCodePage> {
 
 
 class CreateDiscountCodeSecondPage extends StatefulWidget {
-  CreateDiscountCodeSecondPage();
+  final listOfItemsWithDiscount;
+  CreateDiscountCodeSecondPage({this.listOfItemsWithDiscount});
 
   @override
   _CreateDiscountCodeSecondPageState createState() => _CreateDiscountCodeSecondPageState();
 }
 
 class _CreateDiscountCodeSecondPageState extends State<CreateDiscountCodeSecondPage> {
+
+  TextEditingController mailController = TextEditingController();
+  var itemsList;
+  String discountCode = "Discount Code";
+  bool executed = false;
+
+  @override
+  void initState() {
+    itemsList = widget.listOfItemsWithDiscount;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -254,6 +271,93 @@ class _CreateDiscountCodeSecondPageState extends State<CreateDiscountCodeSecondP
             Navigator.pop(context);
           },
           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+        ),
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            executed?SizedBox():textfieldStyle(textHint: "xyz@atyourdoorstep.pk", obscureText: false, textLabel1: 'Email',controllerText: mailController,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(executed?"Discount Code":"Discounted Items", style: TextStyle(fontSize: 25,
+                color: Colors.red,
+                fontFamily: "PTSans",
+                fontWeight: FontWeight.w700,),),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+              child: Divider(),
+            ),
+            executed?SizedBox():Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: itemsList.length>=3? 220 : 120,
+                child: ListView.builder(
+                  //physics: ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: itemsList.length,
+                    itemBuilder:
+                        (BuildContext context, int index) {
+                      return ListTile(
+                        title: Text(itemsList[index]['name'].toString()),
+                        subtitle: Text("Discount: ${itemsList[index]['discount'].toString()}  Quantity: ${itemsList[index]['quantity'].toString()}"),
+                        trailing: TextButton(onPressed: () {
+                          setState(() {
+                            itemsList.removeAt(index);
+                          });
+                        },
+                            child: Icon(Icons.restore_from_trash)),
+                      );
+                    }),
+              ),
+            ),
+            executed?SizedBox():AYDButton(
+              buttonText: "Create Discount",
+              onPressed: () async {
+               if(mailController.text.isNotEmpty && itemsList.length>=1){
+                 for(int i=0;i<itemsList.length;i++){
+                   itemsList[i].removeWhere((key,value)=> key == 'name');
+                 }
+                 EasyLoading.show(status: 'Loading...');
+                 var res = await CallApi().postData(
+                     {
+                       "items": itemsList,
+                       "email": mailController.text,
+                     }, '/createDiscountCode');
+                 var body = json.decode(res.body);
+                 EasyLoading.dismiss();
+                 setState(() {
+                   discountCode=body['discount'][0]['code'];
+                   executed = true;
+                 });
+                 print(body);
+                 itemsList.clear();
+               }
+               else{
+                 showMsg(context, "Required Email");
+               }
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: executed ? Card(
+                child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SelectableText(discountCode
+                          ,style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),),
+                      ),
+                    )),
+                shadowColor: Colors.grey[300],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0),
+                  ),
+                  side: BorderSide(color: Colors.red),
+                ),):SizedBox(),
+            ),
+          ],
         ),
       ),
     );
