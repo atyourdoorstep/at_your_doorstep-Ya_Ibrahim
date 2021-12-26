@@ -362,7 +362,66 @@ class _ShowItemPageState extends State<ShowItemPage> {
                 ),
               ),
             ),
-            Center(child: Text("Hello")),
+            ///
+            Center(
+                child: SizedBox(
+                  height: 500,
+                  child: ListView.builder(
+                    physics: ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: items['reviews'].length,
+                    itemBuilder:(context , index){
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 80,
+                              child: Center(
+                                child: ListTile(
+                                  trailing:  Text(items['reviews'][index]['created_at'].substring(0,10), style:
+                                  TextStyle(fontSize: 10, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                  title: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("${ucFirst(items['reviews'][index]['user']['fName'])} ${ucFirst(items['reviews'][index]['user']['lName'])}" ,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                          color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+                                    child: Text(items['reviews'][index]['review'],
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.black26, fontSize: 15.0),),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 10,),
+                                  items['reviews'][index]['rating'] >=1?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
+                                  items['reviews'][index]['rating'] >=2?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
+                                  items['reviews'][index]['rating'] >=3?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
+                                  items['reviews'][index]['rating'] >=4?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
+                                  items['reviews'][index]['rating'] >=5?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
+
+                                ],
+                              ),
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      );//categoryItem[index]['image']
+                    },
+                  ),
+                ),
+            ),
           ],
         ),
       ),
