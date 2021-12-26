@@ -248,8 +248,8 @@ class _EditProfileOpState extends State<EditProfileOp> {
                               ],
                             ),
                           ),
-                          ListTile(title: Text("Order Invoice", style: menuFont,),
-                            leading: Icon(Icons.reorder),
+                          ListTile(title: Text("Payments", style: menuFont,),
+                            leading: Icon(Icons.payment),
                           ),
                           Divider(),
                           Visibility(

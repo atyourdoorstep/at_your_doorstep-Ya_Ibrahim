@@ -236,7 +236,6 @@ getSellerAddressForPostCreation(BuildContext context) async{
       print(body.toString());
       print(sAddress);
       print(sellerID);
-      showMsg(context, "Data Fetched...");
   }
   if(body['success'] == false){
     sAddress = "";

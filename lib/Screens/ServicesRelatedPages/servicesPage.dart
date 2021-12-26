@@ -88,6 +88,8 @@ class _ServicesPageState extends State<ServicesPage> {
                 SizedBox(
                   height: 500,
                   child: ListView.builder(
+                    physics: ClampingScrollPhysics(),
+                    shrinkWrap: true,
                     itemCount: categoryItem.length,
                       itemBuilder:(context , index){
                         return GestureDetector(
