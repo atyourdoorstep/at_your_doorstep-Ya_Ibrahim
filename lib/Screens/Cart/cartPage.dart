@@ -201,9 +201,9 @@ class _AddCartPageState extends State<AddCartPage> {
                     );
                   },
                 ):Center(
-                  child: ListTile(title: Center(child: Text("Cart is Empty !!",
-                   style: TextStyle(color: Colors.red),
-                  )),),
+                  child: Container(
+                    child: Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-H9OX1lSX0QPyYGcY8pim2lG4qvgmYAmmfQ&usqp=CAU'),
+                  ),
                 ),
               ): Padding(
                 padding: const EdgeInsets.all(8.0),
