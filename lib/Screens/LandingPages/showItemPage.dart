@@ -3,6 +3,7 @@ import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/paymentPage.dart';
+import 'package:at_your_doorstep/ratingAndReviewPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -385,64 +386,91 @@ class _ShowItemPageState extends State<ShowItemPage> {
               ),
             ),
             ///
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: SizedBox(
-                height: 500,
-                child: ListView.builder(
-                  physics: ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: items['reviews'].length,
-                  itemBuilder:(context , index){
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          //orderItems = orderItems.reversed.toList();
+                        });
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                            width: double.infinity,
-                            height: 80,
-                            child: Center(
-                              child: ListTile(
-                                trailing:  Text(items['reviews'][index]['created_at'].substring(0,10), style:
-                                TextStyle(fontSize: 10, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                                title: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("${ucFirst(items['reviews'][index]['user']['fName'])} ${ucFirst(items['reviews'][index]['user']['lName'])}" ,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                        color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
-                                ),
-                                subtitle: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0,right: 8.0),
-                                  child: Text(items['reviews'][index]['review'],
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: Colors.black26, fontSize: 15.0),),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 9.0,right: 9.0),
-                            child: Row(
-                              children: [
-                                SizedBox(width: 10,),
-                                items['reviews'][index]['rating'] >=1?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
-                                items['reviews'][index]['rating'] >=2?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
-                                items['reviews'][index]['rating'] >=3?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
-                                items['reviews'][index]['rating'] >=4?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
-                                items['reviews'][index]['rating'] >=5?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
-
-                              ],
-                            ),
-                          ),
-                          Divider(),
+                          Text("Sort by "),
+                          Icon(Icons.sort),
                         ],
                       ),
-                    );//categoryItem[index]['image']
-                  },
-                ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 400,
+                    child: ListView.builder(
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: items['reviews'].length,
+                      itemBuilder:(context , index){
+                        return Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                height: 80,
+                                child: Center(
+                                  child: ListTile(
+                                    trailing:  Text(items['reviews'][index]['created_at'].substring(0,10), style:
+                                    TextStyle(fontSize: 10, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                    title: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text("${ucFirst(items['reviews'][index]['user']['fName'])} ${ucFirst(items['reviews'][index]['user']['lName'])}" ,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                            color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                                    ),
+                                    subtitle: Padding(
+                                      padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+                                      child: Text(items['reviews'][index]['review'],
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.black26, fontSize: 15.0),),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 9.0,right: 9.0),
+                                child: Row(
+                                  children: [
+                                    SizedBox(width: 10,),
+                                    items['reviews'][index]['rating'] >=1?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
+                                    items['reviews'][index]['rating'] >=2?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
+                                    items['reviews'][index]['rating'] >=3?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
+                                    items['reviews'][index]['rating'] >=4?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
+                                    items['reviews'][index]['rating'] >=5?Icon(Icons.star, size: 13,color: Colors.yellow,) :Icon(Icons.star_border, size: 13,),
+
+                                  ],
+                                ),
+                              ),
+                              Divider(),
+                            ],
+                          ),
+                        );//categoryItem[index]['image']
+                      },
+                    ),
+                  ),
+                  AYDOutlinedButton(
+                    buttonText: "Rate it!",
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                          RatingAndReview()),);
+                    },
+                  )
+                ],
               ),
             ),
           ],
