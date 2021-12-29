@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
+import 'package:at_your_doorstep/askMeAnything.dart';
 import 'package:at_your_doorstep/paymentPage.dart';
 import 'package:at_your_doorstep/ratingAndReviewPage.dart';
 import 'package:flutter/material.dart';
@@ -168,7 +169,10 @@ class _ShowItemPageState extends State<ShowItemPage> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 TextButton(
-                                  onPressed: () {  },
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                        AskMeAnything()),);
+                                    },
                                   child: Text('Ask me anything', style:
                                   TextStyle(decoration: TextDecoration.underline,
                                       fontSize: 13, color: Colors.blueGrey, fontFamily: "PTSans", fontWeight: FontWeight.w500 )),
