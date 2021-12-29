@@ -34,6 +34,13 @@ class _RatingAndReviewState extends State<RatingAndReview> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Center(
+                child: Text("Rate It!", style:
+                TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -59,7 +66,7 @@ class _RatingAndReviewState extends State<RatingAndReview> {
                    ],
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(height: 13,),
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Row(
@@ -80,7 +87,7 @@ class _RatingAndReviewState extends State<RatingAndReview> {
                 ),
               ),
               AYDButton(
-                buttonText: "Submit",
+                buttonText: "Rate it!",
                 onPressed: (){},
               ),
             ],

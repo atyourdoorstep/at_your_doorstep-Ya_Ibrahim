@@ -406,8 +406,8 @@ class _ShowItemPageState extends State<ShowItemPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 400,
+                  items['reviews'].length > 0?SizedBox(
+                    height: 500,
                     child: ListView.builder(
                       physics: ClampingScrollPhysics(),
                       shrinkWrap: true,
@@ -462,6 +462,9 @@ class _ShowItemPageState extends State<ShowItemPage> {
                         );//categoryItem[index]['image']
                       },
                     ),
+                  ):Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: SizedBox(),
                   ),
                   AYDOutlinedButton(
                     buttonText: "Rate it!",
