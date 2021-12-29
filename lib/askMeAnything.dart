@@ -22,6 +22,12 @@ class _AskMeAnythingState extends State<AskMeAnything> {
         //   color: Colors.red,
         //   fontFamily: "PTSans",
         //   fontWeight: FontWeight.w500,),),
+        // actions: [
+        //   Text("Asked Questions", style: TextStyle(
+        //     color: Colors.red,
+        //     fontFamily: "PTSans",
+        //     fontWeight: FontWeight.w500,),),
+        // ],
         elevation: 0.0,
         backgroundColor: Colors.white,
         leading: IconButton(
