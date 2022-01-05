@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:at_your_doorstep/Screens/createDiscountCodePage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
@@ -116,7 +117,7 @@ class _EditProfileOpState extends State<EditProfileOp> {
                 ),
                 //
                 SizedBox(
-                  height: roleOfUser == "seller"?460:290,
+                  height: roleOfUser == "seller"?410:290,
                   child: Padding(
                     padding: const EdgeInsets.all(7.0),
                     child: Card(
@@ -132,12 +133,11 @@ class _EditProfileOpState extends State<EditProfileOp> {
                               children: [
                                 GestureDetector(
                                   onTap:(){
-                                    Navigator.push(context, new MaterialPageRoute(
-                                        builder: (context) =>UpdateSellerProAndItems()));
-                                    // Navigator.of(
-                                    //   context,
-                                    //   rootNavigator: true,).pushNamed('sellerUpdateProfile');
-                      },
+                                    Navigator.of(
+                                      context,
+                                      rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>UpdateSellerProAndItems()));
+
+                                  },
                                   child: ListTile(title: Text("Seller Profile", style: menuFont,),
                                     leading: Icon(Icons.account_box_outlined),
                                   ),
@@ -182,8 +182,10 @@ class _EditProfileOpState extends State<EditProfileOp> {
                                                      children: [
                                                        GestureDetector(
                                                          onTap:() async {
-                                                           Navigator.push(context, new MaterialPageRoute(
-                                                               builder: (context) =>PostCreation(typeofPost: "product",)));
+
+                                                           Navigator.of(
+                                                             context,
+                                                             rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>PostCreation(typeofPost: "product",)));
                                                          },
                                                          child: ListTile(
                                                            leading: CircleAvatar(child: Icon(Icons.shopping_bag_outlined)),
@@ -193,8 +195,9 @@ class _EditProfileOpState extends State<EditProfileOp> {
                                                        Divider(),
                                                        GestureDetector(
                                                          onTap:() async {
-                                                           Navigator.push(context, new MaterialPageRoute(
-                                                               builder: (context) =>PostCreation(typeofPost: "service",)));
+                                                           Navigator.of(
+                                                             context,
+                                                             rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>PostCreation(typeofPost: "service",)));
                                                          },
                                                          child: ListTile(
                                                            leading: CircleAvatar(child: Icon(Icons.home_repair_service)),
@@ -258,7 +261,9 @@ class _EditProfileOpState extends State<EditProfileOp> {
                               children: [
                                 GestureDetector(
                                   onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddAddress()),);
+                                    Navigator.of(
+                                      context,
+                                      rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>AddAddress()));
                                   },
                                   child: ListTile(title: Text("My Address", style: menuFont,),
                                     leading: Icon(Icons.location_on),
@@ -270,20 +275,13 @@ class _EditProfileOpState extends State<EditProfileOp> {
                           ),
                           GestureDetector(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SuggestNewService(title: "Complaints",)),);
+                              Navigator.of(
+                                context,
+                                rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>SuggestNewService(title: "Complaints")));
 
                             },
                             child: ListTile(title: Text("Complaints", style: menuFont,),
                               leading: Icon(Icons.edit),
-                            ),
-                          ),
-                          Divider(),
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SuggestNewService(title: "REQUEST FOR NEW SERVICE")),);
-                            },
-                            child: ListTile(title: Text("Suggest New Service", style: menuFont,),
-                              leading: Icon(Icons.add_chart),
                             ),
                           ),
                           Divider(),
@@ -361,24 +359,40 @@ class _EditProfileOpState extends State<EditProfileOp> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Row(
+                            children: [
+                              TextButton(
+                                onPressed: () async {
+                                  const url = 'https://atyourdoorstep-pk.herokuapp.com/';
+                                  if(await canLaunch(url)){
+                                    await launch(url);
+                                  }
+                                  else{
+                                    throw 'Could not launch $url';
+                                  }
+                                },
+                                child: Text("About", style: TextStyle(
+                                  color: Colors.black45,
+                                )),
+                              ),
+                              Text("|  Version: 1.0.0", style: TextStyle(
+                                color: Colors.black45,
+                              )),
+                            ],
+                          ),
                           TextButton(
                             onPressed: () async {
-                              const url = 'https://atyourdoorstep-pk.herokuapp.com/';
-                              if(await canLaunch(url)){
-                                await launch(url);
-                              }
-                              else{
-                                throw 'Could not launch $url';
-                              }
+                              Navigator.of(
+                                context,
+                                rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>SuggestNewService(title: "REQUEST FOR NEW SERVICE")));
                             },
-                            child: Text("About", style: TextStyle(
+                            child: Text("Suggest New Service", style: TextStyle(
+                              fontSize: 11,
                               color: Colors.black45,
                             )),
                           ),
-                          Text("|  Version: 1.0.0", style: TextStyle(
-                            color: Colors.black45,
-                          )),
                         ],
                       ),
                     ),),
