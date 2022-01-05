@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:at_your_doorstep/Screens/createDiscountCodePage.dart';
+import 'package:at_your_doorstep/Screens/paymentsDetailCust.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
@@ -251,8 +252,15 @@ class _EditProfileOpState extends State<EditProfileOp> {
                               ],
                             ),
                           ),
-                          ListTile(title: Text("Payments", style: menuFont,),
-                            leading: Icon(Icons.payment),
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.of(
+                                context,
+                                rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>PaymentDetailsCustomer()));
+                            },
+                            child: ListTile(title: Text("Payments", style: menuFont,),
+                              leading: Icon(Icons.payment),
+                            ),
                           ),
                           Divider(),
                           Visibility(
@@ -422,7 +430,9 @@ class _EditProfileOpState extends State<EditProfileOp> {
                   color: Colors.blue,
                   iconSize: 25,
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
+                    Navigator.of(
+                      context,
+                      rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
                   }),
               CircularMenuItem(
                   icon: FontAwesomeIcons.ticketAlt,
