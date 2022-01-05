@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
+import 'package:at_your_doorstep/Screens/SellerControl/sellerProfileUpdate.dart';
 import 'package:at_your_doorstep/Screens/userProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -152,7 +154,13 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
       EasyLoading.dismiss();
       Navigator.pop(context);
       Navigator.push(context, MaterialPageRoute(builder: (context) => editProfile()),);
-    }
+      Timer(Duration(seconds: 1),(){
+        Navigator.of(
+          context,
+          rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>UpdateSellerProAndItems()));
+        showMsg(context, "Setup your profile details");
+      });
+        }
     else{
       showMsg(context,body['message']);
     }
