@@ -17,11 +17,22 @@ class PaymentDetailsCustomer extends StatefulWidget {
 }
 
 class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
+
+  bool executed = false;
+  late var payments;
+
+  @override
+  void initState() {
+    executed = false;
+    getPaymentHistory();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Discount Code", style: TextStyle(fontSize: 18,
+        title: Text("Payment History", style: TextStyle(fontSize: 18,
           color: Colors.red,
           fontFamily: "PTSans",
           fontWeight: FontWeight.w500,),),
@@ -34,7 +45,117 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
         ),
       ),
-      body: Container(),
+      body: executed ? SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      payments = payments.reversed.toList();
+                    });
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text("Sort by "),
+                      Icon(Icons.sort),
+                    ],
+                  ),
+                ),
+              ),
+              payments.length > 0 ? SizedBox(
+                height: 550,
+                child: ListView.builder(
+                  itemCount: payments.length,
+                  itemBuilder:(context , index){
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 6.0),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          color: Colors.red,
+                                          child: Text(" ${ucFirst(payments[index]['type'])} ", style:
+                                          TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                                        ),
+                                        SizedBox(width: 5,),
+                                        Container(
+                                          color: Colors.orange,
+                                          child: Text(" ${ucFirst(payments[index]['status'])} ", style:
+                                          TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                                        ),
+                                        SizedBox(width: 5,),
+                                        Container(
+                                          color: Colors.grey,
+                                          child: Text(" ${payments[index]['stripe_payment_id']} ", style:
+                                          TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                    child: Text("Order ID #${payments[index]['order_id']}",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                                  ),
+                                ],
+                              ),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text("Date: ", style:
+                                    TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                    Text(payments[index]['created_at'].substring(0,10), style:
+                                    TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+                              child: Divider(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ): ListTile(title: Center(child: Text("No Payments Yet!",
+                style: TextStyle(color: Colors.red),
+              ))),
+            ],
+          ),
+        ),
+      ): SpecialSpinner(),
     );
+  }
+
+  getPaymentHistory() async {
+    payments={};
+    var res= await CallApi().postData({},'/getUserPaymentHistory');
+    var body =json.decode(res.body);
+    if(res.statusCode == 200){
+      setState(() {
+        payments = body['payments'];
+      });
+      print(payments.toString());
+      executed = true;
+    }
   }
 }
