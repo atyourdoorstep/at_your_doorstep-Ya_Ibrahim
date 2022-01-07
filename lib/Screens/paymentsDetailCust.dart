@@ -20,6 +20,7 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
 
   bool executed = false;
   late var payments;
+  var borderRad = BorderRadius.all(Radius.circular(5.0));
 
   @override
   void initState() {
@@ -71,66 +72,80 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
                 child: ListView.builder(
                   itemCount: payments.length,
                   itemBuilder:(context , index){
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 6.0),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          color: Colors.red,
-                                          child: Text(" ${ucFirst(payments[index]['type'])} ", style:
-                                          TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                                        ),
-                                        SizedBox(width: 5,),
-                                        Container(
-                                          color: Colors.orange,
-                                          child: Text(" ${ucFirst(payments[index]['status'])} ", style:
-                                          TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                                        ),
-                                        SizedBox(width: 5,),
-                                        Container(
-                                          color: Colors.grey,
-                                          child: Text(" ${payments[index]['stripe_payment_id']} ", style:
-                                          TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                    child: Text("Order ID #${payments[index]['order_id']}",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
-                                  ),
-                                ],
-                              ),
-                              subtitle: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 6.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                    return GestureDetector(
+                      onTap: (){
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=>PaymentDetails(paymentID: payments[index]['stripe_payment_id'],)));
+                      },
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Date: ", style:
-                                    TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                                    Text(payments[index]['created_at'].substring(0,10), style:
-                                    TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 6.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color:  Colors.red,),
+                                              borderRadius: borderRad,
+                                            ),
+                                            child: Text(" ${ucFirst(payments[index]['type'])} ", style:
+                                            TextStyle(fontSize: 14, color:  Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                                          ),
+                                          SizedBox(width: 5,),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: Colors.orange,),
+                                              borderRadius: borderRad,
+                                            ),
+                                            child: Text(" ${ucFirst(payments[index]['status'])} ", style:
+                                            TextStyle(fontSize: 14, color: Colors.orange, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                                          ),
+                                          SizedBox(width: 5,),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: Colors.grey,),
+                                              borderRadius: borderRad,
+                                            ),
+                                            child: Text(" ${payments[index]['stripe_payment_id']} ", style:
+                                            TextStyle(fontSize: 14, color: Colors.grey, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                      child: Text("Order ID #${payments[index]['order_id']}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                                    ),
                                   ],
                                 ),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text("Date: ", style:
+                                      TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                      Text(payments[index]['created_at'].substring(0,10), style:
+                                      TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0,right: 8.0),
-                              child: Divider(),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+                                child: Divider(),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
@@ -158,4 +173,62 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
       executed = true;
     }
   }
+}
+
+class PaymentDetails extends StatefulWidget {
+  final paymentID;
+  const PaymentDetails({this.paymentID});
+
+  @override
+  _PaymentDetailsState createState() => _PaymentDetailsState();
+}
+
+class _PaymentDetailsState extends State<PaymentDetails> {
+  var paymentid;
+  bool executed = false;
+  late var paymentD;
+  @override
+  void initState() {
+   paymentid=widget.paymentID;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Payment of Order ID #", style: TextStyle(fontSize: 18,
+          color: Colors.red,
+          fontFamily: "PTSans",
+          fontWeight: FontWeight.w500,),),
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+        ),
+      ),
+      body: Center(
+        child: Text(
+          paymentid,
+        ),
+      ),
+    );
+  }
+
+  getPaymentDetails() async {
+    paymentD={};
+    var res= await CallApi().postData({},'/getUserPaymentHistory');
+    var body =json.decode(res.body);
+    if(res.statusCode == 200){
+      setState(() {
+        paymentD = body['payments'];
+      });
+      print(paymentD.toString());
+      executed = true;
+    }
+  }
+
 }
