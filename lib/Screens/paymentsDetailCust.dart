@@ -190,6 +190,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
   @override
   void initState() {
    paymentid=widget.paymentID;
+   getPaymentDetails();
     super.initState();
   }
 
@@ -220,11 +221,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
 
   getPaymentDetails() async {
     paymentD={};
-    var res= await CallApi().postData({},'/getUserPaymentHistory');
+    var res= await CallApi().postData({"payment_id": paymentid},'/getPaymentDetails');
     var body =json.decode(res.body);
     if(res.statusCode == 200){
       setState(() {
-        paymentD = body['payments'];
+        paymentD = body['payment_details'];
       });
       print(paymentD.toString());
       executed = true;
