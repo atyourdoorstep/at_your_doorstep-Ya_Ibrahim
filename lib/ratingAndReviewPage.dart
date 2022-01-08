@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
+import 'package:at_your_doorstep/Screens/LandingPages/showItemPage.dart';
 import 'package:at_your_doorstep/paymentPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class RatingAndReview extends StatefulWidget {
-  const RatingAndReview({Key? key}) : super(key: key);
+  final itemD;
+  RatingAndReview({this.itemD});
 
   @override
   _RatingAndReviewState createState() => _RatingAndReviewState();
@@ -15,7 +17,16 @@ class RatingAndReview extends StatefulWidget {
 
 class _RatingAndReviewState extends State<RatingAndReview> {
 
+  var items ;
   int rating = 0;
+  TextEditingController ReviewController = TextEditingController();
+
+  @override
+  void initState() {
+    items = widget.itemD;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +88,7 @@ class _RatingAndReviewState extends State<RatingAndReview> {
                           hintText:  ' Write Something ..',
                         ),
                         obscureText: false,
-                        //controller: dCodeController,
+                        controller: ReviewController,
                         onSubmitted: (value){
                           print(value);
                         },
@@ -88,7 +99,9 @@ class _RatingAndReviewState extends State<RatingAndReview> {
               ),
               AYDButton(
                 buttonText: "Rate it!",
-                onPressed: (){},
+                onPressed: (){
+                  rateItem();
+                },
               ),
             ],
           ),
@@ -96,4 +109,33 @@ class _RatingAndReviewState extends State<RatingAndReview> {
       ),
     );
   }
+
+  rateItem() async {
+    if(rating >=1 && ReviewController.text.length >=5){
+      var res= await CallApi().postData({
+        'item_id': items['id'],
+        'review': ReviewController.text,
+        'rating': rating,
+      },'/RateItem');
+      var body =json.decode(res.body);
+      if(res.statusCode == 200){
+        print(body);
+        if(body['success']){
+          showMsg(context, "You Rated Successfully");
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.push(context, new MaterialPageRoute(
+              builder: (context) => ShowItemPage(itemDetails: items)));
+
+        }
+        else{
+          showMsg(context, body['message']);
+          }
+        }
+    }
+    else{
+      showMsg(context, "Please Reviewed Properly");
+    }
+  }
+
 }
