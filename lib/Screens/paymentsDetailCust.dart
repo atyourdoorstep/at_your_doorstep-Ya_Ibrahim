@@ -20,7 +20,10 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
 
   bool executed = false;
   late var payments;
+  late var paymentD;
+  bool executed1 = false;
   var borderRad = BorderRadius.all(Radius.circular(5.0));
+  List amountList = [];
 
   @override
   void initState() {
@@ -74,7 +77,7 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
                   itemBuilder:(context , index){
                     return GestureDetector(
                       onTap: (){
-                        Navigator.push(context,MaterialPageRoute(builder: (context)=>PaymentDetails(paymentID: payments[index]['stripe_payment_id'],)));
+                        //Navigator.push(context,MaterialPageRoute(builder: (context)=>PaymentDetails(paymentID: payments[index]['stripe_payment_id'],)));
                       },
                       child: Center(
                         child: Padding(
@@ -82,6 +85,7 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
                           child: Column(
                             children: [
                               ListTile(
+                                trailing: executed1 ? Text("Rs. ${amountList[index]}") : CircleAvatar(),
                                 title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -168,68 +172,89 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
     if(res.statusCode == 200){
       setState(() {
         payments = body['payments'];
+        for(int i=0;i<payments.length;i++){
+          amountList.insert(i, 0);
+        }
       });
       print(payments.toString());
+      getPaymentDetails();
       executed = true;
     }
-  }
-}
-
-class PaymentDetails extends StatefulWidget {
-  final paymentID;
-  const PaymentDetails({this.paymentID});
-
-  @override
-  _PaymentDetailsState createState() => _PaymentDetailsState();
-}
-
-class _PaymentDetailsState extends State<PaymentDetails> {
-  var paymentid;
-  bool executed = false;
-  late var paymentD;
-  @override
-  void initState() {
-   paymentid=widget.paymentID;
-   getPaymentDetails();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Payment of Order ID #", style: TextStyle(fontSize: 18,
-          color: Colors.red,
-          fontFamily: "PTSans",
-          fontWeight: FontWeight.w500,),),
-        elevation: 0.0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
-        ),
-      ),
-      body: Center(
-        child: Text(
-          paymentid,
-        ),
-      ),
-    );
   }
 
   getPaymentDetails() async {
-    paymentD={};
-    var res= await CallApi().postData({"payment_id": paymentid},'/getPaymentDetails');
-    var body =json.decode(res.body);
-    if(res.statusCode == 200){
-      setState(() {
-        paymentD = body['payment_details'];
-      });
-      print(paymentD.toString());
-      executed = true;
+    for(int i=0;i<payments.length;i++){
+      paymentD={};
+      var res= await CallApi().postData({"payment_id": payments[i]['stripe_payment_id']},'/getPaymentDetails');
+      var body =json.decode(res.body);
+      if(res.statusCode == 200){
+        setState(() {
+          paymentD = body['payment_details'];
+        });
+        executed1 = true;
+      }
+      print(paymentD['amount']/100);
+      amountList.insert(i, paymentD['amount']/100);
     }
+    print(amountList);
   }
-
 }
+
+// class PaymentDetails extends StatefulWidget {
+//   final paymentID;
+//   const PaymentDetails({this.paymentID});
+//
+//   @override
+//   _PaymentDetailsState createState() => _PaymentDetailsState();
+// }
+//
+// class _PaymentDetailsState extends State<PaymentDetails> {
+//   var paymentid;
+//   bool executed = false;
+//   late var paymentD;
+//   @override
+//   void initState() {
+//    paymentid=widget.paymentID;
+//    getPaymentDetails();
+//     super.initState();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text("Payment of Order ID #", style: TextStyle(fontSize: 18,
+//           color: Colors.red,
+//           fontFamily: "PTSans",
+//           fontWeight: FontWeight.w500,),),
+//         elevation: 0.0,
+//         backgroundColor: Colors.white,
+//         leading: IconButton(
+//           onPressed: () {
+//             Navigator.pop(context);
+//           },
+//           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+//         ),
+//       ),
+//       body: Center(
+//         child: Text(
+//           paymentid,
+//         ),
+//       ),
+//     );
+//   }
+//
+//   getPaymentDetails() async {
+//     paymentD={};
+//     var res= await CallApi().postData({"payment_id": paymentid},'/getPaymentDetails');
+//     var body =json.decode(res.body);
+//     if(res.statusCode == 200){
+//       setState(() {
+//         paymentD = body['payment_details'];
+//       });
+//       print(paymentD.toString());
+//       executed = true;
+//     }
+//   }
+//
+// }

@@ -264,6 +264,25 @@ class _EditProfileOpState extends State<EditProfileOp> {
                           ),
                           Divider(),
                           Visibility(
+                            visible: roleOfUser != "seller",
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap:(){
+                                    Navigator.of(
+                                      context,
+                                      rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>SuggestNewService(title: "REQUEST FOR NEW SERVICE")));
+
+                                  },
+                                  child: ListTile(title: Text("Suggest New Service", style: menuFont,),
+                                    leading: Icon(Icons.add_chart),
+                                  ),
+                                ),
+                                Divider(),
+                              ],
+                            ),
+                          ),
+                          Visibility(
                             visible: roleOfUser == "seller",
                             child: Column(
                               children: [
@@ -390,16 +409,19 @@ class _EditProfileOpState extends State<EditProfileOp> {
                               )),
                             ],
                           ),
-                          TextButton(
-                            onPressed: () async {
-                              Navigator.of(
-                                context,
-                                rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>SuggestNewService(title: "REQUEST FOR NEW SERVICE")));
-                            },
-                            child: Text("Suggest New Service", style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.black45,
-                            )),
+                          Visibility(
+                            visible: roleOfUser == 'seller',
+                            child: TextButton(
+                              onPressed: () async {
+                                Navigator.of(
+                                  context,
+                                  rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>SuggestNewService(title: "REQUEST FOR NEW SERVICE")));
+                              },
+                              child: Text("Suggest New Service", style: TextStyle(
+                                fontSize: 11,
+                                color: Colors.black45,
+                              )),
+                            ),
                           ),
                         ],
                       ),

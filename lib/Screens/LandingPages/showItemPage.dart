@@ -470,12 +470,14 @@ class _ShowItemPageState extends State<ShowItemPage> {
                     padding: const EdgeInsets.only(top: 15.0),
                     child: SizedBox(),
                   ),
-                  AYDOutlinedButton(
-                    buttonText: "Rate it!",
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                          RatingAndReview()),);
-                    },
+                  Center(
+                    child: AYDOutlinedButton(
+                      buttonText: "Rate it!",
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                            RatingAndReview()),);
+                      },
+                    ),
                   )
                 ],
               ),
