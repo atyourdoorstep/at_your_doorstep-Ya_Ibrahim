@@ -53,23 +53,6 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
         child: Container(
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      payments = payments.reversed.toList();
-                    });
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text("Sort by "),
-                      Icon(Icons.sort),
-                    ],
-                  ),
-                ),
-              ),
               payments.length > 0 ? SizedBox(
                 height: 550,
                 child: ListView.builder(
@@ -110,17 +93,16 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
                                             child: Text(" ${ucFirst(payments[index]['status'])} ", style:
                                             TextStyle(fontSize: 14, color: Colors.orange, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
                                           ),
-                                          SizedBox(width: 5,),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(color: Colors.grey,),
-                                              borderRadius: borderRad,
-                                            ),
-                                            child: Text(" ${payments[index]['stripe_payment_id']} ", style:
-                                            TextStyle(fontSize: 14, color: Colors.grey, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                                          ),
                                         ],
                                       ),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.grey,),
+                                        borderRadius: borderRad,
+                                      ),
+                                      child: Text(" ${payments[index]['stripe_payment_id']} ", style:
+                                      TextStyle(fontSize: 14, color: Colors.grey, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 8.0),
