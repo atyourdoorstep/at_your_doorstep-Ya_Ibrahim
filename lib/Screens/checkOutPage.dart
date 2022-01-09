@@ -32,6 +32,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   var ordersList;
   var itemsDetails;
   bool executed = false;
+  bool discounted = false;
   TextEditingController dCodeController = TextEditingController();
 
   @override
@@ -155,6 +156,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 //decoration: TextDecoration.lineThrough,
                               ),),
                             ),
+                            //4242424242424242
                           ),
                         ),
                       ),
@@ -213,6 +215,21 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   }
                 },
               ),
+              discounted?Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Chip(
+                      shape: StadiumBorder(side: BorderSide(color: Colors.blue, width: 2)),
+                      label: Text("All Items or Service Discounted with code", style: TextStyle(
+                        color: Colors.blue,
+                        //decoration: TextDecoration.lineThrough,
+                      ),),
+                    ),
+                  ],
+                ),
+              ):SizedBox(),
             ],
           ),
         ),
@@ -236,6 +253,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   getDiscount(code)async {
     //currentAddress ="";
+    int count =0;
     var res= await CallApi().postData({'code': code},'/getDiscount');
     var body =json.decode(res.body);
     if(res.statusCode == 200){
@@ -247,6 +265,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               if(ordersList[j]['item_id'] == body['discount_code_items'][i]['item_id']){
                 if(ordersList[j]['quantity'] == body['discount_code_items'][i]['quantity']){
                   setState(() {
+                    count++;
                     itemsDetails[j]['price'] = (itemsDetails[j]['price']* ordersList[j]['quantity']) - body['discount_code_items'][i]['discount'];
                   });
                 }
@@ -255,6 +274,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
           }
       //executed = true;
       //print(currentAddress);
+    }
+    if(count>=1){
+      setState(() {
+        discounted = true;
+        dCodeController.clear();
+      });
     }
   }
 }
