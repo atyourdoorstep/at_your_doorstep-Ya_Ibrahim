@@ -150,14 +150,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             ),
                             trailing: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                ),
-                                child: Text("Rs. "+ itemsDetails[index]['price'].toString(), style: TextStyle(
-                                  color: Colors.blue,
-                                ),),
-                              ),
+                              child: Text("Rs. ${itemsDetails[index]['price']*ordersList[index]['quantity']}", style: TextStyle(
+                                color: Colors.blue,
+                                //decoration: TextDecoration.lineThrough,
+                              ),),
                             ),
                           ),
                         ),
@@ -180,6 +176,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             child: ElevatedButton(
                                 onPressed: (){
                               print(dCodeController.text);
+                              getDiscount(dCodeController.text);
                             }, child: Text("Apply Code")),
                           ),
                         ),
@@ -237,4 +234,27 @@ class _CheckoutPageState extends State<CheckoutPage> {
     }
   }
 
+  getDiscount(code)async {
+    //currentAddress ="";
+    var res= await CallApi().postData({'code': code},'/getDiscount');
+    var body =json.decode(res.body);
+    if(res.statusCode == 200){
+          print(ordersList);
+          print(body['discount_code_items']);
+
+          for(int i=0;i<body['discount_code_items'].length ;i++){
+            for(int j=0 ;i<ordersList.length;i++){
+              if(ordersList[j]['item_id'] == body['discount_code_items'][i]['item_id']){
+                if(ordersList[j]['quantity'] == body['discount_code_items'][i]['quantity']){
+                  setState(() {
+                    itemsDetails[j]['price'] = (itemsDetails[j]['price']* ordersList[j]['quantity']) - body['discount_code_items'][i]['discount'];
+                  });
+                }
+              }
+            }
+          }
+      //executed = true;
+      //print(currentAddress);
+    }
+  }
 }
