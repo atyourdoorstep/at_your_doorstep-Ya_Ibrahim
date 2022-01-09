@@ -54,7 +54,7 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
           child: Column(
             children: <Widget>[
               payments.length > 0 ? SizedBox(
-                height: 550,
+                height: 570,
                 child: ListView.builder(
                   itemCount: payments.length,
                   itemBuilder:(context , index){
@@ -68,7 +68,7 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
                           child: Column(
                             children: [
                               ListTile(
-                                trailing: executed1 ? Text("Rs. ${amountList[index]}") : CircleAvatar(),
+                                trailing: executed1 ? Text("Rs. ${amountList[index]}") : Icon(Icons.money),
                                 title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -154,6 +154,8 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
     if(res.statusCode == 200){
       setState(() {
         payments = body['payments'];
+        payments = payments.reversed.toList();
+
         for(int i=0;i<payments.length;i++){
           amountList.insert(i, 0);
         }
