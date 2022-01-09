@@ -278,7 +278,8 @@ class _AddCartPageState extends State<AddCartPage> {
       for(int i=0;i< cartItems.length;i++){
         orderedItems.insert(i, {
           'item_id': cartItems[i]['item_id'],
-          'quantity': cartItems[i]['quantity']
+          'quantity': cartItems[i]['quantity'],
+          'discount': 0,
         });
 
         itemDetails.insert(i, {

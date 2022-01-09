@@ -91,10 +91,23 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     ),
                                     Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Text("Rs. "+ordersDetails[index]['item']['price'].toString(), style: TextStyle(
+                                      child: Text("Actual Rs. ${ordersDetails[index]['item']['price']}", style: TextStyle(
                                         color: Colors.blue,
                                       ),),
                                     ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: Text("Discount Rs. ${ordersDetails[index]['discount']}", style: TextStyle(
+                                        color: Colors.blue,
+                                      ),),
+                                    ),
+                                    SizedBox(height: 3),
+                                    ordersDetails[index]['discount'] >0 ? Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: Text("Discounted Rs. ${ordersDetails[index]['item']['price']-ordersDetails[index]['discount']}", style: TextStyle(
+                                        color: Colors.blue,
+                                      ),),
+                                    ): SizedBox(),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                       child: ordersDetails[index]['item']['type'] == 'product' ? Text("Quantity(s): "+ordersDetails[index]['quantity'].toString(), style: TextStyle(

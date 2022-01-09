@@ -266,6 +266,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 if(ordersList[j]['quantity'] == body['discount_code_items'][i]['quantity']){
                   setState(() {
                     count++;
+                    ordersList[j]['discount'] = body['discount_code_items'][i]['discount'];
                     itemsDetails[j]['price'] = (itemsDetails[j]['price']* ordersList[j]['quantity']) - body['discount_code_items'][i]['discount'];
                   });
                 }
@@ -279,6 +280,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       setState(() {
         discounted = true;
         dCodeController.clear();
+        print(ordersList);
       });
     }
   }

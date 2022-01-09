@@ -148,6 +148,7 @@ with SingleTickerProviderStateMixin{
     if(res.statusCode == 200){
       setState(() {
         orderItems = body['orders'];
+        orderItems= orderItems.reversed.toList();
       });
       print(orderItems.toString());
       executed = true;
