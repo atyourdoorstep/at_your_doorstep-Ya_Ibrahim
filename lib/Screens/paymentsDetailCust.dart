@@ -54,7 +54,7 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
           child: Column(
             children: <Widget>[
               payments.length > 0 ? SizedBox(
-                height: 570,
+                height: 580,
                 child: ListView.builder(
                   itemCount: payments.length,
                   itemBuilder:(context , index){

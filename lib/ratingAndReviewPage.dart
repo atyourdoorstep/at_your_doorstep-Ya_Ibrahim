@@ -20,6 +20,16 @@ class _RatingAndReviewState extends State<RatingAndReview> {
   var items ;
   int rating = 0;
   TextEditingController ReviewController = TextEditingController();
+  List designedReviews = [
+    "Very Good Service",
+    "Amazing Product",
+    "Smooth Delivery",
+    "Recommended",
+    "Really Appreciated ",
+    "Bad Service",
+    "Not Happy",
+    ":)",
+  ];
 
   @override
   void initState() {
@@ -40,70 +50,102 @@ class _RatingAndReviewState extends State<RatingAndReview> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
         ),
       ),
-      body:Center(
-        child: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Text("Rate It!", style:
-                TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 10,),
+      body:SingleChildScrollView(
+        child: Center(
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Text("Rate It!", style:
+                  TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 10,),
 
-                    GestureDetector(onTap:(){setState(() {
-                      rating=1;
-                    });},child: rating >=1?Icon(Icons.star, size: 50,color: Colors.yellow,):Icon(Icons.star_border, size: 50,color: Colors.black12,)),
-                    GestureDetector(onTap:(){setState(() {
-                      rating=2;
-                    });},child: rating >=2?Icon(Icons.star, size: 50,color: Colors.yellow,) :Icon(Icons.star_border, size: 50,color: Colors.black12,)),
-                    GestureDetector(onTap:(){setState(() {
-                      rating=3;
-                    });},child: rating >=3?Icon(Icons.star, size: 50,color: Colors.yellow,) :Icon(Icons.star_border, size: 50,color: Colors.black12,)),
-                    GestureDetector(onTap:(){setState(() {
-                      rating=4;
-                    });},child: rating >=4?Icon(Icons.star, size: 50,color: Colors.yellow,) :Icon(Icons.star_border, size: 50,color: Colors.black12,)),
-                    GestureDetector(onTap:(){setState(() {
-                      rating=5;
-                    });},child: rating >=5?Icon(Icons.star, size: 50,color: Colors.yellow,) :Icon(Icons.star_border, size: 50,color: Colors.black12,)),
-                   ],
+                      GestureDetector(onTap:(){setState(() {
+                        rating=1;
+                      });},child: rating >=1?Icon(Icons.star, size: 50,color: Colors.yellow,):Icon(Icons.star_border, size: 50,color: Colors.black12,)),
+                      GestureDetector(onTap:(){setState(() {
+                        rating=2;
+                      });},child: rating >=2?Icon(Icons.star, size: 50,color: Colors.yellow,) :Icon(Icons.star_border, size: 50,color: Colors.black12,)),
+                      GestureDetector(onTap:(){setState(() {
+                        rating=3;
+                      });},child: rating >=3?Icon(Icons.star, size: 50,color: Colors.yellow,) :Icon(Icons.star_border, size: 50,color: Colors.black12,)),
+                      GestureDetector(onTap:(){setState(() {
+                        rating=4;
+                      });},child: rating >=4?Icon(Icons.star, size: 50,color: Colors.yellow,) :Icon(Icons.star_border, size: 50,color: Colors.black12,)),
+                      GestureDetector(onTap:(){setState(() {
+                        rating=5;
+                      });},child: rating >=5?Icon(Icons.star, size: 50,color: Colors.yellow,) :Icon(Icons.star_border, size: 50,color: Colors.black12,)),
+                     ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 13,),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText:  ' Write Something ..',
+                SizedBox(height: 13,),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText:  ' Write Something ..',
+                          ),
+                          obscureText: false,
+                          controller: ReviewController,
+                          onSubmitted: (value){
+                            print(value);
+                          },
                         ),
-                        obscureText: false,
-                        controller: ReviewController,
-                        onSubmitted: (value){
-                          print(value);
-                        },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              AYDButton(
-                buttonText: "Rate it!",
-                onPressed: (){
-                  rateItem();
-                },
-              ),
-            ],
+                AYDButton(
+                  buttonText: "Rate it!",
+                  onPressed: (){
+                    rateItem();
+                  },
+                ),
+                SizedBox(height: 7.0,),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Wrap(
+                    children: List<Widget>.generate(designedReviews.length,
+                            (int index){
+                          return GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                ReviewController.text = ReviewController.text + " "+ designedReviews[index];
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Chip(
+                                shape: StadiumBorder(side: BorderSide(color: Color(0xffD60024), width: 2)),
+                                label:Text(ucFirst(designedReviews[index]),
+                                  style: TextStyle(
+                                    color: Color(0xffD60024),fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                backgroundColor: Colors.white,
+                                //Color(0xFFFFE7E7) ,
+                              ),
+                            ),
+                          );
+                        }
+                    ).toList(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
