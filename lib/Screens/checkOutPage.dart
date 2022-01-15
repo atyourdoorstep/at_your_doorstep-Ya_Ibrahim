@@ -31,6 +31,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   var stripToken;
   var ordersList;
   var itemsDetails;
+  var itemsDetails2;
   bool executed = false;
   bool discounted = false;
   TextEditingController dCodeController = TextEditingController();
@@ -42,6 +43,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     stripToken = widget.stripToken;
     ordersList = widget.ordersList;
     itemsDetails = widget.itemsDetails;
+    itemsDetails2 = [...widget.itemsDetails];
     print(itemsDetails);
     super.initState();
   }
@@ -151,10 +153,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             ),
                             trailing: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text("Rs. ${itemsDetails[index]['price']*ordersList[index]['quantity']}", style: TextStyle(
-                                color: Colors.blue,
-                                //decoration: TextDecoration.lineThrough,
-                              ),),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  discounted?Text("Rs. ${itemsDetails[index]['price']}", style: TextStyle(
+                                    color: Colors.blue,
+                                    //decoration: TextDecoration.lineThrough,
+                                  ),):SizedBox(),
+                                  Text("Rs. ${discounted? ((itemsDetails2[index]['price']+ordersList[index]['discount'])/ordersList[index]['quantity'])*ordersList[index]['quantity']:itemsDetails2[index]['price']*ordersList[index]['quantity']}", style: TextStyle(
+                                    color: Colors.blue,
+                                    decoration: discounted? TextDecoration.lineThrough: TextDecoration.none,
+                                  ),),
+                                ],
+                              ),
                             ),
                             //4242424242424242
                           ),
@@ -261,7 +272,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           print(body['discount_code_items']);
 
           for(int i=0;i<body['discount_code_items'].length ;i++){
-            for(int j=0 ;i<ordersList.length;i++){
+            for(int j=0 ;j<ordersList.length;j++){
               if(ordersList[j]['item_id'] == body['discount_code_items'][i]['item_id']){
                 if(ordersList[j]['quantity'] == body['discount_code_items'][i]['quantity']){
                   setState(() {
