@@ -31,7 +31,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
   var stripToken;
   var ordersList;
   var itemsDetails;
-  var itemsDetails2;
   bool executed = false;
   bool discounted = false;
   TextEditingController dCodeController = TextEditingController();
@@ -43,7 +42,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
     stripToken = widget.stripToken;
     ordersList = widget.ordersList;
     itemsDetails = widget.itemsDetails;
-    itemsDetails2 = [...widget.itemsDetails];
     print(itemsDetails);
     super.initState();
   }
@@ -160,7 +158,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                     color: Colors.blue,
                                     //decoration: TextDecoration.lineThrough,
                                   ),):SizedBox(),
-                                  Text("Rs. ${discounted? ((itemsDetails2[index]['price']+ordersList[index]['discount'])/ordersList[index]['quantity'])*ordersList[index]['quantity']:itemsDetails2[index]['price']*ordersList[index]['quantity']}", style: TextStyle(
+                                  Text("Rs. ${discounted? ((itemsDetails[index]['price']+ordersList[index]['discount'])/ordersList[index]['quantity'])*ordersList[index]['quantity']:itemsDetails[index]['price']*ordersList[index]['quantity']}", style: TextStyle(
                                     color: Colors.blue,
                                     decoration: discounted? TextDecoration.lineThrough: TextDecoration.none,
                                   ),),
@@ -188,7 +186,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             padding: const EdgeInsets.all(6.0),
                             child: ElevatedButton(
                                 onPressed: (){
-                              print(dCodeController.text);
                               getDiscount(dCodeController.text);
                             }, child: Text("Apply Code")),
                           ),
@@ -203,6 +200,22 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ],
                 ),
               ),
+              discounted?Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Chip(
+                      backgroundColor: Colors.white,
+                      shape: StadiumBorder(side: BorderSide(color: Colors.blue, width: 2)),
+                      label: Text("All Items or Service Discounted with code", style: TextStyle(
+                        color: Colors.blue,
+                        //decoration: TextDecoration.lineThrough,
+                      ),),
+                    ),
+                  ],
+                ),
+              ):SizedBox(),
               AYDButton(
                 buttonText: "Checkout!",
                 onPressed: () async {
@@ -226,21 +239,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   }
                 },
               ),
-              discounted?Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Chip(
-                      shape: StadiumBorder(side: BorderSide(color: Colors.blue, width: 2)),
-                      label: Text("All Items or Service Discounted with code", style: TextStyle(
-                        color: Colors.blue,
-                        //decoration: TextDecoration.lineThrough,
-                      ),),
-                    ),
-                  ],
-                ),
-              ):SizedBox(),
             ],
           ),
         ),
@@ -267,8 +265,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
     int count =0;
     var res= await CallApi().postData({'code': code},'/getDiscount');
     var body =json.decode(res.body);
+    print(body);
     if(res.statusCode == 200){
           print(ordersList);
+          print(body);
           print(body['discount_code_items']);
 
           for(int i=0;i<body['discount_code_items'].length ;i++){
@@ -286,6 +286,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
           }
       //executed = true;
       //print(currentAddress);
+    }
+    else{
+      showMsg(context, body['message']);
     }
     if(count>=1){
       setState(() {

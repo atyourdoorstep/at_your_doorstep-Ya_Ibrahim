@@ -241,13 +241,12 @@ class _AddCartPageState extends State<AddCartPage> {
                           //                               'id': cartItems[i]['id'],
                           //                             },'/removeFromCart');
                           //                           }
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => PaymentPage(
-                                    ordersList: orderedItems,
-                                    itemsDetails: itemDetails,
-                                  )));
+                          Navigator.of(
+                            context,
+                            rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>PaymentPage(
+                            ordersList: orderedItems,
+                            itemsDetails: itemDetails,
+                          )));
                         },
                       ),
                     ],

@@ -63,7 +63,7 @@ class _OrderDetailsState extends State<OrderDetails> {
             ),
             SizedBox(height: 10,),
             SizedBox(
-              height: ordersDetails.length <= 1 ? 150 :400,
+              height: ordersDetails.length <= 1 ? 150 :500,
               child: ordersDetails.length >= 1 ? ListView.builder(
                 itemCount: ordersDetails.length,
                 itemBuilder:(context , index){
@@ -102,11 +102,20 @@ class _OrderDetailsState extends State<OrderDetails> {
                                       ),),
                                     ),
                                     SizedBox(height: 3),
-                                    ordersDetails[index]['discount'] >0 ? Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Text("Discounted Rs. ${ordersDetails[index]['item']['price']-ordersDetails[index]['discount']}", style: TextStyle(
-                                        color: Colors.blue,
-                                      ),),
+                                    ordersDetails[index]['discount'] >0 ? Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                          child: Text("Discounted Rs. ${(ordersDetails[index]['item']['price']*ordersDetails[index]['quantity'])-ordersDetails[index]['discount']}", style: TextStyle(
+                                            color: Colors.blue,
+                                          ),),
+                                        ),
+                                        Text("${ordersDetails[index]['item']['price']*ordersDetails[index]['quantity']}",
+                                          style: TextStyle(
+                                          color: Colors.blue,
+                                            decoration: TextDecoration.lineThrough,
+                                        ),),
+                                      ],
                                     ): SizedBox(),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
