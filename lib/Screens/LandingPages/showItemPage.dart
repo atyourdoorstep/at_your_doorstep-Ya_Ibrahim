@@ -21,11 +21,15 @@ class _ShowItemPageState extends State<ShowItemPage> {
 
   var items;
   late int quantity;
+  late var canRateItems;
+  late bool executed;
 
   @override
   void initState() {
     items = widget.itemDetails;
     quantity = 1;
+    executed= false;
+    canRate(items['id']);
     print(items.toString());
     super.initState();
   }
@@ -464,17 +468,27 @@ class _ShowItemPageState extends State<ShowItemPage> {
                         );//categoryItem[index]['image']
                       },
                     ),
-                  ):Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
-                    child: SizedBox(height: 100,),
+                  ):Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: SizedBox(height: 100,),
+                      ),
+        ListTile(title: Center(child: Text("No Reviews",
+    style: TextStyle(color: Colors.red),
+    ))),
+                    ],
                   ),
-                  Center(
-                    child: AYDOutlinedButton(
-                      buttonText: "Rate it!",
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                            RatingAndReview(itemD: items,)),);
-                      },
+                  Visibility(
+                    visible: canRateItems == true,
+                    child: Center(
+                      child: AYDOutlinedButton(
+                        buttonText: "Rate it!",
+                        onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                              RatingAndReview(itemD: items,)),);
+                        },
+                      ),
                     ),
                   )
                 ],
@@ -487,6 +501,20 @@ class _ShowItemPageState extends State<ShowItemPage> {
       length: 2,
     );
   }
+
+  canRate(data) async {
+    canRateItems={};
+    var res= await CallApi().postData({'item_id':data},'/canRateItem');
+    var body =json.decode(res.body);
+    if(res.statusCode == 200){
+      setState(() {
+        canRateItems = body['success'];
+        print(canRateItems);
+      });
+      executed = true;
+    }
+  }
+
 }
 
 ///AppBar(

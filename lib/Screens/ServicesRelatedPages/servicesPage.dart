@@ -85,7 +85,7 @@ class _ServicesPageState extends State<ServicesPage> {
                     ),
                   ),
                 ),
-                SizedBox(
+                categoryItem.length >0 ? SizedBox(
                   height: 500,
                   child: ListView.builder(
                     physics: ClampingScrollPhysics(),
@@ -159,6 +159,11 @@ class _ServicesPageState extends State<ServicesPage> {
                         );//categoryItem[index]['image']
                       },
                   ),
+                ): Align(
+                  alignment: Alignment.center,
+                  child: ListTile(title: Center(child: Text("No Item & Service Available!",
+                    style: TextStyle(color: Colors.red),
+                  ))),
                 ),
               ],
             ),
