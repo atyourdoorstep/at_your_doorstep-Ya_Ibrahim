@@ -9,7 +9,6 @@ class CallApi{
   //  final String _url = 'http://192.168.100.6:8000/api';//for local
 
 
-
   postData(data, apiUrl) async {
     Uri fullUrl = Uri.parse(_url + apiUrl + await _getToken());
     var resp=await http.post(

@@ -3,11 +3,6 @@ import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
 import 'package:at_your_doorstep/Help_Classes/buttonClass.dart';
 import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
-import 'package:at_your_doorstep/Help_Classes/textFieldClass.dart';
-import 'package:at_your_doorstep/Screens/Cart/cartPage.dart';
-import 'package:at_your_doorstep/Screens/LandingPages/showItemPage.dart';
-import 'package:at_your_doorstep/Screens/Orders/orderDetailPage.dart';
-import 'package:at_your_doorstep/Screens/Orders/sellerOrderDetails.dart';
 import 'package:at_your_doorstep/Screens/getAddressFromCustomer.dart';
 import 'package:at_your_doorstep/orderCompletePage.dart';
 import 'package:flutter/cupertino.dart';
@@ -154,11 +149,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  discounted?Text("Rs. ${itemsDetails[index]['price']}", style: TextStyle(
+                                  ordersList[index]['discount']>0 ?Text("Rs. ${itemsDetails[index]['price']}", style: TextStyle(
                                     color: Colors.blue,
                                     //decoration: TextDecoration.lineThrough,
                                   ),):SizedBox(),
-                                  Text("Rs. ${discounted? ((itemsDetails[index]['price']+ordersList[index]['discount'])/ordersList[index]['quantity'])*ordersList[index]['quantity']:itemsDetails[index]['price']*ordersList[index]['quantity']}", style: TextStyle(
+                                  Text("Rs. ${ordersList[index]['discount']>0? ((itemsDetails[index]['price']+ordersList[index]['discount'])/ordersList[index]['quantity'])*ordersList[index]['quantity']:itemsDetails[index]['price']*ordersList[index]['quantity']}", style: TextStyle(
                                     color: Colors.blue,
                                     decoration: discounted? TextDecoration.lineThrough: TextDecoration.none,
                                   ),),

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:at_your_doorstep/Screens/Cart/cartPage.dart';
-import 'package:at_your_doorstep/mapPage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
@@ -144,7 +143,7 @@ class _HomePageOperationState extends State<HomePageOperation>
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
-                    height: 180.0,
+                    height: 120.0,
                     child: ListView(
                         physics: ClampingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
@@ -275,6 +274,8 @@ class _HomePageOperationState extends State<HomePageOperation>
     }
     return res;
   }
+
+ //'https://maps.googleapis.com/maps/api/geocode/json?latlng=${31.4015326},${74.2761796}&key=AIzaSyDh0oDKoxQijV3bgBmzkbxt8lxKUkUa2zM'
 }
 
 class CupertinoHomePage extends StatefulWidget {
