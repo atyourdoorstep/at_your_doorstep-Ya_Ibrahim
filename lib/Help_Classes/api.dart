@@ -19,7 +19,8 @@ class CallApi{
     return resp;
   }
   getData(apiUrl) async {
-    Uri fullUrl = Uri.parse(_url + apiUrl);
+    //_url +
+    Uri fullUrl = Uri.parse(_url +apiUrl);
     var resp=await http.get(
         fullUrl,
         headers: _setHeaders()

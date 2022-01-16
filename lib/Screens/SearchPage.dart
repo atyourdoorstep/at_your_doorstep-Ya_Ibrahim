@@ -5,6 +5,7 @@ import 'package:at_your_doorstep/Screens/LandingPages/showItemPage.dart';
 import 'package:at_your_doorstep/Screens/SellerControl/showSellerProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -28,6 +29,7 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     executed= false;
     executed1= false;
+    getsss();
 
     super.initState();
   }
@@ -243,6 +245,14 @@ class _SearchPageState extends State<SearchPage> {
         print("loooo :"+searchItem1.toString());
       });
       executed1 = true;
+    }
+  }
+
+  getsss() async {
+    var _url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=${31.4015326},${74.2761796}&key=AIzaSyDh0oDKoxQijV3bgBmzkbxt8lxKUkUa2zM';
+    http.Response  response = await http.get(Uri.parse(_url));
+    if(response.statusCode == 200){
+      print(response.body);
     }
   }
 
