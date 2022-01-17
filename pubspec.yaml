@@ -37,6 +37,7 @@ dependencies:
   font_awesome_flutter: any
   url_launcher:
   geocoding: ^2.0.1
+  provider: ^6.0.2
   google_maps_flutter:
   circular_menu:
 
