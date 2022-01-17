@@ -67,25 +67,42 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   SizedBox(height: 10),
                   Text('${ucFirst((userD['fName'].toString()))} ${ucFirst((userD['lName'].toString()))}', style:
                   TextStyle(fontSize: 18, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Deliver to: ${currentAddress}', style:
-                        TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.bold)),
-                      ),
-                      TextButton(onPressed: (){
-                        Navigator.pushReplacement(context, new MaterialPageRoute(
-                            builder: (context) =>AskingForAddressOrderTime(
-                              striprToken: stripToken,
-                              ordersList: ordersList,
-                              itemsDetails: itemsDetails,
-                            )));
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: Icon(Icons.location_on,),
+                        title: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text("${currentAddress}",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2
+                              ,style:
+                              TextStyle(fontSize: 13, fontFamily: "PTSans",color: Colors.black38 )),
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            VerticalDivider(),
+                            TextButton(
+                              onPressed: (){
+                                Navigator.pushReplacement(context, new MaterialPageRoute(
+                                    builder: (context) =>AskingForAddressOrderTime(
+                                      striprToken: stripToken,
+                                      ordersList: ordersList,
+                                      itemsDetails: itemsDetails,
+                                    )));
 
-                      },
-                          child: Icon(Icons.edit)),
-                    ],
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(Icons.edit),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

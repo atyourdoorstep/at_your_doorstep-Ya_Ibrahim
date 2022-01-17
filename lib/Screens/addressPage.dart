@@ -57,33 +57,60 @@ class _AddAddressState extends State<AddAddress> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("Your Current Location Address is:",
-                  overflow: TextOverflow.ellipsis
-                  ,style:
-                  TextStyle(fontSize: 13, fontFamily: "PTSans" ,fontWeight: FontWeight.bold)),
-              TextButton(
-                onPressed: (){
-                  addressController.clear();
-                  setState(() {
-                    addressController.text = AddressLatLong;
-                  });
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("${AddressLatLong}",
-                      overflow: TextOverflow.ellipsis
-                      ,style:
-                      TextStyle(fontSize: 13, fontFamily: "PTSans",color: Colors.black38 )),
+              _isGetLocation?Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Row(
+                  children: [
+                    Text("Your Current Location Address is:",
+                        overflow: TextOverflow.ellipsis
+                        ,style:
+                        TextStyle(fontSize: 13, fontFamily: "PTSans" ,fontWeight: FontWeight.bold)),
+                  ],
                 ),
-              ),
+              ):SizedBox(),
+              _isGetLocation ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: (){
+                    addressController.clear();
+                    setState(() {
+                      addressController.text = AddressLatLong;
+                    });
+                  },
+                  child: Card(
+                    child: ListTile(
+                      leading: Icon(Icons.location_on,),
+                        title: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text("${AddressLatLong}",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2
+                              ,style:
+                              TextStyle(fontSize: 13, fontFamily: "PTSans",color: Colors.black38 )),
+                        ),
+                       trailing: Row(
+                         mainAxisSize: MainAxisSize.min,
+                         children: [
+                           VerticalDivider(),
+                           Padding(
+                             padding: const EdgeInsets.all(8.0),
+                             child: Icon(Icons.add),
+                           ),
+                         ],
+                       ),
+                    ),
+                  ),
+                ),
+              ):SizedBox(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("IF YOU WANT TO SAVE IT CLICK ON CURRENT ADDRESS & UPDATE IT!!",
-                    overflow: TextOverflow.ellipsis
+                child: Text(_isGetLocation?"(IF YOU WANT TO SAVE IT CLICK ON CURRENT ADDRESS & UPDATE IT!!)":"(For Getting Current address please turn on Location)",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2
                     ,style:
-                    TextStyle(fontSize: 13, color: Colors.red, fontFamily: "PTSans" )),
+                    TextStyle(fontSize: 10, color: Colors.red, fontFamily: "PTSans" )),
               ),
-              SizedBox(height: 25),
+              SizedBox(height: 35),
               Center(
                 child: Text("YOUR ADDRESS", style:
                 TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
