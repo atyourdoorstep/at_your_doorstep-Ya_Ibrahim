@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:location/location.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -38,8 +39,7 @@ class _HomePageOperationState extends State<HomePageOperation>
   late LocationData _locationData;
   bool _isListenLocation=false;
   bool _isGetLocation=false;
-
-
+  late String AddressLatLong = "Finding Address Location";
 
 
   var checkUser = {};
@@ -73,6 +73,10 @@ class _HomePageOperationState extends State<HomePageOperation>
     setState(() {
       _isGetLocation = true;
     });
+    
+    if(_isGetLocation){
+      getsss(_locationData.latitude,_locationData.longitude);
+    }
   }
 
 
@@ -100,7 +104,7 @@ class _HomePageOperationState extends State<HomePageOperation>
   Widget build(BuildContext context) {
     return Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60.0),
+            preferredSize: Size.fromHeight(65.0),
             child: AppBar(
               backgroundColor: Colors.red,
               leading: Icon(Icons.location_on,),
@@ -119,8 +123,12 @@ class _HomePageOperationState extends State<HomePageOperation>
                     children: [
                       Text('Deliver to: ',style:
                       TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                      _isGetLocation ? Text("${_locationData.latitude}, ${_locationData.longitude}",style:
-                      TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans" )):
+                      _isGetLocation ? Expanded(
+                        child: Text("${AddressLatLong}",
+                            overflow: TextOverflow.ellipsis
+                            ,style:
+                        TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans" )),
+                      ):
                       Text('Your Location',style:
                       TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans" )),
                        GestureDetector(onTap: () {
@@ -249,11 +257,11 @@ class _HomePageOperationState extends State<HomePageOperation>
                     ),
                   ],
                 ),
-                _isGetLocation ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
-                  child: Text("Location: ${_locationData.latitude}, ${_locationData.longitude} ", style:
-                  TextStyle(fontSize: 14, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                ): Container(),
+                // _isGetLocation ? Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
+                //   child: Text("Address: ${AddressLatLong} ", style:
+                //   TextStyle(fontSize: 14, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                // ): Container(),
               ],
             ),
           ): SpecialSpinner(),
@@ -275,6 +283,18 @@ class _HomePageOperationState extends State<HomePageOperation>
     return res;
   }
 
+  getsss(lati,longi) async {
+    var _url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=${lati},${longi}&key=AIzaSyDh0oDKoxQijV3bgBmzkbxt8lxKUkUa2zM';
+    http.Response  response = await http.get(Uri.parse(_url));
+    if(response.statusCode == 200){
+      //print(response.body);
+      var res =json.decode(response.body);
+      setState(() {
+        AddressLatLong = res['results'][0]["formatted_address"];
+      });
+      print(AddressLatLong);
+    }
+  }
  //'https://maps.googleapis.com/maps/api/geocode/json?latlng=${31.4015326},${74.2761796}&key=AIzaSyDh0oDKoxQijV3bgBmzkbxt8lxKUkUa2zM'
 }
 
