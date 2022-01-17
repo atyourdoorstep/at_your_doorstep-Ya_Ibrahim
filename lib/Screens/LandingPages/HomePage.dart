@@ -125,10 +125,15 @@ class _HomePageOperationState extends State<HomePageOperation>
                       Text('Deliver to: ',style:
                       TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                       _isGetLocation ? Expanded(
-                        child: Text("${AddressLatLong}",
-                            overflow: TextOverflow.ellipsis
-                            ,style:
-                        TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans" )),
+                        child: Provider<String>(
+                          create: (context) {
+                              return AddressLatLong;
+                          },
+                          child: Text("${AddressLatLong}",
+                              overflow: TextOverflow.ellipsis
+                              ,style:
+                          TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans" )),
+                        ),
                       ):
                       Text('Your Location',style:
                       TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans" )),
