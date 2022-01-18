@@ -174,8 +174,9 @@ class _ShowItemPageState extends State<ShowItemPage> {
                               children: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                        AskMeAnything()),);
+                                    Navigator.of(
+                                      context,
+                                      rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>AskMeAnything(itemid: items["id"],)));
                                     },
                                   child: Text('Ask me anything', style:
                                   TextStyle(decoration: TextDecoration.underline,
