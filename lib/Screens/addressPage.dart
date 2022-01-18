@@ -106,7 +106,7 @@ class _AddAddressState extends State<AddAddress> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(_isGetLocation?"(IF YOU WANT TO SAVE IT CLICK ON CURRENT ADDRESS & UPDATE IT!!)":"(For Getting Current address please turn on Location)",
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 2
+                    maxLines: 4
                     ,style:
                     TextStyle(fontSize: 10, color: Colors.red, fontFamily: "PTSans" )),
               ),

@@ -104,7 +104,7 @@ class _HomePageOperationState extends State<HomePageOperation>
   Widget build(BuildContext context) {
     return Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(65.0),
+            preferredSize: Size.fromHeight(60.0),
             child: AppBar(
               backgroundColor: Colors.red,
               leading: Icon(Icons.location_on,),

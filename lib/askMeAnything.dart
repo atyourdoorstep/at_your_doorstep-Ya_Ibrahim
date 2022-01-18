@@ -140,12 +140,12 @@ class _QuestionListState extends State<QuestionList> {
                 ),
               ),
             ),
-            5 > 0?SizedBox(
+            getQuestList.length > 0?SizedBox(
               height: 500,
               child: ListView.builder(
                 physics: ClampingScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: 5,
+                itemCount: getQuestList.length,
                 itemBuilder:(context , index){
                   return Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -156,8 +156,7 @@ class _QuestionListState extends State<QuestionList> {
                           height: 80,
                           child: Center(
                             child: ListTile(
-                              //items['reviews'][index]['created_at'].substring(0,10)
-                              trailing:  Text(" ", style:
+                              trailing:  Text(getQuestList[index]['created_at'].substring(0,10), style:
                               TextStyle(fontSize: 10, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                               title: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -168,18 +167,32 @@ class _QuestionListState extends State<QuestionList> {
                                   style: TextStyle(
                                       color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
                               ),
-                              subtitle: Padding(
-                                padding: const EdgeInsets.only(left: 8.0,right: 8.0),
-                                //items['reviews'][index]['review']
-                                child: Text("${index}",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Colors.black26, fontSize: 15.0),),
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+                                    //items['reviews'][index]['review']
+                                    child: Text("Q. "+getQuestList[index]['message'],
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 3,
+                                      style: TextStyle(
+                                          color: Colors.red.shade400, fontSize: 15.0),),
+                                  ),
+                                  getQuestList[index]["child_questions"].length > 0 ?Padding(
+                                    padding: const EdgeInsets.only(left: 8.0,right: 8.0, top: 5),
+                                    child: Text("A. "+getQuestList[index]["child_questions"][0]['message'],
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 3,
+                                      style: TextStyle(
+                                          color: Colors.black26, fontSize: 15.0),),
+                                  ):SizedBox(),
+                                ],
                               ),
                             ),
                           ),
                         ),
-                        Divider(),
                       ],
                     ),
                   );//categoryItem[index]['image']
@@ -206,14 +219,27 @@ class _QuestionListState extends State<QuestionList> {
     getQuestList={};
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
-    var res= await CallApi().getData('/getItemQuestions?item_id=${data}');
-    var body =json.decode(res.body);
-    if(res.statusCode == 200){
-      setState(() {
-        getQuestList = body['itemQuestions'];
-        print(getQuestList);
-      });
-      executed = true;
+    if(token.toString().length == 0){
+      var res= await CallApi().getData('/getItemQuestions?item_id=${data}');
+      var body =json.decode(res.body);
+      if(res.statusCode == 200){
+        setState(() {
+          getQuestList = body['itemQuestions'];
+          print(getQuestList);
+        });
+        executed = true;
+      }
+    }
+    else{
+      var res= await CallApi().getData('/getItemQuestions?item_id=${data}&token=${token}');
+      var body =json.decode(res.body);
+      if(res.statusCode == 200){
+        setState(() {
+          getQuestList = body['itemQuestions'];
+          print(getQuestList);
+        });
+        executed = true;
+      }
     }
   }
 
