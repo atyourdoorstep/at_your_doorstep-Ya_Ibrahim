@@ -24,6 +24,8 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
   String dropdownValue = 'Home';
   int idCat = 0;
   TextEditingController userNameController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +115,8 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
                 ),
               ),
             ),
+            textfieldStyle(textHint: "yasheikh store", obscureText: false, textLabel1:'Title', controllerText: titleController,),
+            textfieldStyle(textHint: "Description add kro...", obscureText: false, textLabel1: 'Describe your service', controllerText: descriptionController,),
             ///
             Padding(
               padding: EdgeInsets.all(12.0),
@@ -146,20 +150,30 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
     var body = json.decode(resp.body);
     print(body.toString());
     if(body['success']){
-      showMsg(context, "You have Successfully Register as a Service Provider.");
-      getRoleUser();
-      setState(() {
-        roleOfUser = "seller";
-      });
-      EasyLoading.dismiss();
-      Navigator.pop(context);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => editProfile()),);
-      Timer(Duration(seconds: 1),(){
-        Navigator.of(
-          context,
-          rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>UpdateSellerProAndItems()));
-        showMsg(context, "Setup your profile details");
-      });
+      if(titleController.text != "" && descriptionController.text != ""){
+        var res = await CallApi().postData({
+          'title':titleController.text.toLowerCase(),
+          'description':descriptionController.text.toLowerCase(),
+        }, '/updateProfile');
+        var body1 = json.decode(res.body);
+        showMsg(context, "You have Successfully Register as a Service Provider.");
+        getRoleUser();
+        setState(() {
+          roleOfUser = "seller";
+        });
+        EasyLoading.dismiss();
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => editProfile()),);
+        Timer(Duration(seconds: 1),(){
+          Navigator.of(
+            context,
+            rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>UpdateSellerProAndItems()));
+          showMsg(context, "Setup your profile details");
+        });
+      }
+      else{
+        showMsg(context,"Something Wrong");
+      }
         }
     else{
       showMsg(context,body['message']);

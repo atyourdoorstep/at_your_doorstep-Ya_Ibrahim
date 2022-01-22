@@ -81,7 +81,9 @@ class _HomePageOperationState extends State<HomePageOperation>
 
 
   var serviceNames;
+  var topSolds;
   bool executed = false;
+  bool executed2 = false;
 
   @override
   void initState() {
@@ -91,12 +93,14 @@ class _HomePageOperationState extends State<HomePageOperation>
     getUserInfo();
     getProfilePicture();
     getParentServices();
+    getTopSoldToday();
     if(roleOfUser == "seller") {
       getSellerInfo();
     }
     getCartItemsCount();
     //getSellerNewOrdersCount();
     executed = false;
+    executed2 = false;
 
   }
 
@@ -108,12 +112,12 @@ class _HomePageOperationState extends State<HomePageOperation>
             child: AppBar(
               backgroundColor: Colors.red,
               leading: Icon(Icons.location_on,),
-              actions: [
-                IconButton(
-                    onPressed: (){},
-                    icon: Icon(Icons.notifications_none_rounded, size: 25),
-                ),
-              ],
+              // actions: [
+              //   IconButton(
+              //       onPressed: (){},
+              //       icon: Icon(Icons.notifications_none_rounded, size: 25),
+              //   ),
+              // ],
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -144,7 +148,7 @@ class _HomePageOperationState extends State<HomePageOperation>
               ),
             ),
           ),
-          body: executed ? SingleChildScrollView(
+          body: executed && executed2 ? SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -253,6 +257,65 @@ class _HomePageOperationState extends State<HomePageOperation>
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
+                      child: Text("Top Sold", style:
+                      TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SizedBox(
+                    height: 120,
+                    child: GridView.builder(
+                      itemCount: topSolds.length,
+                      scrollDirection: Axis.horizontal,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+                      itemBuilder: (context , index){
+                        return GestureDetector(
+                          onTap: () {
+                            // setState(() {
+                            //   selectedIndex = index;
+                            //   print("List Rank ${index}");
+                            //   itemDetails = categoryItem[index];
+                            //   print("Item ID ${categoryItem[index]['id']}");
+                            // });
+                          },
+                          child: Card(
+                            //color: selectedIndex== index ? Colors.red.withOpacity(0.2): Colors.white,
+                            child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      AspectRatio(
+                                          aspectRatio: 2/2,
+                                          child: Image.network(topSolds[index]['image'])),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.all(8.0),
+                                      //   child: Text(ucFirst(topSolds[index]['name']),
+                                      //     maxLines: 2,
+                                      //     overflow: TextOverflow.ellipsis
+                                      //     ,style: TextStyle(fontWeight: FontWeight.w700, fontSize: 9),),
+                                      // ),
+                                    ],
+                                  ),
+                                )),
+                            shadowColor: Colors.grey[300],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10.0),
+                              ),
+                              side: BorderSide(color: Colors.red),
+                            ),),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
                       child: Text("Recommended for you", style:
                       TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                     ),
@@ -280,6 +343,20 @@ class _HomePageOperationState extends State<HomePageOperation>
       executed = true;
       getRoleUser();
       getSellerData();
+    }
+    return res;
+  }
+
+  getTopSoldToday()
+  async {
+    var res= await CallApi().getData('/topSoldToday');
+    if(res.statusCode == 200){
+      res =json.decode(res.body);
+      setState(() {
+        topSolds = res;
+        print(topSolds);
+      });
+      executed2 = true;
     }
     return res;
   }

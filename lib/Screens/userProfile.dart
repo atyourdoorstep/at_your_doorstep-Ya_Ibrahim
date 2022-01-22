@@ -584,9 +584,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           children: [
                             GestureDetector(
                               onTap:(){
-                                 Navigator.of(
-                                   context,
-                                   rootNavigator: true,).pushNamed('ShowFullImage');
+                                if(profilePicUrl == 'https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png'){
+                                  showMsg(context,"No Profile Picture");
+                                }
+                                else{
+                                  Navigator.of(
+                                    context,
+                                    rootNavigator: true,).pushNamed('ShowFullImage');
+                                }
                         },
                               child: Hero(
                                 tag:"fullsize",
