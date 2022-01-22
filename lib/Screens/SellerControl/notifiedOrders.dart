@@ -81,9 +81,12 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
                         //   order_items.insert(i, orders[i]['id']);
                         // }
                         // print(order_items);
+                        showModalBottomSheet(
+                          elevation: 20.0,
+                          context: context,
 
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                            OrdersListSellerSide(orderItems: orderItems1[index]['orders'],)),);
+                          builder: (context) => OrdersListSellerSide(orderItems: orderItems1[index]['orders'],userDetails: orderItems1[index]),
+                        );
 
                         // Navigator.push(context, MaterialPageRoute(builder: (context) =>
                         //     OrderDetailsForSeller(
@@ -176,8 +179,9 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
 }
 
 class OrdersListSellerSide extends StatefulWidget {
+  final userDetails;
   final orderItems;
-  OrdersListSellerSide({this.orderItems});
+  OrdersListSellerSide({this.orderItems,this.userDetails});
 
   @override
   _OrdersListSellerSideState createState() => _OrdersListSellerSideState();
@@ -185,9 +189,12 @@ class OrdersListSellerSide extends StatefulWidget {
 
 class _OrdersListSellerSideState extends State<OrdersListSellerSide> {
   var orderItems;
+  var userDetails;
+  List orderlistID = [];
 
   @override
   void initState() {
+    userDetails = widget.userDetails;
     orderItems = widget.orderItems;
     orderItems = orderItems.reversed.toList();
     super.initState();
@@ -206,67 +213,76 @@ class _OrdersListSellerSideState extends State<OrdersListSellerSide> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
         ),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 500,
-              child: ListView.builder(
-                itemCount: orderItems.length,
-                itemBuilder:(context , index){
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Order #${index+1}",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.w700),),
-                                ),
-                              ],
-                            ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  itemCount: orderItems.length,
+                  itemBuilder:(context , index){
+                    print(orderItems);
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Ordered Date: ", style:
-                                  TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                                  Text(orderItems[index]['order_items'][0]['created_at'].substring(0,10), style:
-                                  TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("Order #${index+1}",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.w700),),
+                                  ),
                                 ],
                               ),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text("Ordered Date: ", style:
+                                    TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                    Text(orderItems[index]['order_items'][0]['created_at'].substring(0,10), style:
+                                    TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                  ],
+                                ),
+                              ),
+                              trailing: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ElevatedButton(onPressed: () {
+                                  orderlistID.clear();
+                                  for(int i=0;i<orderItems[index]['order_items'].length;i++){
+                                    orderlistID.insert(i, orderItems[index]['order_items'][i]['id']);
+                                  }
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                      OrderDetailsForSeller(OrdersItem: orderItems[index]['order_items'],
+                                          userDetails: userDetails,
+                                          ordersIdList: orderlistID,
+                                      )),);
+                                  print(orderlistID);
+                                },
+                                    child: Text("Order Details")),
+                              ),
                             ),
-                            trailing: Padding(
+                            Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: ElevatedButton(onPressed: () {
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                //     OrderDetails(orderNo: "Order #${index+1}",
-                                //       ordersDetails: orderItems[index]['order_items'],
-                                //     )),);
-                              },
-                                  child: Text("Order Details")),
+                              child: Divider(),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Divider(),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
