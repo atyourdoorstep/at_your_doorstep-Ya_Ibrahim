@@ -79,6 +79,7 @@ class _AddAddressState extends State<AddAddress> {
                   },
                   child: Card(
                     child: ListTile(
+                      //isThreeLine: true,
                       leading: Icon(Icons.location_on,),
                         title: Padding(
                           padding: const EdgeInsets.all(12.0),

@@ -102,13 +102,13 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
             ),
             SizedBox(height: 10,),
             SizedBox(
-              height: ordersItem.length <= 1 ? 150 :400,
+              height: ordersItem.length <= 1 ? 150 :500,
               child: ordersItem.length >= 1 ? ListView.builder(
                 itemCount: ordersItem.length,
                 itemBuilder:(context , index){
                   return GestureDetector(
                     onTap: (){
-                      showMsg(context, "Rs. ${ordersItem[index]['item']['price']} , Quantity(s): ${ordersItem[index]['quantity']} , id : ${ordersItem[index]['id']}");
+                      showMsg(context, "Rs. ${ordersItem[index]['item']['price']} , Quantity(s): ${ordersItem[index]['quantity']}");
                     },
                     child: Center(
                       child: Padding(
@@ -130,13 +130,37 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Text("Rs. "+ordersItem[index]['item']['price'].toString(), style: TextStyle(
+                                      child: Text("Actual Rs. ${ordersItem[index]['item']['price']}", style: TextStyle(
                                         color: Colors.blue,
                                       ),),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Text("Quantity(s): "+ordersItem[index]['quantity'].toString(), style: TextStyle(
+                                      child: Text("Discount Rs. ${ordersItem[index]['discount']}", style: TextStyle(
+                                        color: Colors.blue,
+                                      ),),
+                                    ),
+                                    SizedBox(height: 3),
+                                    ordersItem[index]['discount'] >0 ? Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                          child: Text("Discounted Rs. ${(ordersItem[index]['item']['price']*ordersItem[index]['quantity'])-ordersItem[index]['discount']}", style: TextStyle(
+                                            color: Colors.blue,
+                                          ),),
+                                        ),
+                                        Text("${ordersItem[index]['item']['price']*ordersItem[index]['quantity']}",
+                                          style: TextStyle(
+                                            color: Colors.blue,
+                                            decoration: TextDecoration.lineThrough,
+                                          ),),
+                                      ],
+                                    ): SizedBox(),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: ordersItem[index]['item']['type'] == 'product' ? Text("Quantity(s): "+ordersItem[index]['quantity'].toString(), style: TextStyle(
+                                        color: Colors.blue,
+                                      ),): Text("Service is Booked ", style: TextStyle(
                                         color: Colors.blue,
                                       ),),
                                     ),
@@ -201,6 +225,11 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
 
                           Navigator.pop(context);
                           Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.of(
+                            context,
+                            rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
+
                         }
                     },
                       buttonText: "Confirm Order!",
