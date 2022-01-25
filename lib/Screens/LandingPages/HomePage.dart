@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:at_your_doorstep/Screens/Cart/cartPage.dart';
+import 'package:at_your_doorstep/Screens/LandingPages/showItemPage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:at_your_doorstep/Help_Classes/Constants.dart';
 import 'package:at_your_doorstep/Help_Classes/api.dart';
@@ -265,47 +266,71 @@ class _HomePageOperationState extends State<HomePageOperation>
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: SizedBox(
-                    height: 120,
+                    height: 115,
                     child: GridView.builder(
                       itemCount: topSolds.length,
                       scrollDirection: Axis.horizontal,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
                       itemBuilder: (context , index){
-                        return GestureDetector(
-                          onTap: () {
-                            // setState(() {
-                            //   selectedIndex = index;
-                            //   print("List Rank ${index}");
-                            //   itemDetails = categoryItem[index];
-                            //   print("Item ID ${categoryItem[index]['id']}");
-                            // });
-                          },
-                          child: Card(
-                            //color: selectedIndex== index ? Colors.red.withOpacity(0.2): Colors.white,
-                            child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      AspectRatio(
-                                          aspectRatio: 2/2,
-                                          child: Image.network(topSolds[index]['image'])),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.all(8.0),
-                                      //   child: Text(ucFirst(topSolds[index]['name']),
-                                      //     maxLines: 2,
-                                      //     overflow: TextOverflow.ellipsis
-                                      //     ,style: TextStyle(fontWeight: FontWeight.w700, fontSize: 9),),
-                                      // ),
-                                    ],
-                                  ),
-                                )),
-                            shadowColor: Colors.grey[300],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10.0),
+                        return Stack(
+                          children: [
+                            GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, new MaterialPageRoute(
+                                  builder: (context) =>ShowItemPage(itemDetails: topSolds[index],)));
+                            },
+                            child: Card(
+                              color: Colors.white,
+                              child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        AspectRatio(
+                                            aspectRatio: 2/2,
+                                            child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(16.0),
+                                                child: Image.network(topSolds[index]['image']))),
+                                        // Padding(
+                                        //   padding: const EdgeInsets.all(8.0),
+                                        //   child: Text(ucFirst(topSolds[index]['name']),
+                                        //     overflow: TextOverflow.ellipsis
+                                        //     ,style: TextStyle(fontWeight: FontWeight.w700, fontSize: 9),),
+                                        // ),
+                                      ],
+                                    ),
+                                  )),
+                              shadowColor: Colors.grey[300],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(10.0),
+                                ),
+                                side: BorderSide(color: Colors.red),
+                              ),),
+                          ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                              child: Container(
+                                color: Colors.red,
+                                child: Text(" ${topSolds[index]['reviews_avg_rating']!= null ? double.parse(topSolds[index]['reviews_avg_rating']).toStringAsFixed(1) : "N/A"}⭐ ", style:
+                                TextStyle(fontSize: 12, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
                               ),
-                              side: BorderSide(color: Colors.red),
-                            ),),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                                child: Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Text(ucFirst(topSolds[index]['name']),
+                                      overflow: TextOverflow.ellipsis
+                                      ,style: TextStyle(fontWeight: FontWeight.w700, fontSize: 8,color: Colors.white),),
+                                  ),
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                            ),
+                        ],
                         );
                       },
                     ),

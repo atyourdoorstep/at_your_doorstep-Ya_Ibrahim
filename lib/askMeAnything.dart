@@ -162,6 +162,7 @@ class _QuestionListState extends State<QuestionList> {
     itemid=widget.itemid;
     print(itemid);
     getItemQuestions(itemid);
+    getQuestList={};
     executed = false;
     super.initState();
   }
@@ -270,31 +271,34 @@ class _QuestionListState extends State<QuestionList> {
   }
 
   getItemQuestions(data) async {
-    getQuestList={};
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var token = localStorage.getString('token');
-    if(userD['fName'] == 'Guest'){
+    setState(() {
+      getQuestList={};
+    });
+    // if(userD['fName'] != 'Guest'){
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
       var res= await CallApi().getData('/getItemQuestions?item_id=${data}');
-      var body =json.decode(res.body);
+      var body1 =json.decode(res.body);
       if(res.statusCode == 200){
         setState(() {
-          getQuestList = body['itemQuestions'];
+          getQuestList = body1['itemQuestions'];
+          print(data);
           print(getQuestList);
         });
         executed = true;
       }
-    }
-    else{
-      var res= await CallApi().getData('/getItemQuestions?item_id=${data}&token=${token}');
-      var body =json.decode(res.body);
-      if(res.statusCode == 200){
-        setState(() {
-          getQuestList = body['itemQuestions'];
-          print(getQuestList);
-        });
-        executed = true;
-      }
-    }
+    // }
+    // else{
+    //   var res= await CallApi().getData('/getItemQuestions?item_id=${data}');
+    //   var body =json.decode(res.body);
+    //   if(res.statusCode == 200){
+    //     setState(() {
+    //       getQuestList = body['itemQuestions'];
+    //       print(getQuestList);
+    //     });
+    //     executed = true;
+    //   }
+    // }
   }
 
 }
