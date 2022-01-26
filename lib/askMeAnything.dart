@@ -193,24 +193,9 @@ class _QuestionListState extends State<QuestionList> {
       ),
       body: executed? SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: (){
-                  setState(() {
-                    //orderItems = orderItems.reversed.toList();
-                  });
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text("Sort by "),
-                    Icon(Icons.sort),
-                  ],
-                ),
-              ),
-            ),
+            SizedBox(height: 10,),
             getQuestList.length > 0?SizedBox(
               height: 500,
               child: ListView.builder(
@@ -221,43 +206,80 @@ class _QuestionListState extends State<QuestionList> {
                   return Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: double.infinity,
-                          height: 80,
-                          child: Center(
-                            child: ListTile(
-                              //trailing:  Text(getQuestList[index]['created_at'].substring(0,10), style:
-                              //TextStyle(fontSize: 10, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                              title:  Padding(
-                                padding: const EdgeInsets.only(left: 8.0,right: 8.0),
-                                //items['reviews'][index]['review']
-                                child: Text("Q. "+getQuestList[index]['message'],
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                  style: TextStyle(
-                                      color: Colors.red.shade400, fontSize: 15.0),),
+                        GestureDetector(
+                          onTap:(){
+                            showModalBottomSheet(
+                              elevation: 20.0,
+                              context: context,
+
+                              builder: (context) => ReplyBox(
+                                item_id: itemid,
+                                item_questions_id: getQuestList[index]['id'], ),
+                            );
+                          },
+                          child: Material(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(30.0),
+                              bottomRight: Radius.circular(30.0),
+                              topRight: Radius.circular(30.0),
+                            ),
+                            elevation: 5.0,
+                            color: Colors.red,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 20.0),
+                              child: Text(getQuestList[index]['message'],
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
                               ),
-                              subtitle: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  getQuestList[index]["child_questions"].length > 0 ?Padding(
-                                    padding: const EdgeInsets.only(left: 8.0,right: 8.0, top: 5),
-                                    child: Text("A. "+getQuestList[index]["child_questions"][0]['message'],
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 3,
-                                      style: TextStyle(
-                                          color: Colors.black26, fontSize: 15.0),),
-                                  ):SizedBox(),
-                                ],
                               ),
                             ),
                           ),
                         ),
+                        getQuestList[index]['child_questions'].length>0? ExpansionTile(
+                          title: Text("Answers"),
+                          children:[
+                            ListView.builder(
+                              physics: ClampingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: getQuestList[index]['child_questions'].length,
+                              itemBuilder:(context , index1){
+                                return Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Material(
+                                        shadowColor: Colors.red,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(30.0),
+                                          bottomLeft: Radius.circular(30.0),
+                                          bottomRight: Radius.circular(30.0),
+                                        ),
+                                        elevation: 5.0,
+                                        color: Colors.white,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 20.0),
+                                          child: Text(getQuestList[index]['child_questions'][index1]['message'],
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 15.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );//categoryItem[index]['image']
+                              },
+                            ),
+                          ],
+                        ):SizedBox(),
                       ],
                     ),
-                  );//categoryItem[index]['image']
+                  );
                 },
               ),
             ):Column(
@@ -308,4 +330,121 @@ class _QuestionListState extends State<QuestionList> {
     }
   }
 
+}
+
+class ReplyBox extends StatefulWidget {
+  final item_id ,item_questions_id;
+  ReplyBox({this.item_id,this.item_questions_id});
+
+  @override
+  _ReplyBoxState createState() => _ReplyBoxState();
+}
+
+class _ReplyBoxState extends State<ReplyBox> {
+
+  late int item_id ,item_questions_id;
+  TextEditingController questController = TextEditingController();
+  String dropdownValue = 'Public';
+  int ispublic =1;
+
+  @override
+  void initState() {
+    item_id =widget.item_id;
+    item_questions_id = widget.item_questions_id;
+    super.initState();
+  }
+  void askNewQuestion2(data)async{
+    var resp;
+    resp= await CallApi().postData(data, '/createItemQuestion');
+    var body = json.decode(resp.body);
+    print(body.toString());
+    if(body['success']){
+      showMsg(context,"Your Query is submit");
+      //questController.clear();
+      Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionList(itemid: item_id)),);
+    }
+    else{
+      showMsg(context,body['message']);
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body:Container(
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Center(
+              child: Text("REPLY ME!", style:
+              TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+            ),
+            SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Text("Select your privacy: "),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: DropdownButton(
+                      focusColor: Colors.white,
+                      value: dropdownValue,
+                      underline: Container(
+                        height: 2,
+                        color: Colors.white,
+                      ),
+                      iconEnabledColor: Colors.black,
+                      style: const TextStyle(color: Colors.red),
+                      onChanged: (String? newValue){
+                        setState(() {
+                          dropdownValue = newValue!;
+                          ispublic = dropdownValue == 'Public'? 1 : 0;
+                        });
+                        print(ispublic);
+                      },
+                      items: <String>['Public', 'Private']
+                          .map<DropdownMenuItem<String>>((String value){
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(value),
+                          ),
+                        );
+                      }
+                      ).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            textfieldStyle(textHint: "Discount mil jy ga?", obscureText: false, textLabel1:'Type your Question...', controllerText: questController,),
+            SizedBox(
+              height: 5,
+            ),
+            AYDButton(
+              onPressed: (){
+                askNewQuestion2(
+                    {
+                      'is_public': ispublic,
+                      'item_id': item_id,
+                      'message': questController.text,
+                      'item_questions_id': item_questions_id,
+                    }
+                );
+              },
+              buttonText: "Submit",
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
