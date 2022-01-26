@@ -157,7 +157,7 @@ class _HomePageOperationState extends State<HomePageOperation>
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
-                    height: 120.0,
+                    height: 130.0,
                     child: ListView(
                         physics: ClampingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
@@ -238,9 +238,11 @@ class _HomePageOperationState extends State<HomePageOperation>
                                 child: Center(
                                     child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(serviceNames["data"][index]['name'],style: TextStyle(fontWeight: FontWeight.w500),),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                    child: Text(serviceNames["data"][index]['name'],style: TextStyle(fontWeight: FontWeight.w500),)),
                               )),
-                                shadowColor: Colors.grey[300],
+                                shadowColor: Colors.grey[300]!.withRed(5),
                                 shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(10.0),
                                 ),
@@ -300,18 +302,24 @@ class _HomePageOperationState extends State<HomePageOperation>
                                       ],
                                     ),
                                   )),
-                              shadowColor: Colors.grey[300],
+                              shadowColor: Colors.grey,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(10.0),
                                 ),
-                                side: BorderSide(color: Colors.red),
+                                //side: BorderSide(color: Colors.red),
                               ),),
                           ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 8.0),
                               child: Container(
-                                color: Colors.red,
-                                child: Text(" ${topSolds[index]['reviews_avg_rating']!= null ? double.parse(topSolds[index]['reviews_avg_rating']).toStringAsFixed(1) : "N/A"}⭐ ", style:
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(10.0),
+                                    topRight: Radius.circular(10.0),
+                                  ),
+                                ),
+                                child: Text(" ${topSolds[index]['reviews_avg_rating']!= null ? double.parse(topSolds[index]['reviews_avg_rating']).toStringAsFixed(1) : "N/A"}⭐  ", style:
                                 TextStyle(fontSize: 12, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
                               ),
                             ),

@@ -18,12 +18,14 @@ class SearchInAreaPage extends StatefulWidget {
 class _SearchInAreaPageState extends State<SearchInAreaPage> {
   bool isSearching = false;
   TextEditingController searchController = TextEditingController();
+  TextEditingController RadiusController = TextEditingController();
   var searchItem;
   var searchItem1;
 
   bool executed= false;
   bool executed1 = false;
   late String searchWord="";
+  int dropdownValue = 1;
 
   Location location = new Location();
   late bool serviceEnabled;
@@ -50,7 +52,7 @@ class _SearchInAreaPageState extends State<SearchInAreaPage> {
     setState(() {
       _isGetLocation = true;
     });
-    getSearchItems("new");
+    //getSearchItems("new");
   }
 
   @override
@@ -77,37 +79,73 @@ class _SearchInAreaPageState extends State<SearchInAreaPage> {
             icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
           ),
           backgroundColor: Colors.white,
-          title: TextField(
-            decoration: InputDecoration(
-              hintText:  ' Search by services ,provider\'s name',
-              // suffixIcon:  Padding(
-              //   padding: const EdgeInsets.all(6.0),
-              //   child: TextButton(
-              //     onPressed: (){
-              //       // getDiscount(dCodeController.text);
-              //       Navigator.push(context, MaterialPageRoute(builder: (context) => SearchInAreaPage()),);
-              //     }, child: Text("Nearby",style:TextStyle(fontSize: 12,)),
-              //   ),
-              // ),
-            ),
-            obscureText: false,
-            controller: searchController,
-            onChanged: (value){
-              print(value);
-              setState(() {
-                searchWord = value;
-              });
-              if(value != ''){
-                getSearchItems(value);
-                //getSearchServiceProvider(value);
-              }
-            },
-            // onSubmitted: (value){
-            //   if(value != ''){
-            //     getSearchItems(value);
-            //     getSearchServiceProvider(value);
-            //   }
-            // },
+          title: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText:  ' Search by services ,provider\'s name',
+                    // suffixIcon:  Padding(
+                    //   padding: const EdgeInsets.all(6.0),
+                    //   child: TextButton(
+                    //     onPressed: (){
+                    //       // getDiscount(dCodeController.text);
+                    //       Navigator.push(context, MaterialPageRoute(builder: (context) => SearchInAreaPage()),);
+                    //     }, child: Text("Nearby",style:TextStyle(fontSize: 12,)),
+                    //   ),
+                    // ),
+                  ),
+                  obscureText: false,
+                  controller: searchController,
+                  onChanged: (value){
+                    print(value);
+                    setState(() {
+                      searchWord = value;
+                    });
+                    if(value != ''){
+                      getSearchItems(value);
+                      //getSearchServiceProvider(value);
+                    }
+                  },
+                  // onSubmitted: (value){
+                  //   if(value != ''){
+                  //     getSearchItems(value);
+                  //     getSearchServiceProvider(value);
+                  //   }
+                  // },
+                ),
+              ),
+              DropdownButton(
+                hint: Text("Radius",style: TextStyle(color: Colors.red),),
+                focusColor: Colors.white,
+                value: dropdownValue,
+                underline: Container(
+                  height: 2,
+                  color: Colors.white,
+                ),
+                iconEnabledColor: Colors.black,
+                style: const TextStyle(color: Colors.red),
+                onChanged: (int? newValue){
+                  setState(() {
+                    dropdownValue = newValue!;
+                    //ispublic = dropdownValue == 'Public'? 1 : 0;
+                  });
+                  getSearchItems(searchController.text);
+                  //print(ispublic);
+                },
+                items: <int>[1,2,3,4,5,6,7,8,9,10]
+                    .map<DropdownMenuItem<int>>((int value){
+                  return DropdownMenuItem<int>(
+                    value: value,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(value.toString()),
+                    ),
+                  );
+                }
+                ).toList(),
+              ),
+            ],
           ),
           centerTitle: true,
           titleSpacing: 2.0,
@@ -133,7 +171,7 @@ class _SearchInAreaPageState extends State<SearchInAreaPage> {
               ),),
             ),
             searchItem.length>0 ? SizedBox(
-              height: searchItem.length <= 1  ? 100 : 300,
+              height: searchItem.length <= 1  ? 100 : 500,
               child: ListView.builder(
                 itemCount: searchItem.length,
                 itemBuilder:(context , index){
@@ -205,11 +243,12 @@ class _SearchInAreaPageState extends State<SearchInAreaPage> {
     searchItem={};
     if(_isGetLocation){
       //getsss(_locationData.latitude,_locationData.longitude);
+      print("${_locationData.latitude}, ${_locationData.longitude}, ${dropdownValue}, ${searchWord}");
       var res= await CallApi().postData(
       {
         'lat':_locationData.latitude,
       'long':_locationData.longitude,
-        'radius':10,
+        'radius':dropdownValue,
         'name':searchWord
       },
           '/itemInRange' );

@@ -274,7 +274,7 @@ class _QuestionListState extends State<QuestionList> {
     setState(() {
       getQuestList={};
     });
-    // if(userD['fName'] != 'Guest'){
+    if(userD['fName'] != 'Guest'){
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       var token = localStorage.getString('token');
       var res= await CallApi().getData('/getItemQuestions?item_id=${data}');
@@ -287,18 +287,18 @@ class _QuestionListState extends State<QuestionList> {
         });
         executed = true;
       }
-    // }
-    // else{
-    //   var res= await CallApi().getData('/getItemQuestions?item_id=${data}');
-    //   var body =json.decode(res.body);
-    //   if(res.statusCode == 200){
-    //     setState(() {
-    //       getQuestList = body['itemQuestions'];
-    //       print(getQuestList);
-    //     });
-    //     executed = true;
-    //   }
-    // }
+    }
+    else{
+      var res= await CallApi().getData('/getItemQuestions?item_id=${data}');
+      var body =json.decode(res.body);
+      if(res.statusCode == 200){
+        setState(() {
+          getQuestList = body['itemQuestions'];
+          print(getQuestList);
+        });
+        executed = true;
+      }
+    }
   }
 
 }
