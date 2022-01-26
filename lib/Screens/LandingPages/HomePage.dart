@@ -83,8 +83,10 @@ class _HomePageOperationState extends State<HomePageOperation>
 
   var serviceNames;
   var topSolds;
+  var recommandItem;
   bool executed = false;
   bool executed2 = false;
+  bool executed3 = false;
 
   @override
   void initState() {
@@ -92,16 +94,21 @@ class _HomePageOperationState extends State<HomePageOperation>
     userData={};
     getLocation();
     getUserInfo();
+    executed = false;
+    executed2 = false;
+    executed3 = false;
+
     getProfilePicture();
     getParentServices();
     getTopSoldToday();
+    getRecommandedItems();
+
     if(roleOfUser == "seller") {
       getSellerInfo();
     }
     getCartItemsCount();
     //getSellerNewOrdersCount();
-    executed = false;
-    executed2 = false;
+
 
   }
 
@@ -195,13 +202,29 @@ class _HomePageOperationState extends State<HomePageOperation>
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
                       child: Text("Available Services", style:
                       TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                     ),
+                    TextButton(
+                        onPressed: () {
+                          // Navigator.push(context,
+                          //     MaterialPageRoute(builder: (context) {
+                          //       return loadingScreenMovies();
+                          //     }));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 10),
+                          child: Text(
+                            "Show All",
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontSize: 12.0),
+                          ),
+                        )),
                   ],
                 ),
                 Align(
@@ -256,13 +279,29 @@ class _HomePageOperationState extends State<HomePageOperation>
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
                       child: Text("Top Sold", style:
                       TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                     ),
+                    TextButton(
+                        onPressed: () {
+                          // Navigator.push(context,
+                          //     MaterialPageRoute(builder: (context) {
+                          //       return loadingScreenMovies();
+                          //     }));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 10),
+                          child: Text(
+                            "Show All",
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontSize: 12.0),
+                          ),
+                        )),
                   ],
                 ),
                 Padding(
@@ -344,16 +383,111 @@ class _HomePageOperationState extends State<HomePageOperation>
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                recommandItem.length > 0 ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
-                      child: Text("Recommended for you", style:
+                      child: Text("Recommanded to you", style:
                       TextStyle(fontSize: 21, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
                     ),
+                    TextButton(
+                        onPressed: () {
+                          // Navigator.push(context,
+                          //     MaterialPageRoute(builder: (context) {
+                          //       return loadingScreenMovies();
+                          //     }));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 10),
+                          child: Text(
+                            "Show All",
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontSize: 12.0),
+                          ),
+                        )),
                   ],
-                ),
+                ):SizedBox(),
+                recommandItem.length > 0 ? Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SizedBox(
+                    height: 115,
+                    child: GridView.builder(
+                      itemCount: recommandItem.length,
+                      scrollDirection: Axis.horizontal,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+                      itemBuilder: (context , index){
+                        return Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(context, new MaterialPageRoute(
+                                    builder: (context) =>ShowItemPage(itemDetails: recommandItem[index],)));
+                              },
+                              child: Card(
+                                color: Colors.white,
+                                child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          AspectRatio(
+                                              aspectRatio: 2/2,
+                                              child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(16.0),
+                                                  child: Image.network(recommandItem[index]['image']))),
+                                          // Padding(
+                                          //   padding: const EdgeInsets.all(8.0),
+                                          //   child: Text(ucFirst(topSolds[index]['name']),
+                                          //     overflow: TextOverflow.ellipsis
+                                          //     ,style: TextStyle(fontWeight: FontWeight.w700, fontSize: 9),),
+                                          // ),
+                                        ],
+                                      ),
+                                    )),
+                                shadowColor: Colors.grey,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0),
+                                  ),
+                                  //side: BorderSide(color: Colors.red),
+                                ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(10.0),
+                                    topRight: Radius.circular(10.0),
+                                  ),
+                                ),
+                                child: Text(" ${recommandItem[index]['reviews_avg_rating']!= null ? double.parse(recommandItem[index]['reviews_avg_rating']).toStringAsFixed(1) : "N/A"}⭐  ", style:
+                                TextStyle(fontSize: 12, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                                child: Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Text(ucFirst(recommandItem[index]['name']),
+                                      overflow: TextOverflow.ellipsis
+                                      ,style: TextStyle(fontWeight: FontWeight.w700, fontSize: 8,color: Colors.white),),
+                                  ),
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ):SizedBox(),
                 // _isGetLocation ? Padding(
                 //   padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 10),
                 //   child: Text("Address: ${AddressLatLong} ", style:
@@ -387,11 +521,25 @@ class _HomePageOperationState extends State<HomePageOperation>
       res =json.decode(res.body);
       setState(() {
         topSolds = res;
-        print(topSolds);
+        //print(topSolds);
       });
       executed2 = true;
     }
     return res;
+  }
+
+  getRecommandedItems()
+  async {
+    recommandItem={};
+    var res= await CallApi().postData({},'/getUserFavourite');
+    var body1 =json.decode(res.body);
+    print("Recommand"+body1);
+    if(res.statusCode == 200){
+      setState(() {
+        recommandItem = body1;
+      });
+      executed3 = true;
+    }
   }
 
   getsss(lati,longi) async {

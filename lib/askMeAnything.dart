@@ -76,7 +76,7 @@ class _AskMeAnythingState extends State<AskMeAnything> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 12.0),
-                    child: Text("Do you want to show your question Public or Private: "),
+                    child: Text("Select your privacy: "),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 12.0),
@@ -284,7 +284,7 @@ class _QuestionListState extends State<QuestionList> {
     if(userD['fName'] != 'Guest'){
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       var token = localStorage.getString('token');
-      var res= await CallApi().getData('/getItemQuestions?item_id=${data}');
+      var res= await CallApi().getData('/getItemQuestions?item_id=${data}&token=${token}');
       var body1 =json.decode(res.body);
       if(res.statusCode == 200){
         setState(() {
