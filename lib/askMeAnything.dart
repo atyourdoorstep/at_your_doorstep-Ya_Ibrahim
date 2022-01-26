@@ -69,45 +69,52 @@ class _AskMeAnythingState extends State<AskMeAnything> {
               TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
             ),
             SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Text("Do you want to show your question Public or Private: "),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: DropdownButton(
+                      focusColor: Colors.white,
+                      value: dropdownValue,
+                      underline: Container(
+                        height: 2,
+                        color: Colors.white,
+                      ),
+                      iconEnabledColor: Colors.black,
+                      style: const TextStyle(color: Colors.red),
+                      onChanged: (String? newValue){
+                        setState(() {
+                          dropdownValue = newValue!;
+                          ispublic = dropdownValue == 'Public'? 1 : 0;
+                        });
+                        print(ispublic);
+                      },
+                      items: <String>['Public', 'Private']
+                          .map<DropdownMenuItem<String>>((String value){
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(value),
+                          ),
+                        );
+                      }
+                      ).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             textfieldStyle(textHint: "Discount mil jy ga?", obscureText: false, textLabel1:'Type your Question...', controllerText: questController,),
             SizedBox(
               height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: DropdownButton(
-                    focusColor: Colors.white,
-                    value: dropdownValue,
-                    underline: Container(
-                      height: 2,
-                      color: Colors.white,
-                    ),
-                    iconEnabledColor: Colors.black,
-                    style: const TextStyle(color: Colors.red),
-                    onChanged: (String? newValue){
-                      setState(() {
-                        dropdownValue = newValue!;
-                        ispublic = dropdownValue == 'Public'? 1 : 0;
-                      });
-                      print(ispublic);
-                    },
-                    items: <String>['Public', 'Private']
-                        .map<DropdownMenuItem<String>>((String value){
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(value),
-                        ),
-                      );
-                    }
-                    ).toList(),
-                  ),
-                ),
-              ],
             ),
             AYDButton(
               onPressed: (){
