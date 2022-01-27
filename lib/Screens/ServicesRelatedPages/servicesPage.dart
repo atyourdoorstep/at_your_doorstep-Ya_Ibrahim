@@ -32,7 +32,9 @@ class _ServicesPageState extends State<ServicesPage> {
     servName = ucFirst(widget.servName);
     parentServName = widget.parentServName;
     categoryID = widget.categoryId;
+    print(categoryID);
     getCategoryItems(categoryID);
+    addUserFavourite(categoryID);
     super.initState();
   }
   @override
@@ -181,9 +183,22 @@ class _ServicesPageState extends State<ServicesPage> {
     if(res.statusCode == 200){
       setState(() {
         categoryItem = body;
-        print("loooo "+categoryItem.toString());
+        //print("loooo "+categoryItem.toString());
       });
       executed = true;
+    }
+  }
+  addUserFavourite(var dataId) async {
+    //categoryItem={};
+    var res= await CallApi().postData({"category_id": dataId},'/addUserFavourite' );
+    var body =json.decode(res.body);
+    print( body.toString());
+    if(res.statusCode == 200){
+      setState(() {
+        //categoryItem = body;
+        print("loooowww "+body.toString());
+      });
+      //executed = true;
     }
   }
 }

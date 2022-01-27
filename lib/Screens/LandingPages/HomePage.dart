@@ -506,6 +506,7 @@ class _HomePageOperationState extends State<HomePageOperation>
       res =json.decode(res.body);
       setState(() {
         serviceNames = res;
+        print(serviceNames["data"]);
       });
       executed = true;
       getRoleUser();
@@ -533,7 +534,7 @@ class _HomePageOperationState extends State<HomePageOperation>
     recommandItem={};
     var res= await CallApi().postData({},'/getUserFavourite');
     var body1 =json.decode(res.body);
-    print("Recommand"+body1);
+    print("Recommand"+body1.toString());
     if(res.statusCode == 200){
       setState(() {
         recommandItem = body1;
