@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:at_your_doorstep/Help_Classes/specialSpinner.dart';
 import 'package:at_your_doorstep/Screens/createDiscountCodePage.dart';
 import 'package:at_your_doorstep/Screens/paymentsDetailCust.dart';
 import 'package:flutter/cupertino.dart';
@@ -441,11 +442,12 @@ class _EditProfileOpState extends State<EditProfileOp> {
             toggleButtonColor: Colors.red,
             items: [
               CircularMenuItem(
-                  icon: Icons.post_add,
+                  icon: Icons.account_balance_wallet_outlined,
                   color: Colors.green,
                   onTap: () {
-                   // Navigator.push(context, MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
-
+                    Navigator.of(
+                      context,
+                      rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>SellerWallet()));
                   }),
               CircularMenuItem(
                   icon: FontAwesomeIcons.bookOpen,
@@ -894,3 +896,68 @@ class _OpenFullImageState extends State<OpenFullImage> {
 
 }
 
+class SellerWallet extends StatefulWidget {
+  const SellerWallet({Key? key}) : super(key: key);
+
+  @override
+  _SellerWalletState createState() => _SellerWalletState();
+}
+
+class _SellerWalletState extends State<SellerWallet> {
+
+  var amount =0;
+  bool executed = false;
+
+  @override
+  void initState() {
+    executed = false;
+    getWallet();
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+        ),
+      ),
+      body: executed?Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: Text("YOUR WALLET", style:
+            TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+          ),
+    SizedBox(
+    height: 20,
+    ),
+          Center(
+            child: Text(amount.toString(), style:
+            TextStyle(fontSize: 30, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
+          ),
+        ],
+      ):SpecialSpinner(),
+
+
+    );
+  }
+  getWallet()
+  async {
+    amount=0;
+    var res= await CallApi().postData({},'/getWallet');
+    var body1 =json.decode(res.body);
+    if(res.statusCode == 200){
+      setState(() {
+        amount = body1['wallet']['amount'];
+      });
+      executed = true;
+    }
+  }
+}
