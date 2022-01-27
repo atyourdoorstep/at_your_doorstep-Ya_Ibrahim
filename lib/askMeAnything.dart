@@ -210,14 +210,17 @@ class _QuestionListState extends State<QuestionList> {
                       children: [
                         GestureDetector(
                           onTap:(){
-                            showModalBottomSheet(
-                              elevation: 20.0,
-                              context: context,
+                            if(userD['fName']!='Guest') {
+                              showModalBottomSheet(
+                                elevation: 20.0,
+                                context: context,
 
-                              builder: (context) => ReplyBox(
-                                item_id: itemid,
-                                item_questions_id: getQuestList[index]['id'], ),
-                            );
+                                builder: (context) =>
+                                    ReplyBox(
+                                      item_id: itemid,
+                                      item_questions_id: getQuestList[index]['id'],),
+                              );
+                            }
                           },
                           child: Material(
                             borderRadius: BorderRadius.only(

@@ -174,9 +174,18 @@ class _ShowItemPageState extends State<ShowItemPage> {
                               children: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.of(
-                                      context,
-                                      rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>AskMeAnything(itemid: items["id"],)));
+                                    if(userD['fName']!='Guest') {
+                                      Navigator.of(
+                                        context,
+                                        rootNavigator: true,).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AskMeAnything(
+                                                    itemid: items["id"],)));
+                                    }
+                                    else{
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionList(itemid: items["id"])),);
+                                    }
                                     },
                                   child: Text('Ask me anything', style:
                                   TextStyle(decoration: TextDecoration.underline,
