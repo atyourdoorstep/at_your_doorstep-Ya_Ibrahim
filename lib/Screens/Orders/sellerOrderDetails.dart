@@ -15,7 +15,8 @@ class OrderDetailsForSeller extends StatefulWidget {
   final OrdersItem;
   final userDetails;
   final ordersIdList;
-  OrderDetailsForSeller({this.OrdersItem,this.userDetails,this.ordersIdList});
+  final paymentDetail;
+  OrderDetailsForSeller({this.paymentDetail,this.OrdersItem,this.userDetails,this.ordersIdList});
 
 
   @override
@@ -27,13 +28,18 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
   var ordersItem;
   var userDetails;
   var ordersIdList;
+  var paymentDetail;
 
   @override
   void initState() {
     ordersItem = widget.OrdersItem;
    userDetails = widget.userDetails;
     ordersIdList = widget.ordersIdList;
+    paymentDetail = widget.paymentDetail;
 
+    // if(ordersItem['payment']!= null){
+    //   print(ordersItem['payment']);
+    // }
     // print(ordersItem[0]['orders'][0]['id']);
     // print(ordersItem[0]['orders'][0]['order_items'][0]['id']);
 
@@ -96,6 +102,66 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                 ],
               ),
             ),
+            ///
+            ListTile(
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color:  Colors.red,),
+                            borderRadius:  BorderRadius.all(Radius.circular(5.0)),
+                          ),
+                          child: Text(" ${ucFirst(paymentDetail['type'])} ", style:
+                          TextStyle(fontSize: 14, color:  Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                        ),
+                        SizedBox(width: 5,),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.orange,),
+                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          ),
+                          child: Text(" ${ucFirst(paymentDetail['status'])} ", style:
+                          TextStyle(fontSize: 14, color: Colors.orange, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey,),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    ),
+                    child: Text(" ${paymentDetail['stripe_payment_id']} ", style:
+                    TextStyle(fontSize: 14, color: Colors.grey, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text("Order ID #${paymentDetail['order_id']}",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                  ),
+                ],
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Date: ", style:
+                    TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    Text(paymentDetail['created_at'].substring(0,10), style:
+                    TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                  ],
+                ),
+              ),
+            ),
+            ///
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text("Order Details: ", style:

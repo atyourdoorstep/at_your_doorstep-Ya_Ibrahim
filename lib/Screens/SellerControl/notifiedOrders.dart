@@ -197,6 +197,7 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
                                               OrderDetailsForSeller(OrdersItem: orderItems1[index]['orders'][index1]['order_items'],
                                                 userDetails: orderItems1[index],
                                                 ordersIdList: orderlistID,
+                                                paymentDetail: orderItems1[index]['orders'][index1]['payment'],
                                               )),);
                                           print(orderlistID);
                                         },

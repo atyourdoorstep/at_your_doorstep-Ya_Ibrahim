@@ -145,9 +145,9 @@ class _HomePageOperationState extends State<HomePageOperation>
                       Text('Your Location',style:
                       TextStyle(fontSize: 13, color: Colors.white, fontFamily: "PTSans" )),
                        GestureDetector(onTap: () {
-                         Navigator.of(
-                           context,
-                           rootNavigator: true,).pushNamed('mapsGoogle');
+                         // Navigator.of(
+                         //   context,
+                         //   rootNavigator: true,).pushNamed('mapsGoogle');
                        },
                        child: Icon(Icons.keyboard_arrow_down_outlined, )),
                     ],
@@ -288,10 +288,8 @@ class _HomePageOperationState extends State<HomePageOperation>
                     ),
                     TextButton(
                         onPressed: () {
-                          // Navigator.push(context,
-                          //     MaterialPageRoute(builder: (context) {
-                          //       return loadingScreenMovies();
-                          //     }));
+                          Navigator.push(context, new MaterialPageRoute(
+                              builder: (context) =>ShowAllPage(name: "Top Sold",itemList: topSolds,)));
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 10),
@@ -393,17 +391,14 @@ class _HomePageOperationState extends State<HomePageOperation>
                     ),
                     TextButton(
                         onPressed: () {
-                          // Navigator.push(context,
-                          //     MaterialPageRoute(builder: (context) {
-                          //       return loadingScreenMovies();
-                          //     }));
+                          Navigator.push(context, new MaterialPageRoute(
+                              builder: (context) =>ShowAllPage(name: "Recommanded to you",itemList: recommandItem,)));
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 10),
                           child: Text(
                             "Show All",
                             style: TextStyle(
-                                decoration: TextDecoration.underline,
                                 fontSize: 12.0),
                           ),
                         )),
@@ -687,4 +682,119 @@ class _CupertinoHomePageState extends State<CupertinoHomePage> {
     return true;
   }
 
+}
+
+class ShowAllPage extends StatefulWidget {
+  final itemList , name;
+  ShowAllPage({this.name,this.itemList});
+
+  @override
+  _ShowAllPageState createState() => _ShowAllPageState();
+}
+
+class _ShowAllPageState extends State<ShowAllPage> {
+  var itemList , name;
+
+  @override
+  void initState() {
+    itemList = widget.itemList;
+    name= widget.name;
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(name.toString(), style: TextStyle(fontSize: 18,
+          color: Colors.red,
+          fontFamily: "PTSans",
+          fontWeight: FontWeight.w500,),),
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
+        ),
+      ),
+      body: GridView.builder(
+        itemCount: itemList.length,
+        scrollDirection: Axis.vertical,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+          crossAxisSpacing: 4,
+          mainAxisSpacing: 4,
+        ),
+        itemBuilder: (context , index){
+          return Stack(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, new MaterialPageRoute(
+                      builder: (context) =>ShowItemPage(itemDetails: itemList[index],)));
+                },
+                child: Card(
+                  color: Colors.white,
+                  child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            AspectRatio(
+                                aspectRatio: 2/2,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    child: Image.network(itemList[index]['image']))),
+                            // Padding(
+                            //   padding: const EdgeInsets.all(8.0),
+                            //   child: Text(ucFirst(topSolds[index]['name']),
+                            //     overflow: TextOverflow.ellipsis
+                            //     ,style: TextStyle(fontWeight: FontWeight.w700, fontSize: 9),),
+                            // ),
+                          ],
+                        ),
+                      )),
+                  shadowColor: Colors.grey,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0),
+                    ),
+                    //side: BorderSide(color: Colors.red),
+                  ),),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(10.0),
+                      topRight: Radius.circular(10.0),
+                    ),
+                  ),
+                  child: Text(" ${itemList[index]['reviews_avg_rating']!= null ? double.parse(itemList[index]['reviews_avg_rating']).toStringAsFixed(1) : "N/A"}⭐  ", style:
+                  TextStyle(fontSize: 12, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Text(ucFirst(itemList[index]['name']),
+                        overflow: TextOverflow.ellipsis
+                        ,style: TextStyle(fontWeight: FontWeight.w700, fontSize: 8,color: Colors.white),),
+                    ),
+                    color: Colors.grey.shade400,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
 }
