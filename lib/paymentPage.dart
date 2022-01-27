@@ -102,7 +102,23 @@ class _PaymentPageState extends State<PaymentPage> {
                   'exp_year': expYearController.text,
                 });
               },
-            )
+            ),
+            GestureDetector(
+              onTap: (){
+                if(currentAddress1 == null){
+                  Navigator.push(context, new MaterialPageRoute(
+                      builder: (context) =>AskingForAddressOrderTime(type:"COD",striprToken:"",ordersList: ordersList,itemsDetails: itemsDetails,)));
+                }
+                else{
+                  Navigator.push(context, new MaterialPageRoute(
+                      builder: (context) =>CheckoutPage(type:"COD",stripToken: "",ordersList: ordersList, itemsDetails: itemsDetails,)));
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("< Cash on Delivery", style: TextStyle(color: Colors.blue , fontSize: 12),),
+              ),
+            ),
           ],
         ),
       ): SpecialSpinner(),
@@ -126,11 +142,11 @@ class _PaymentPageState extends State<PaymentPage> {
 
       if(currentAddress1 == null){
          Navigator.push(context, new MaterialPageRoute(
-             builder: (context) =>AskingForAddressOrderTime(striprToken: stripToken['token']['id'],ordersList: ordersList,itemsDetails: itemsDetails,)));
+             builder: (context) =>AskingForAddressOrderTime(type:"ONLINE",striprToken: stripToken['token']['id'],ordersList: ordersList,itemsDetails: itemsDetails,)));
        }
        else{
          Navigator.push(context, new MaterialPageRoute(
-             builder: (context) =>CheckoutPage(stripToken: stripToken['token']['id'],ordersList: ordersList, itemsDetails: itemsDetails,)));
+             builder: (context) =>CheckoutPage(type:"ONLINE",stripToken: stripToken['token']['id'],ordersList: ordersList, itemsDetails: itemsDetails,)));
        }
     }
     if(body['success']== false){

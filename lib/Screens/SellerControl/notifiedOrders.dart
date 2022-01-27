@@ -35,6 +35,7 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
     getOrderedItemsSeller();
     super.initState();
   }
+  List orderlistID = [];
 
   @override
   void dispose() {
@@ -68,88 +69,152 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
           child: Column(
             children: <Widget>[
               orderItems1.length > 0 ? SizedBox(
-                height: 500,
+                height: 700,
                 child: ListView.builder(
                   itemCount: orderItems1.length,
                   itemBuilder:(context , index){
-                    return GestureDetector(
-                      onTap: (){
-                        // order_items.clear();
-                        // var orders = orderItems1[index]['orders'][0]['order_items'];
-                        // print(orders.length);
-                        // for(int i=0;i< orders.length ; i++){
-                        //   order_items.insert(i, orders[i]['id']);
-                        // }
-                        // print(order_items);
-                        showModalBottomSheet(
-                          elevation: 20.0,
-                          context: context,
+                    return ExpansionTile(
+                      title: GestureDetector(
+                        onTap: (){
+                          // order_items.clear();
+                          // var orders = orderItems1[index]['orders'][0]['order_items'];
+                          // print(orders.length);
+                          // for(int i=0;i< orders.length ; i++){
+                          //   order_items.insert(i, orders[i]['id']);
+                          // }
+                          // print(order_items);
+                          // showModalBottomSheet(
+                          //   elevation: 20.0,
+                          //   context: context,
+                          //
+                          //   builder: (context) => OrdersListSellerSide(orderItems: orderItems1[index]['orders'],userDetails: orderItems1[index]),
+                          // );
 
-                          builder: (context) => OrdersListSellerSide(orderItems: orderItems1[index]['orders'],userDetails: orderItems1[index]),
-                        );
-
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                        //     OrderDetailsForSeller(
-                        //       OrdersItem: orderItems1[index]['orders'][0]['order_items'],
-                        //       userDetails: orderItems1[index],
-                        //       ordersIdList: order_items,
-                        //       )),);
-                      },
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              ListTile(
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // date == orderItems1[index]['orders'][0]['created_at'].substring(0,10) ? FadeTransition(
-                                    //   opacity: _animationController,
-                                    //   child: Padding(
-                                    //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                    //     child: Container(
-                                    //       color: Colors.red,
-                                    //       child: Text(" New ", style:
-                                    //       TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                                    //     ),
-                                    //   ),
-                                    // ): SizedBox(),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text("${ucFirst(orderItems1[index]['fName'])} ${ucFirst(orderItems1[index]['lName'])}",
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.w700),),
-                                    ),
-                                  ],
-                                ),
-                                subtitle: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                          //     OrderDetailsForSeller(
+                          //       OrdersItem: orderItems1[index]['orders'][0]['order_items'],
+                          //       userDetails: orderItems1[index],
+                          //       ordersIdList: order_items,
+                          //       )),);
+                        },
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Customer ID: ", style:
-                                      TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                                      Text("${orderItems1[index]['id']}", style:
-                                      TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                      // date == orderItems1[index]['orders'][0]['created_at'].substring(0,10) ? FadeTransition(
+                                      //   opacity: _animationController,
+                                      //   child: Padding(
+                                      //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      //     child: Container(
+                                      //       color: Colors.red,
+                                      //       child: Text(" New ", style:
+                                      //       TextStyle(fontSize: 14, color: Colors.white, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                                      //     ),
+                                      //   ),
+                                      // ): SizedBox(),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text("${ucFirst(orderItems1[index]['fName'])} ${ucFirst(orderItems1[index]['lName'])}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.w700),),
+                                      ),
                                     ],
                                   ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Text("Customer ID: ", style:
+                                        TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                        Text("${orderItems1[index]['id']}", style:
+                                        TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                      ],
+                                    ),
+                                  ),
+                                  trailing: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Text("No of Orders: ${orderItems1[index]['orders'].length}", style:
+                                    TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                  ),
                                 ),
-                                trailing: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Text("No of Orders: ${orderItems1[index]['orders'].length}", style:
-                                  TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Divider(),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
+                      children: [
+                        ////
+                        ListView.builder(
+                          physics: ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: orderItems1[index]['orders'].length,
+                          itemBuilder:(context , index1){
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      title: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text("Order #${index1+1}",
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.w700),),
+                                          ),
+                                        ],
+                                      ),
+                                      subtitle: Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Text("Ordered Date: ", style:
+                                            TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                            Text(orderItems1[index]['orders'][index1]['order_items'][0]['created_at'].substring(0,10), style:
+                                            TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                                          ],
+                                        ),
+                                      ),
+                                      trailing: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ElevatedButton(onPressed: () {
+                                          orderlistID.clear();
+                                          for(int i=0;i<orderItems1[index]['orders'][index1]['order_items'].length;i++){
+                                            orderlistID.insert(i, orderItems1[index]['orders'][index1]['order_items'][i]['id']);
+                                          }
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                              OrderDetailsForSeller(OrdersItem: orderItems1[index]['orders'][index1]['order_items'],
+                                                userDetails: orderItems1[index],
+                                                ordersIdList: orderlistID,
+                                              )),);
+                                          print(orderlistID);
+                                        },
+                                            child: Text("Order Details")),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Divider(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        ////
+                      ],
                     );
                   },
                 ),
@@ -178,113 +243,3 @@ class _NotifiedOrdersListState extends State<NotifiedOrdersList>
   }
 }
 
-class OrdersListSellerSide extends StatefulWidget {
-  final userDetails;
-  final orderItems;
-  OrdersListSellerSide({this.orderItems,this.userDetails});
-
-  @override
-  _OrdersListSellerSideState createState() => _OrdersListSellerSideState();
-}
-
-class _OrdersListSellerSideState extends State<OrdersListSellerSide> {
-  var orderItems;
-  var userDetails;
-  List orderlistID = [];
-
-  @override
-  void initState() {
-    userDetails = widget.userDetails;
-    orderItems = widget.orderItems;
-    orderItems = orderItems.reversed.toList();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back_ios, color: Colors.red,size: 35,),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 300,
-                child: ListView.builder(
-                  itemCount: orderItems.length,
-                  itemBuilder:(context , index){
-                    print(orderItems);
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text("Order #${index+1}",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.w700),),
-                                  ),
-                                ],
-                              ),
-                              subtitle: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text("Ordered Date: ", style:
-                                    TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                                    Text(orderItems[index]['order_items'][0]['created_at'].substring(0,10), style:
-                                    TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                                  ],
-                                ),
-                              ),
-                              trailing: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ElevatedButton(onPressed: () {
-                                  orderlistID.clear();
-                                  for(int i=0;i<orderItems[index]['order_items'].length;i++){
-                                    orderlistID.insert(i, orderItems[index]['order_items'][i]['id']);
-                                  }
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                      OrderDetailsForSeller(OrdersItem: orderItems[index]['order_items'],
-                                          userDetails: userDetails,
-                                          ordersIdList: orderlistID,
-                                      )),);
-                                  print(orderlistID);
-                                },
-                                    child: Text("Order Details")),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Divider(),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}

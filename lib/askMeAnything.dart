@@ -197,7 +197,7 @@ class _QuestionListState extends State<QuestionList> {
           children: [
             SizedBox(height: 10,),
             getQuestList.length > 0?SizedBox(
-              height: 500,
+              height: 700,
               child: ListView.builder(
                 physics: ClampingScrollPhysics(),
                 shrinkWrap: true,
@@ -378,7 +378,7 @@ class _ReplyBoxState extends State<ReplyBox> {
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
-              child: Text("REPLY ME!", style:
+              child: Text("REPLY!", style:
               TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
             ),
             SizedBox(height: 15),

@@ -14,8 +14,9 @@ class CheckoutPage extends StatefulWidget {
   final stripToken;
   final ordersList;
   final itemsDetails;
+  final type;
 
-  CheckoutPage({this.ordersList,this.stripToken, this.itemsDetails});
+  CheckoutPage({this.type,this.ordersList,this.stripToken, this.itemsDetails});
 
   @override
   _CheckoutPageState createState() => _CheckoutPageState();
@@ -26,6 +27,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   var stripToken;
   var ordersList;
   var itemsDetails;
+  var type;
   bool executed = false;
   bool discounted = false;
   TextEditingController dCodeController = TextEditingController();
@@ -37,6 +39,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
     stripToken = widget.stripToken;
     ordersList = widget.ordersList;
     itemsDetails = widget.itemsDetails;
+    type = widget.type;
+    print(type);
     print(itemsDetails);
     super.initState();
   }
@@ -88,6 +92,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               onPressed: (){
                                 Navigator.pushReplacement(context, new MaterialPageRoute(
                                     builder: (context) =>AskingForAddressOrderTime(
+                                      type:type,
                                       striprToken: stripToken,
                                       ordersList: ordersList,
                                       itemsDetails: itemsDetails,
@@ -231,23 +236,44 @@ class _CheckoutPageState extends State<CheckoutPage> {
               AYDButton(
                 buttonText: "Checkout!",
                 onPressed: () async {
-                  EasyLoading.show(status: 'Creating Order...');
-                  var res= await CallApi().postData({
-                    'items': ordersList,
-                    'stripe_token': stripToken,
-                    'cur': "PKR",
-                  },'/orderCreate');
-                  var body =json.decode(res.body);
-                  EasyLoading.dismiss();
-                  if(res.statusCode == 200){
-                    showMsg(context,"Order Created Successfully!!");
-                    Navigator.push(context, new MaterialPageRoute(
-                        builder: (context) =>OrderComplete(orderList: ordersList,)));
+                  if(type == "ONLINE"){
+                    EasyLoading.show(status: 'Creating Order...');
+                    var res= await CallApi().postData({
+                      'items': ordersList,
+                      'stripe_token': stripToken,
+                      'cur': "PKR",
+                    },'/orderCreate');
+                    var body =json.decode(res.body);
+                    EasyLoading.dismiss();
+                    if(res.statusCode == 200){
+                      showMsg(context,"Order Created Successfully!!");
+                      Navigator.push(context, new MaterialPageRoute(
+                          builder: (context) =>OrderComplete(orderList: ordersList,)));
 
-                    /////
+                      /////
+                    }
+                    else{
+                      showMsg(context,"There is some issues");
+                    }
                   }
                   else{
-                    showMsg(context,"There is some issues");
+                    EasyLoading.show(status: 'Creating Order...');
+                    var res= await CallApi().postData({
+                      'items': ordersList,
+                    },'/orderCreate');
+                    var body =json.decode(res.body);
+                    print(body);
+                    EasyLoading.dismiss();
+                    if(res.statusCode == 200){
+                      showMsg(context,"Order Created Successfully!!");
+                      Navigator.push(context, new MaterialPageRoute(
+                          builder: (context) =>OrderComplete(orderList: ordersList,)));
+
+                      /////
+                    }
+                    else{
+                      showMsg(context,"There is some issues");
+                    }
                   }
                 },
               ),

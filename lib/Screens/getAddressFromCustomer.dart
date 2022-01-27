@@ -18,7 +18,8 @@ class AskingForAddressOrderTime extends StatefulWidget {
   final striprToken;
   final ordersList;
   final itemsDetails;
-  AskingForAddressOrderTime({this.ordersList,this.striprToken, this.itemsDetails});
+  final type;
+  AskingForAddressOrderTime({this.type,this.ordersList,this.striprToken, this.itemsDetails});
 
   @override
   _AskingForAddressOrderTimeState createState() => _AskingForAddressOrderTimeState();
@@ -30,6 +31,7 @@ class _AskingForAddressOrderTimeState extends State<AskingForAddressOrderTime> {
   var striprToken;
   var ordersList;
   var itemsDetails;
+  var type;
   bool executed = false;
   Location location = new Location();
   late bool serviceEnabled;
@@ -50,6 +52,7 @@ class _AskingForAddressOrderTimeState extends State<AskingForAddressOrderTime> {
     striprToken = widget.striprToken;
     ordersList = widget.ordersList;
     itemsDetails = widget.itemsDetails;
+    type=widget.type;
     super.initState();
   }
 
@@ -153,6 +156,7 @@ class _AskingForAddressOrderTimeState extends State<AskingForAddressOrderTime> {
                     //Navigator.pop(context);
                     Navigator.pushReplacement(context, new MaterialPageRoute(
                         builder: (context) =>CheckoutPage(
+                          type: type,
                           stripToken: striprToken,
                           ordersList: ordersList,
                           itemsDetails: itemsDetails,
