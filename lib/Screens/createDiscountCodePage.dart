@@ -48,7 +48,7 @@ class _CreateDiscountCodePageState extends State<CreateDiscountCodePage> {
         ),
       ),
       body: executed ? SingleChildScrollView(
-        child: Container(
+        child: categoryItem.length>0?Container(
           child: Column(
             children: [
               Padding(
@@ -194,7 +194,7 @@ class _CreateDiscountCodePageState extends State<CreateDiscountCodePage> {
               ),
               ],
           ),
-        ),
+        ):Text("No Item Found"),
       ): SpecialSpinner(),
       floatingActionButton: FloatingActionButton(
         elevation: 3,
