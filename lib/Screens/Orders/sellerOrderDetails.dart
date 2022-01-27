@@ -142,14 +142,14 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                         ],
                       ),
                     ),
-                    Container(
+                    paymentDetail['stripe_payment_id'] !=null ? Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey,),
                         borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       ),
                       child: Text(" ${paymentDetail['stripe_payment_id']} ", style:
                       TextStyle(fontSize: 14, color: Colors.grey, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                    ),
+                    ): SizedBox(),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Text("Order ID #${paymentDetail['order_id']}",
@@ -229,7 +229,7 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                                         });
                                         //print(ispublic);
                                       },
-                                      items: <String>['Processing', 'Delivered','Completed','Canceled']
+                                      items: <String>['Processing', 'Delivered','Completed','Cancelled']
                                           .map<DropdownMenuItem<String>>((String value){
                                         return DropdownMenuItem<String>(
                                           value: value,
@@ -367,7 +367,7 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                 )),),
               ),
             ),
-            ordersItem[0]['status'] == "confirmed" ?SizedBox(): Align(
+            ordersItem[0]['status'] == "confirmed" || ordersItem[0]['status'] == "Cancelled"  ?SizedBox(): Align(
               alignment: FractionalOffset.bottomCenter,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -396,7 +396,27 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                     },
                       buttonText: "Confirm Order!",
                     ),
-                    AYDOutlinedButton(onPressed: (){},buttonText: "Cancel",)
+                    // AYDOutlinedButton(
+                    //
+                    //     onPressed: ()async{
+                    //       for(int i=0;i<ordersItem ; i++){
+                    //         var res= await CallApi().postData({
+                    //           'status':"Cancelled",
+                    //           'order_item_id': ordersItem[i]['id'],
+                    //           'order_id': ordersItem[i]['order_id'],
+                    //           'seller':ordersItem[i]['seller_id']
+                    //         },'/changeStatus');
+                    //       }
+                    //         showMsg(context, "Order Cancelled!!");
+                    //
+                    //         Navigator.pop(context);
+                    //         Navigator.pop(context);
+                    //         Navigator.of(
+                    //           context,
+                    //           rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
+                    //
+                    //       },
+                    //   buttonText: "Cancel",)
                   ],
                 ),
               ),),
