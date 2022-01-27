@@ -96,14 +96,14 @@ class _PaymentDetailsCustomerState extends State<PaymentDetailsCustomer> {
                                         ],
                                       ),
                                     ),
-                                    Container(
+                                    payments[index]['stripe_payment_id'] !=null ? Container(
                                       decoration: BoxDecoration(
                                         border: Border.all(color: Colors.grey,),
                                         borderRadius: borderRad,
                                       ),
                                       child: Text(" ${payments[index]['stripe_payment_id']} ", style:
                                       TextStyle(fontSize: 14, color: Colors.grey, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                                    ),
+                                    ): SizedBox(),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                                       child: Text("Order ID #${payments[index]['order_id']}",
