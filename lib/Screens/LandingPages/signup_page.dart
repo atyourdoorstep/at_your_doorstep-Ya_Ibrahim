@@ -81,7 +81,7 @@ class _SignupOperationState extends State<SignupOperation> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           //Text("${selectedData.toLocal()}".split(' ')[0]),
-                          textfieldStyle(textHint: 'Date of Birth', obscureText: false, textLabel1: 'Date',controllerText: dateOfBirthController,
+                          textfieldStyle(textHint: 'Date of Birth', obscureText: false, textLabel1: 'Date of Birth',controllerText: dateOfBirthController,
                             focus: AlwaysDisable(),
                             suffixButton: IconButton(
                               icon: Icon(Icons.calendar_today),
