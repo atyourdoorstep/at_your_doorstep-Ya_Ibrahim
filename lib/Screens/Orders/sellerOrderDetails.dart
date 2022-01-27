@@ -80,86 +80,99 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
             TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
             Text(ordersItem[0]['created_at'].substring(0,10), style:
             TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Buyer Personal Info: ", style:
-              TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Full Name:  ${ucFirst(userDetails['fName'])} ${ucFirst(userDetails['lName'])}", style:
-                  TextStyle(fontSize: 15, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                  Text("Address:  ${userDetails['address'] == "" ? "Not Available" : userDetails['address']}", style:
-                  TextStyle(fontSize: 15, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                  Text("Contact No:  ${userDetails['contact']}", style:
-                  TextStyle(fontSize: 15, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                  Text("Email Address:  ${userDetails['email']}", style:
-                  TextStyle(fontSize: 15, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-
-                ],
+            ExpansionTile(
+              title: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Buyer Personal Info ", style:
+                TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
               ),
-            ),
-            ///
-            ListTile(
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 6.0),
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color:  Colors.red,),
-                            borderRadius:  BorderRadius.all(Radius.circular(5.0)),
-                          ),
-                          child: Text(" ${ucFirst(paymentDetail['type'])} ", style:
-                          TextStyle(fontSize: 14, color:  Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                        ),
-                        SizedBox(width: 5,),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.orange,),
-                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          ),
-                          child: Text(" ${ucFirst(paymentDetail['status'])} ", style:
-                          TextStyle(fontSize: 14, color: Colors.orange, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey,),
-                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    ),
-                    child: Text(" ${paymentDetail['stripe_payment_id']} ", style:
-                    TextStyle(fontSize: 14, color: Colors.grey, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text("Order ID #${paymentDetail['order_id']}",
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
-                  ),
-                ],
-              ),
-              subtitle: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Date: ", style:
-                    TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
-                    Text(paymentDetail['created_at'].substring(0,10), style:
-                    TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    Text("Full Name:  ${ucFirst(userDetails['fName'])} ${ucFirst(userDetails['lName'])}", style:
+                    TextStyle(fontSize: 15, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    Text("Address:  ${userDetails['address'] == "" ? "Not Available" : userDetails['address']}", style:
+                    TextStyle(fontSize: 15, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    Text("Contact No:  ${userDetails['contact']}", style:
+                    TextStyle(fontSize: 15, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    Text("Email Address:  ${userDetails['email']}", style:
+                    TextStyle(fontSize: 15, color: Colors.black, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+
                   ],
                 ),
               ),
+    ],
+            ),
+            ///
+            ExpansionTile(
+              title: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Payment Info ", style:
+                TextStyle(fontSize: 15, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+              ),
+              children: [
+                ListTile(
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color:  Colors.red,),
+                              borderRadius:  BorderRadius.all(Radius.circular(5.0)),
+                            ),
+                            child: Text(" ${ucFirst(paymentDetail['type'])} ", style:
+                            TextStyle(fontSize: 14, color:  Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                          ),
+                          SizedBox(width: 5,),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.orange,),
+                              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                            ),
+                            child: Text(" ${ucFirst(paymentDetail['status'])} ", style:
+                            TextStyle(fontSize: 14, color: Colors.orange, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey,),
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      ),
+                      child: Text(" ${paymentDetail['stripe_payment_id']} ", style:
+                      TextStyle(fontSize: 14, color: Colors.grey, fontFamily: "PTSans", fontWeight: FontWeight.w700 , )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text("Order ID #${paymentDetail['order_id']}",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w700),),
+                    ),
+                  ],
+                ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("Date: ", style:
+                      TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                      Text(paymentDetail['created_at'].substring(0,10), style:
+                      TextStyle(fontSize: 13, color: Colors.black26, fontFamily: "PTSans", fontWeight: FontWeight.w700 )),
+                    ],
+                  ),
+                ),
+              ),
+    ],
             ),
             ///
             Padding(
