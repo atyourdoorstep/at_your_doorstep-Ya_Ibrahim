@@ -46,7 +46,7 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
     super.initState();
   }
 
-  String dropdownValue = 'Processing';
+  String dropdownValue = 'Delivered';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +107,7 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
     ],
             ),
             ///
-            ExpansionTile(
+            paymentDetail != null ? ExpansionTile(
               title: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text("Payment Info ", style:
@@ -173,7 +173,7 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                 ),
               ),
     ],
-            ),
+            ): SizedBox(),
             ///
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -193,82 +193,86 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                         elevation: 20.0,
                         context: context,
 
-                        builder: (context) => Column(
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Text("SET ORDER STATUS!", style:
-                              TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
-                            ),
-                            SizedBox(height: 20),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        builder: (context) => StatefulBuilder(
+                            builder: (BuildContext context , StateSetter state){
+                              return Column(
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                // crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 12.0),
-                                    child: Text("Select Change Status: "),
+                                  SizedBox(height: 20),
+                                  Center(
+                                    child: Text("SET ORDER STATUS!", style:
+                                    TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
                                   ),
+                                  SizedBox(height: 20),
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 12.0),
-                                    child: DropdownButton(
-                                      focusColor: Colors.white,
-                                      value: dropdownValue,
-                                      underline: Container(
-                                        height: 2,
-                                        color: Colors.white,
-                                      ),
-                                      iconEnabledColor: Colors.black,
-                                      style: const TextStyle(color: Colors.red),
-                                      onChanged: (String? newValue){
-                                        setState(() {
-                                          dropdownValue = newValue!;
-                                          //ispublic = dropdownValue == 'Public'? 1 : 0;
-                                        });
-                                        //print(ispublic);
-                                      },
-                                      items: <String>['Processing', 'Delivered','Completed','Cancelled']
-                                          .map<DropdownMenuItem<String>>((String value){
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(value),
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 12.0),
+                                          child: Text("Select Change Status: "),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 12.0),
+                                          child: DropdownButton(
+                                            focusColor: Colors.white,
+                                            value: dropdownValue,
+                                            underline: Container(
+                                              height: 2,
+                                              color: Colors.white,
+                                            ),
+                                            iconEnabledColor: Colors.black,
+                                            style: const TextStyle(color: Colors.red),
+                                            onChanged: (String? newValue){
+                                              state(() {
+                                                dropdownValue = newValue!;
+                                              });
+                                            },
+                                            items: <String>['Processing', 'Delivered','Completed','Cancelled']
+                                                .map<DropdownMenuItem<String>>((String value){
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Text(value),
+                                                ),
+                                              );
+                                            }
+                                            ).toList(),
                                           ),
-                                        );
-                                      }
-                                      ).toList(),
+                                        ),
+                                      ],//['Processing', 'Delivered','Completed','Cancelled']
                                     ),
                                   ),
-                                ],//['Processing', 'Delivered','Completed','Canceled']
-                              ),
-                            ),
-                            AYDButton(
-                              onPressed: ()async{
-                                var res= await CallApi().postData({
-                                  'status':dropdownValue,
-                                  'order_item_id': ordersItem[index]['id'],
-                                  'order_id': ordersItem[index]['order_id'],
-                                  'seller':ordersItem[index]['seller_id']
-                                },'/changeStatus');
-                                var body =json.decode(res.body);
-                                if(res.statusCode == 200){
-                                  print(body.toString());
-                                  showMsg(context, "Order Confirmed!!");
+                                  AYDButton(
+                                    onPressed: ()async{
+                                      var res= await CallApi().postData({
+                                        'status':dropdownValue,
+                                        'order_item_id': ordersItem[index]['id'],
+                                        'order_id': ordersItem[index]['order_id'],
+                                        'seller':ordersItem[index]['seller_id']
+                                      },'/changeStatus');
+                                      var body =json.decode(res.body);
+                                      if(res.statusCode == 200){
+                                        print(body.toString());
+                                        showMsg(context, "Order Status Changed!!");
 
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                  Navigator.of(
-                                    context,
-                                    rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                        Navigator.of(
+                                          context,
+                                          rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>NotifiedOrdersList()));
 
-                                }
-                              },
-                              buttonText: "Done",
-                            ),
-                          ],
+                                      }
+                                    },
+                                    buttonText: "Done",
+                                  ),
+                                ],
+                              );
+                            }
                         ),
                       );
 
@@ -331,7 +335,7 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                                 ),
                                 trailing:  Padding(
                                   padding: const EdgeInsets.all(5.0),
-                                  child: ordersItem[index]['status'] == "processing" ? Chip(
+                                  child: ucFirst(ordersItem[index]['status']) == "Processing" ? Chip(
                                     shape: StadiumBorder(side: BorderSide(color: Color(0xffD60024), width: 2)),
                                     label:Text(ucFirst(ordersItem[index]['status']),
                                       style: TextStyle(
@@ -367,7 +371,9 @@ class _OrderDetailsForSellerState extends State<OrderDetailsForSeller> {
                 )),),
               ),
             ),
-            ordersItem[0]['status'] == "confirmed" || ordersItem[0]['status'] == "Cancelled"  ?SizedBox(): Align(
+            ordersItem[0]['status'] == "confirmed" || ordersItem[0]['status'] == "Cancelled"
+                || ordersItem[0]['status'] == "Delivered" || ordersItem[0]['status'] == "Completed"
+                ?SizedBox(): Align(
               alignment: FractionalOffset.bottomCenter,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

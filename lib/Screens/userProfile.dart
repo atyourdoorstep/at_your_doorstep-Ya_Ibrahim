@@ -483,6 +483,8 @@ class _EditProfileOpState extends State<EditProfileOp> {
       {
         showMsg(context, 'Session expired please login again');
       }
+      sellerTitle = "No Name";
+      profilePicUrl='https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png';
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.remove('user');
       localStorage.remove('token');

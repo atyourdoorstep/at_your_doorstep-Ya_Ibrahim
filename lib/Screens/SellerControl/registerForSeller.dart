@@ -123,11 +123,11 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
               child: AYDButton(
                 buttonText: "Register",
                 onPressed: () {
-                  if(userNameController.text != ""){
+                  if(userNameController.text != "" && titleController.text != "" && descriptionController.text != ""){
                     _registerServicePro();
                   }
                   else {
-                    showMsg(context, "Your Username field box is Empty!!");
+                    showMsg(context, "Some field(s) are Empty!!");
                   }
                 },
               ),
@@ -150,7 +150,6 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
     var body = json.decode(resp.body);
     print(body.toString());
     if(body['success']){
-      if(titleController.text != "" && descriptionController.text != ""){
         var res = await CallApi().postData({
           'title':titleController.text.toLowerCase(),
           'description':descriptionController.text.toLowerCase(),
@@ -170,10 +169,6 @@ class _RegisterSellerOneState extends State<RegisterSellerOne> {
             rootNavigator: true,).push(MaterialPageRoute(builder: (context)=>UpdateSellerProAndItems()));
           showMsg(context, "Setup your profile details");
         });
-      }
-      else{
-        showMsg(context,"Something Wrong");
-      }
         }
     else{
       showMsg(context,body['message']);

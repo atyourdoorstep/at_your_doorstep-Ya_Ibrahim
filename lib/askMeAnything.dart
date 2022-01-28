@@ -378,12 +378,13 @@ class _ReplyBoxState extends State<ReplyBox> {
       body:Container(
         child: Column(
           children: [
+            SizedBox(height: 20),
             Center(
               child: Text("REPLY!", style:
               TextStyle(fontSize: 30, color: Colors.red, fontFamily: "PTSans", fontWeight: FontWeight.w700 , letterSpacing: 2.0)),
             ),
             SizedBox(height: 15),
-            textfieldStyle(textHint: "mil jy ga...", obscureText: false, textLabel1:'Type your Question...', controllerText: questController,),
+            textfieldStyle(textHint: "mil jy ga...", obscureText: false, textLabel1:'Type your something...', controllerText: questController,),
             SizedBox(
               height: 5,
             ),
